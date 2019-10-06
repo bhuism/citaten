@@ -1,0 +1,20 @@
+spring:
+  r2dbc:
+    #   url: r2dbc:mysql://localhost:3306/test
+    url: r2dbc:h2:mem:///demo?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;IGNORECASE=TRUE
+    username: root
+    password: killer
+    initialization-mode: always
+    separator: ;
+    sql-script-encoding: utf-8
+    schema:
+      - classpath:schema_converted.sql
+#    data:
+#      - classpath:data_converted.sql
+#      - classpath:data_converted.sql
+#     - classpath:data_converted.sql
+#    data:
+#      - classpath:data_converted.sql
+logging:
+  level:
+    nl.appsource: DEBUG
