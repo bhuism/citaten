@@ -8,5 +8,11 @@ cache:
 services:
   - docker
 
-before_install:
-  - docker build -t bhuism/citaten .
+jobs:
+  include:
+    - stage: build java
+      script: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+    - stage: test
+      script: mvn test -B
+    - stage: build docker
+      script: docker build -t bhuism/citaten .
