@@ -8,6 +8,9 @@ cache:
 services:
   - docker
 
+jdk:
+  - openjdk11
+
 jobs:
   include:
     - stage: build java
