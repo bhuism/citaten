@@ -23,8 +23,8 @@ public class DemoConfig {
     }
 
     @Bean
-    FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
-        FilterRegistrationBean<ForwardedHeaderFilter> bean = new FilterRegistrationBean<>();
+    public FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
+        final FilterRegistrationBean<ForwardedHeaderFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(new ForwardedHeaderFilter());
         return bean;
     }
