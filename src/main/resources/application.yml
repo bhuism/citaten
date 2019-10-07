@@ -1,4 +1,8 @@
 spring:
+  server:
+    use-forward-headers: true
+    compression:
+      enabled: true
   r2dbc:
     #   url: r2dbc:mysql://localhost:3306/test
     url: r2dbc:h2:mem:///demo?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;IGNORECASE=TRUE
