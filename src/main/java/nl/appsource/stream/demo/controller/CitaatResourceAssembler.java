@@ -9,11 +9,7 @@ import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class CitaatResourceAssembler implements SimpleRepresentationModelAssembler<Citaat> {
-
-    private final static CitaatController citaatController = methodOn(CitaatController.class);
-    private final static SprekerController sprekerController = methodOn(SprekerController.class);
-    private final static CategorieController categorieController = methodOn(CategorieController.class);
+public class CitaatResourceAssembler extends BaseResourceAssembler implements SimpleRepresentationModelAssembler<Citaat> {
 
     @Override
     public void addLinks(EntityModel<Citaat> resource) {
@@ -24,6 +20,9 @@ public class CitaatResourceAssembler implements SimpleRepresentationModelAssembl
 
     @Override
     public void addLinks(CollectionModel<EntityModel<Citaat>> resources) {
-        resources.add(linkTo(citaatController.getAll()).withRel("all"));
+        resources.add(linkTo(citaatController.getAll()).withRel("citaten"));
+        resources.add(linkTo(sprekerController.getAll()).withRel("sprekers"));
+        resources.add(linkTo(categorieController.getAll()).withRel("categorien"));
+
     }
 }

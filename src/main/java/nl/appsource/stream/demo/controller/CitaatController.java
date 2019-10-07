@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -48,6 +50,7 @@ public class CitaatController {
     public Mono<EntityModel<Citaat>> getById(@PathVariable Long id) {
         return citaatRepository.findById(id)
                 .map(citaatResourceAssembler::toModel)
+                .map(citaat -> citaat.add(linkTo(methodOn(CitaatController.class).getAll()).withRel("citaten")))
                 ;
     }
 

@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -45,7 +48,9 @@ public class SprekerController {
     @GetMapping("/{id}")
     public Mono<EntityModel<Spreker>> getById(@PathVariable Long id) {
         return SprekerRepository.findById(id)
-                .map(sprekerResourceAssembler::toModel);
+                .map(sprekerResourceAssembler::toModel)
+                .map(spreker -> spreker.add(linkTo(methodOn(SprekerController.class).getAll()).withRel("sprekers")))
+                ;
     }
 
 }

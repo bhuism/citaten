@@ -8,17 +8,17 @@ import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class SprekerResourceAssembler implements SimpleRepresentationModelAssembler<Spreker> {
-
-    private final static SprekerController controller = methodOn(SprekerController.class);
+public class SprekerResourceAssembler extends BaseResourceAssembler implements SimpleRepresentationModelAssembler<Spreker> {
 
     @Override
     public void addLinks(EntityModel<Spreker> resource) {
-        resource.add(linkTo(controller.getById(resource.getContent().getId())).withSelfRel());
+        resource.add(linkTo(sprekerController.getById(resource.getContent().getId())).withSelfRel());
     }
 
     @Override
     public void addLinks(CollectionModel<EntityModel<Spreker>> resources) {
-        resources.add(linkTo(controller.getAll()).withRel("categorien"));
+        resources.add(linkTo(sprekerController.getAll()).withRel("sprekers"));
+        resources.add(linkTo(methodOn(CitaatController.class).getAll()).withRel("citaten"));
+
     }
 }
