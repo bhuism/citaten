@@ -13,12 +13,10 @@ jdk:
 
 jobs:
   include:
-    - stage: build java
-      script: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-    - stage: test
-      script: mvn test -B
-    - stage: build docker
+    - stage: build test deploy
       script:
+        - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+        - mvn test -B
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t bhuism/citaten:latest .
         - docker push bhuism/citaten:latest
