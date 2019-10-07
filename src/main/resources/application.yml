@@ -22,3 +22,4 @@ spring:
 logging:
   level:
     nl.appsource: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
