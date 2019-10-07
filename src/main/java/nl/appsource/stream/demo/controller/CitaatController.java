@@ -34,21 +34,24 @@ public class CitaatController {
         return citaatRepository.findAll()
                 .limitRequest(10)
                 .collectList()
-                .map(citaatResourceAssembler::toCollectionModel);
+                .map(citaatResourceAssembler::toCollectionModel)
+                ;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<EntityModel<Citaat>> create(@RequestBody EntityModel<Citaat> citaat) {
         return citaatRepository.save(citaat.getContent())
-                .map(citaatResourceAssembler::toModel);
+                .map(citaatResourceAssembler::toModel)
+                ;
 
     }
 
     @GetMapping("/{id}")
     public Mono<EntityModel<Citaat>> getById(@PathVariable Long id) {
         return citaatRepository.findById(id)
-                .map(citaatResourceAssembler::toModel);
+                .map(citaatResourceAssembler::toModel)
+                ;
     }
 
 }
