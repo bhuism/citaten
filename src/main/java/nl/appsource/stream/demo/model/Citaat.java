@@ -1,5 +1,6 @@
 package nl.appsource.stream.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -16,9 +17,11 @@ public class Citaat {
 
     private final String name;
 
+    @JsonIgnore
     @Column("spreker")
     private final Long sprekerId;
 
+    @JsonIgnore
     @Column("categorie")
     private final Long categorieId;
 
