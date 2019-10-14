@@ -8,9 +8,73 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
+import javax.servlet.Filter;
+
 @Slf4j
 @Configuration
 public class DemoConfig {
+
+
+//    @Bean
+//    public EntityLinks citaatEntityLinks() {
+//
+//        return new EntityLinks() {
+//
+//            @Override
+//            public boolean supports(final Class<?> aClass) {
+//                return false;
+//            }
+//
+//            @Override
+//            public LinkBuilder linkFor(final Class<?> type) {
+//                return null;
+//            }
+//
+//            @Override
+//            public LinkBuilder linkFor(final Class<?> type, final Object... parameters) {
+//                return null;
+//            }
+//
+//            @Override
+//            public LinkBuilder linkForItemResource(final Class<?> type, final Object id) {
+//                return null;
+//            }
+//
+//            @Override
+//            public Link linkToCollectionResource(final Class<?> type) {
+//                return null;
+//            }
+//
+//            @Override
+//            public Link linkToItemResource(final Class<?> type, final Object id) {
+//                return null;
+//            }
+//        };
+//    }
+
+
+//    @Bean
+//    public LinkRelationProvider citaatlLinkRelationProvider() {
+//
+//        return new LinkRelationProvider() {
+//
+//            @Override
+//            public LinkRelation getItemResourceRelFor(final Class<?> type) {
+//                return LinkRelation.of("aaa");
+//            }
+//
+//            @Override
+//            public LinkRelation getCollectionResourceRelFor(final Class<?> type) {
+//                return LinkRelation.of("bbb");
+//            }
+//
+//            @Override
+//            public boolean supports(final LookupContext delimiter) {
+//                return Citaat.class.equals(delimiter.getType());
+//            }
+//        };
+//
+//    }
 
     @Bean
     @Profile("production")
@@ -24,8 +88,9 @@ public class DemoConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
-        final FilterRegistrationBean<ForwardedHeaderFilter> bean = new FilterRegistrationBean<>();
+    @Profile("production")
+    public FilterRegistrationBean<Filter> forwardedHeaderFilter() {
+        final FilterRegistrationBean<Filter> bean = new FilterRegistrationBean<>();
         bean.setFilter(new ForwardedHeaderFilter());
         return bean;
     }

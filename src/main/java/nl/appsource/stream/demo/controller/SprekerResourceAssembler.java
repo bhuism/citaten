@@ -17,7 +17,7 @@ public class SprekerResourceAssembler extends BaseResourceAssembler implements S
 
     @Override
     public void addLinks(CollectionModel<EntityModel<Spreker>> resources) {
-        resources.add(linkTo(sprekerController.getAll()).withRel("sprekers"));
+        resources.add(linkTo(sprekerController.sprekers()).withRel("sprekers"));
         resources.add(linkTo(methodOn(CitaatController.class).getAll()).withRel("citaten"));
 
     }
