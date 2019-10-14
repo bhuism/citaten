@@ -14,68 +14,6 @@ import javax.servlet.Filter;
 @Configuration
 public class DemoConfig {
 
-
-//    @Bean
-//    public EntityLinks citaatEntityLinks() {
-//
-//        return new EntityLinks() {
-//
-//            @Override
-//            public boolean supports(final Class<?> aClass) {
-//                return false;
-//            }
-//
-//            @Override
-//            public LinkBuilder linkFor(final Class<?> type) {
-//                return null;
-//            }
-//
-//            @Override
-//            public LinkBuilder linkFor(final Class<?> type, final Object... parameters) {
-//                return null;
-//            }
-//
-//            @Override
-//            public LinkBuilder linkForItemResource(final Class<?> type, final Object id) {
-//                return null;
-//            }
-//
-//            @Override
-//            public Link linkToCollectionResource(final Class<?> type) {
-//                return null;
-//            }
-//
-//            @Override
-//            public Link linkToItemResource(final Class<?> type, final Object id) {
-//                return null;
-//            }
-//        };
-//    }
-
-
-//    @Bean
-//    public LinkRelationProvider citaatlLinkRelationProvider() {
-//
-//        return new LinkRelationProvider() {
-//
-//            @Override
-//            public LinkRelation getItemResourceRelFor(final Class<?> type) {
-//                return LinkRelation.of("aaa");
-//            }
-//
-//            @Override
-//            public LinkRelation getCollectionResourceRelFor(final Class<?> type) {
-//                return LinkRelation.of("bbb");
-//            }
-//
-//            @Override
-//            public boolean supports(final LookupContext delimiter) {
-//                return Citaat.class.equals(delimiter.getType());
-//            }
-//        };
-//
-//    }
-
     @Bean
     @Profile("production")
     public CommonsRequestLoggingFilter logFilter() {

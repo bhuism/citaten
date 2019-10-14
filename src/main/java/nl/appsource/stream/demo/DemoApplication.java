@@ -9,10 +9,6 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 
 @Slf4j
 @SpringBootApplication
-//@SpringBootApplication(exclude = HypermediaAutoConfiguration.class)
-//@EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
-//@EnableHypermediaSupport(type = { HAL, HAL_FORMS }, stacks = WebStack.WEBFLUX)
-//@EnableAutoConfiguration(exclude = HypermediaAutoConfiguration.class)
 @EnableHypermediaSupport(type = HAL)
 public class DemoApplication {
 
