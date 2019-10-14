@@ -1,7 +1,6 @@
 package nl.appsource.stream.demo.controller;
 
 
-import lombok.RequiredArgsConstructor;
 import nl.appsource.stream.demo.assembler.BaseResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
@@ -19,7 +18,6 @@ import reactor.core.publisher.Mono;
  * @param <T>
  */
 
-@RequiredArgsConstructor
 public class AbstractController<T> {
 
     @Autowired
