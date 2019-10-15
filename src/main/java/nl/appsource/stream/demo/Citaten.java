@@ -10,10 +10,10 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 @Slf4j
 @SpringBootApplication
 @EnableHypermediaSupport(type = HAL)
-public class DemoApplication {
+public class Citaten {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(Citaten.class, args);
     }
 
 }
