@@ -4,7 +4,6 @@
 [![Build Status](https://travis-ci.com/bhuism/citaten.svg?branch=master)](https://travis-ci.com/bhuism/citaten)
 [![Open Issues](https://img.shields.io/github/issues/bhuism/citaten.svg)](https://github.com/bhuism/citaten/issues)
 [![License](https://img.shields.io/github/license/bhuism/citaten.svg?color=4c1)](https://github.com/bhuism/citaten/blob/master/LICENSE)
-[![Coverage Status](https://coveralls.io/repos/github/bhuism/citaten/badge.svg?branch=master)](https://coveralls.io/github/bhuism/citaten?branch=master)
 [![Codecov](https://codecov.io/gh/bhuism/citaten/branch/master/graph/badge.svg)](https://codecov.io/gh/bhuism/citaten)
 
 Try out spring reactive rest
