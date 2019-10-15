@@ -11,6 +11,6 @@ jobs:
   include:
     - stage: build test deploy
       script:
-        - mvn -B -V clean install jacoco:report coveralls:report
+        - mvn -B -V clean install jacoco:report
 after_success:
   - bash <(curl -s https://codecov.io/bash)
