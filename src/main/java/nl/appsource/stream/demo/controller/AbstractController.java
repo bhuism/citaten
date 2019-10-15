@@ -49,7 +49,6 @@ public class AbstractController<T> {
         return repository.save(entity.getContent())
                 .map(c -> resourceAssembler.toModel2(c, null))
                 ;
-
     }
 
 
