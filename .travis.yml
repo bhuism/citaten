@@ -12,4 +12,4 @@ jobs:
   include:
     - stage: build test deploy
       script:
-        - mvn install -B -V
+        - mvn -B -V clean install jacoco:report coveralls:report
