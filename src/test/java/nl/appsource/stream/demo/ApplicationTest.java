@@ -15,9 +15,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -34,42 +33,39 @@ public class ApplicationTest {
     @LocalServerPort
     private Long port;
 
-    protected String baseUrl() {
+    private String baseUrl() {
         return "http://localhost:" + port;
     }
 
-    protected String api() {
-        return baseUrl() + "/citaten";
-    }
-
-
-    @Test
-    public void testGetEmployeeListSuccess() throws URISyntaxException {
-
-        final String URI = api() + "/{id}";
+    private ResponseEntity<Citaat> getCitaat(final Long id) {
+        final String URI = baseUrl() + "/citaten/{id}";
         final RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.setMessageConverters(getMessageConverters());
 
         final HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaTypes.HAL_JSON));
-        final HttpEntity<String> entity = new HttpEntity<String>(headers);
+        headers.setAccept(Collections.singletonList(MediaTypes.HAL_JSON));
+        final HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        final ResponseEntity<Citaat> response = restTemplate.exchange(URI, HttpMethod.GET, entity, Citaat.class, "1102");
+        return restTemplate.exchange(URI, HttpMethod.GET, entity, Citaat.class, id);
+    }
+
+    @Test
+    public void testGetEmployeeListSuccess() {
+
+        final ResponseEntity<Citaat> response = getCitaat(1102L);
         final Citaat resource = response.getBody();
 
         assertThat(response.getStatusCodeValue(), is(200));
         assertThat(response.getHeaders().keySet(), hasItem("Content-Type"));
-        assertThat(response.getHeaders(), hasEntry("Content-Type", Arrays.asList(MediaTypes.HAL_JSON_VALUE)));
+        assertThat(response.getHeaders(), hasEntry("Content-Type", Collections.singletonList(MediaTypes.HAL_JSON_VALUE)));
 
         assertThat(resource, is(not(nullValue())));
         assertThat(resource.getId(), is(1102L));
-
     }
 
     private List<HttpMessageConverter<?>> getMessageConverters() {
-        List<HttpMessageConverter<?>> converters =
-                new ArrayList<HttpMessageConverter<?>>();
+        final List<HttpMessageConverter<?>> converters = new ArrayList<>();
         converters.add(new MappingJackson2HttpMessageConverter());
         return converters;
 
