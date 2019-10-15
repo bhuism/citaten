@@ -23,7 +23,7 @@ public class SprekerResourceAssembler extends BaseResourceAssembler<Spreker> {
     @Override
     public CollectionModel<EntityModel<Spreker>> addLinks(final CollectionModel<EntityModel<Spreker>> resources, final ServerWebExchange exchange) {
         resources.add(WebMvcLinkBuilder.linkTo(sprekerController.getAll()).withRel("sprekers"));
-        resources.add(WebMvcLinkBuilder.linkTo(methodOn(CitaatController.class).getAll()).withRel("citaten"));
+        resources.add(WebMvcLinkBuilder.linkTo(citaatController.getAll()).withRel("citaten"));
         return resources;
     }
 

@@ -23,7 +23,7 @@ public class CategorieResourceAssembler extends BaseResourceAssembler<Categorie>
     @Override
     public CollectionModel<EntityModel<Categorie>> addLinks(final CollectionModel<EntityModel<Categorie>> resources, final ServerWebExchange exchange) {
         resources.add(WebMvcLinkBuilder.linkTo(categorieController.getAll()).withRel("categorien"));
-        resources.add(WebMvcLinkBuilder.linkTo(methodOn(CitaatController.class).getAll()).withRel("citaten"));
+        resources.add(WebMvcLinkBuilder.linkTo(citaatController.getAll()).withRel("citaten"));
         return resources;
     }
 }

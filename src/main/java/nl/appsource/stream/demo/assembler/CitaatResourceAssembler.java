@@ -27,8 +27,8 @@ public class CitaatResourceAssembler extends BaseResourceAssembler<Citaat> {
     public CollectionModel<EntityModel<Citaat>> addLinks(final CollectionModel<EntityModel<Citaat>> resources, final ServerWebExchange exchange) {
 
         resources.add(linkTo(methodOn(CitaatController.class).getAll()).withRel("citaten"));
-        resources.add(WebMvcLinkBuilder.linkTo(methodOn(SprekerController.class).getAll()).withRel("sprekers"));
-        resources.add(WebMvcLinkBuilder.linkTo(methodOn(CategorieController.class).getAll()).withRel("categorien"));
+        resources.add(WebMvcLinkBuilder.linkTo(sprekerController.getAll()).withRel("sprekers"));
+        resources.add(WebMvcLinkBuilder.linkTo(categorieController.getAll()).withRel("categorien"));
 
         return resources;
     }
