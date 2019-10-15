@@ -7,7 +7,7 @@
 
 [![Status](https://travis-ci.org/bhuism/citaten.svg?branch=master)](https://travis-ci.org/bhuism/citaten)  
 
-[![CodeClimate](http://img.shields.io/codeclimate/github/bhuism/citaten.svg?style=flat)(https://codeclimate.com/github/bhuism/citaten "CodeClimate")
+[![CodeClimate](http://img.shields.io/codeclimate/github/bhuism/citaten.svg?style=flat)](https://codeclimate.com/github/bhuism/citaten "CodeClimate")
 
 [![Coveralls](http://img.shields.io/coveralls/bhuism/citaten.svg?style=flat)](https://coveralls.io/r/bhuism/citaten)
 
