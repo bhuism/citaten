@@ -5,8 +5,8 @@ cache:
     - .autoconf
     - $HOME/.m2
 
-services:
-  - docker
+#services:
+#  - docker
 
 jdk:
   - openjdk11
@@ -15,8 +15,8 @@ jobs:
   include:
     - stage: build test deploy
       script:
-        - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-        - mvn test -B
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t bhuism/citaten:latest .
-        - docker push bhuism/citaten:latest
+#       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - mvn install -B -V
+#        - mvn test -B
+#        - docker build -t bhuism/citaten:latest .
+#        - docker push bhuism/citaten:latest
