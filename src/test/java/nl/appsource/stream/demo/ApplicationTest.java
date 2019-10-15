@@ -64,8 +64,8 @@ public class ApplicationTest {
 
         Traverson traverson = new Traverson(new URI(baseUrl() + "/citaten"), MediaTypes.HAL_JSON);
         Traverson.TraversalBuilder tb = traverson.follow("citaten");
-        ParameterizedTypeReference<CollectionModel<EntityModel<Citaat>>> typeRefDevices = new ParameterizedTypeReference<CollectionModel<EntityModel<Citaat>>>() {};
-        CollectionModel<EntityModel<Citaat>> models = tb.toObject(typeRefDevices);
+        ParameterizedTypeReference<CollectionModel<EntityModel<Citaat>>> typeRefDevices = new ParameterizedTypeReference<>() {};
+        final CollectionModel<EntityModel<Citaat>> models = tb.toObject(typeRefDevices);
 
         return models;
     }
