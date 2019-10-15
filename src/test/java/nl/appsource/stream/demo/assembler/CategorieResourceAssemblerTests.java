@@ -21,12 +21,12 @@ import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class AssemblerTests {
+public class CategorieResourceAssemblerTests {
+
+    final CategorieResourceAssembler assembler = new CategorieResourceAssembler();
 
     @Test
     public void toModel2ShouldWork() {
-
-        final CategorieResourceAssembler assembler = new CategorieResourceAssembler();
 
         final EntityModel<Categorie> resource = assembler.toModel2(new Categorie(-1L, "Frodo"), null);
 
@@ -34,15 +34,18 @@ public class AssemblerTests {
         assertThat(resource.getContent().getName(), is(equalTo("Frodo")));
 
         assertThat(resource.getLinks(), iterableWithSize(1));
+
         assertThat(resource.getLinks().iterator().next().getHref(), is(equalTo("/categorien/-1")));
         assertThat(resource.getLinks().iterator().next().getRel(), is(equalTo(LinkRelation.of("self"))));
+
+        final Link link = linkTo(methodOn(CategorieController.class, -1L).getById(-1L)).withSelfRel();
+
+        assertThat(resource.getLinks(), IsIterableContainingInAnyOrder.containsInAnyOrder(link));
 
     }
 
     @Test
     public void toCollectionModelShouldWork() {
-
-        final CategorieResourceAssembler assembler = new CategorieResourceAssembler();
 
         final Mono<CollectionModel<EntityModel<Categorie>>> resource = assembler.toCollectionModel(Flux.fromIterable(Arrays.asList(new Categorie(-1L, "Frodo"), new Categorie(-2L, "Pippin"))), null);
 

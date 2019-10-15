@@ -1,26 +1,29 @@
 package nl.appsource.stream.demo.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Table("Citaat")
 public class Citaat {
 
     @Id
-    private final Long id;
+    private Long id;
 
-    private final String name;
+    private String name;
 
     @Column("spreker")
-    private final Long sprekerId;
+    private Long sprekerId;
 
     @Column("categorie")
-    private final Long categorieId;
+    private Long categorieId;
 
     public Citaat withId(Long id) {
         return new Citaat(id, this.name, this.sprekerId, this.categorieId);
