@@ -4,7 +4,6 @@ cache:
   directories:
     - .autoconf
     - $HOME/.m2
-
 jdk:
   - openjdk11
 
@@ -13,3 +12,5 @@ jobs:
     - stage: build test deploy
       script:
         - mvn -B -V clean install jacoco:report coveralls:report
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
