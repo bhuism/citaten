@@ -18,7 +18,7 @@ public class CitaatResourceAssembler extends BaseResourceAssembler<Citaat> {
 
     @Override
     public EntityModel<Citaat> addLinks(final EntityModel<Citaat> resource, final ServerWebExchange exchange) {
-        resource.add(WebMvcLinkBuilder.linkTo(methodOn(CitaatController.class).getById(resource.getContent().getId())).withSelfRel());
+        resource.add(linkTo(methodOn(CitaatController.class).getById(resource.getContent().getId())).withSelfRel());
         resource.add(linkTo(methodOn(CitaatController.class).getAll(null)).withRel("citaten").expand());
         return resource;
     }
@@ -26,9 +26,9 @@ public class CitaatResourceAssembler extends BaseResourceAssembler<Citaat> {
     @Override
     public CollectionModel<EntityModel<Citaat>> addLinks(final CollectionModel<EntityModel<Citaat>> resources, final ServerWebExchange exchange) {
 
-        resources.add(linkTo(methodOn(CitaatController.class).getAll(null)).withRel("citaten").expand());
-        resources.add(WebMvcLinkBuilder.linkTo(sprekerController.getAll(null)).withRel("sprekers").expand());
-        resources.add(WebMvcLinkBuilder.linkTo(categorieController.getAll(null)).withRel("categorien").expand());
+        resources.add(linkTo(citaatController.getAll(null)).withRel("citaten").expand());
+        resources.add(linkTo(sprekerController.getAll(null)).withRel("sprekers").expand());
+        resources.add(linkTo(categorieController.getAll(null)).withRel("categorien").expand());
 
         return resources;
     }
