@@ -53,6 +53,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-h2</artifactId>
         </dependency>
@@ -167,7 +172,7 @@
                 <executions>
                     <execution>
                         <id>build-and-push-docker-image</id>
-                        <phase>package</phase>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
@@ -193,10 +198,11 @@
                 <filtering>true</filtering>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>static/index.html</include>
+                    <include>application.yml</include>
                 </includes>
             </resource>
             <resource>
+                <filtering>false</filtering>
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
