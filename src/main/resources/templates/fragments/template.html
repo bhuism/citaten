@@ -23,7 +23,7 @@
 <body>
 <footer class="footer" th:fragment="footer">
     <div class="container">
-        <span class="text-muted">©2019 <a href="http://www.appsource.nl">Appsource</a></span>
+        <span class="text-muted">©2019 <a style="color: inherit;" href="http://www.appsource.nl">Appsource</a></span>
             - <a th:text="${@environment.getProperty('git.commit.id.abbrev')}" th:href="'https://github.com/bhuism/citaten/commit/' + ${@environment.getProperty('git.commit.id')}">git.commit.id.abbrev</a>
             - <span th:text="${#strings.listJoin(@environment.getActiveProfiles(), ',')}"></span>
             - <span th:text="${#calendars.format(#calendars.createNow(), 'dd MMM yyyy HH:mm:ss')}"></span>
