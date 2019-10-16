@@ -5,3 +5,6 @@ logging:
   level:
     nl.appsource: DEBUG
     org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
+git.commit.id: '@git.commit.id@'
+git.commit.id.abbrev: "@git.commit.id.abbrev@"
