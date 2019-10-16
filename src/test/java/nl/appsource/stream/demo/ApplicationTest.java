@@ -1,5 +1,6 @@
 package nl.appsource.stream.demo;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.model.Citaat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +35,7 @@ import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApplicationTest {
@@ -103,6 +105,8 @@ public class ApplicationTest {
 
         final ResponseEntity<Citaat> response = createCitaat(citaat);
         final Citaat resource = response.getBody();
+
+        log.debug("Created: " + resource.getId());
 
         assertThat(response.getStatusCode(), is(equalTo(CREATED)));
         assertThat(response.getHeaders().keySet(), hasItem("Content-Type"));
