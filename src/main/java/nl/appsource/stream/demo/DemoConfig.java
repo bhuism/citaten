@@ -1,5 +1,6 @@
 package nl.appsource.stream.demo;
 
+import lombok.Generated;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import javax.servlet.Filter;
 
 @Slf4j
 @Configuration
+@Generated
 public class DemoConfig {
 
     @Bean
