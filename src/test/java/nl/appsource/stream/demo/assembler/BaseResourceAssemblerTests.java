@@ -10,8 +10,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 public class BaseResourceAssemblerTests {
 
-    protected final Link categorien = linkTo(methodOn(CategorieController.class).getAll()).withRel("categorien");
-    protected final Link citaten = linkTo(methodOn(CitaatController.class).getAll()).withRel("citaten");
-    protected final Link sprekers = linkTo(methodOn(SprekerController.class).getAll()).withRel("sprekers");
+    protected final Link categorien = linkTo(methodOn(CategorieController.class).getAll(null)).withRel("categorien").expand();
+    protected final Link citaten = linkTo(methodOn(CitaatController.class).getAll(null)).withRel("citaten").expand();
+    protected final Link sprekers = linkTo(methodOn(SprekerController.class).getAll(null)).withRel("sprekers").expand();
 
 }
