@@ -1,4 +1,4 @@
-package nl.appsource.stream.demo;
+package nl.appsource.stream.demo.config;
 
 import lombok.Generated;
 import lombok.extern.slf4j.Slf4j;
@@ -6,6 +6,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
@@ -14,7 +17,12 @@ import javax.servlet.Filter;
 @Slf4j
 @Configuration
 @Generated
-public class DemoConfig {
+@EnableWebSecurity
+public class CitatenConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+    }
 
     @Bean
     @Profile("production")
