@@ -14,6 +14,7 @@ import org.springframework.hateoas.client.Traverson;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
@@ -50,8 +51,7 @@ public class ApplicationTest {
     private HttpEntity<Citaat> createHttpEntity(final Citaat citaat) {
         final HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaTypes.HAL_JSON));
-        final HttpEntity<Citaat> entity = new HttpEntity<>(citaat, headers);
-        return entity;
+        return new HttpEntity<>(citaat, headers);
     }
 
     private ResponseEntity<Citaat> getCitaat(final Long id) {
@@ -62,13 +62,11 @@ public class ApplicationTest {
 
     private CollectionModel<EntityModel<Citaat>> getCitaten() throws URISyntaxException {
 
-        Traverson traverson = new Traverson(new URI(baseUrl() + "/citaten"), MediaTypes.HAL_JSON);
-        Traverson.TraversalBuilder tb = traverson.follow("citaten");
-        ParameterizedTypeReference<CollectionModel<EntityModel<Citaat>>> typeRefDevices = new ParameterizedTypeReference<>() {
+        final Traverson traverson = new Traverson(new URI(baseUrl() + "/citaten"), MediaTypes.HAL_JSON);
+        final Traverson.TraversalBuilder tb = traverson.follow("citaten");
+        final  ParameterizedTypeReference<CollectionModel<EntityModel<Citaat>>> typeRefDevices = new ParameterizedTypeReference<>() {
         };
-        final CollectionModel<EntityModel<Citaat>> models = tb.toObject(typeRefDevices);
-
-        return models;
+        return tb.toObject(typeRefDevices);
     }
 
     private ResponseEntity<Citaat> createCitaat(final Citaat citaat) throws URISyntaxException {
