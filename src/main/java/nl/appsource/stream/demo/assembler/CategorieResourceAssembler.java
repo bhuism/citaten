@@ -16,7 +16,7 @@ public class CategorieResourceAssembler extends BaseResourceAssembler<Categorie>
 
     @Override
     public EntityModel<Categorie> addLinks(final EntityModel<Categorie> resource, final ServerWebExchange exchange) {
-        resource.add(WebMvcLinkBuilder.linkTo(categorieController.getById(resource.getContent().getId())).withSelfRel());
+        resource.add(WebMvcLinkBuilder.linkTo(categorieController.getById(resource.getContent().getId())).withSelfRel().expand());
         return resource;
     }
 
