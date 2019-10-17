@@ -32,7 +32,7 @@ public class CategorieResourceAssemblerTests extends BaseResourceAssemblerTests 
         assertThat(resource.getContent().getName(), is(equalTo("Frodo")));
         assertThat(resource.getLinks(), iterableWithSize(1));
 
-        final Link link = linkTo(methodOn(CategorieController.class, -1L).getById(-1L)).withSelfRel();
+        final Link link = linkTo(methodOn(CategorieController.class, -1L).getById(-1L)).withSelfRel().expand();
 
         assertThat(resource.getLinks(), containsInAnyOrder(link));
 

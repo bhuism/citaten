@@ -33,11 +33,13 @@ public class CitaatResourceAssemblerTests extends BaseResourceAssemblerTests {
         assertThat(resource.getContent().getSpreker(), is(equalTo(-2L)));
         assertThat(resource.getContent().getCategorie(), is(equalTo(-3L)));
 
-        assertThat(resource.getLinks(), iterableWithSize(2));
+        assertThat(resource.getLinks(), iterableWithSize(4));
 
         final Link self = linkTo(methodOn(CitaatController.class, -1L).getById(-1L)).withSelfRel().expand();
+        final Link citatenSpreker = linkTo(methodOn(CitaatController.class, -1L).getCitaatByIdSpreker(-1L)).withRel("spreker").expand();
+        final Link citatenCategorie= linkTo(methodOn(CitaatController.class, -1L).getCitaatByIdCategorie(-1L)).withRel("categorie").expand();
 
-        assertThat(resource.getLinks(), containsInAnyOrder(self, citaten));
+        assertThat(resource.getLinks(), containsInAnyOrder(self, citaten, citatenSpreker, citatenCategorie));
 
     }
 
