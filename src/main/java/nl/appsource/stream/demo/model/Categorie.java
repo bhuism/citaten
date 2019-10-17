@@ -3,6 +3,7 @@ package nl.appsource.stream.demo.model;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -10,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @RequiredArgsConstructor
 @Table("Categorie")
 @Generated
+@ToString
 public class Categorie {
 
     @Id

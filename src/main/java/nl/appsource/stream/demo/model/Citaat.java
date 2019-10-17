@@ -5,15 +5,18 @@ import lombok.Generated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.hateoas.server.core.Relation;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table("Citaat")
 @Generated
+@ToString
 public class Citaat {
 
     @Id
@@ -22,17 +25,17 @@ public class Citaat {
     private String name;
 
     @Column("spreker")
-    private Long sprekerId;
+    private Long spreker;
 
     @Column("categorie")
-    private Long categorieId;
+    private Long categorie;
 
-    public Citaat withId(Long id) {
-        return new Citaat(id, this.name, this.sprekerId, this.categorieId);
+    public Citaat withId(final Long id) {
+        return new Citaat(id, this.name, this.spreker, this.categorie);
     }
 
-    public static Citaat of(String name, Long sprekerId, Long categorieId) {
-        return new Citaat(null, name, sprekerId, categorieId);
+    public static Citaat of(final String name, final Long spreker, final Long categorie) {
+        return new Citaat(null, name, spreker, categorie);
     }
 
 }
