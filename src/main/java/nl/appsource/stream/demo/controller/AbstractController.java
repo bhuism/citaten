@@ -1,6 +1,7 @@
 package nl.appsource.stream.demo.controller;
 
 
+import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.assembler.BaseResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
@@ -24,6 +25,7 @@ import javax.validation.constraints.Min;
  */
 
 @Validated
+@Slf4j
 public class AbstractController<T> {
 
     @Autowired
@@ -34,6 +36,7 @@ public class AbstractController<T> {
 
     @GetMapping
     public Mono<CollectionModel<EntityModel<T>>> getAll(@RequestParam(required = false, defaultValue = "5") @Max(100) @Min(1) final Long limit) {
+        log.debug("getAll() limit=" + limit);
         return resourceAssembler
                 .toCollectionModel(repository.findAll()
                         .limitRequest(limit), null)
@@ -42,6 +45,7 @@ public class AbstractController<T> {
 
     @GetMapping("/{id}")
     public Mono<EntityModel<T>> getById(@PathVariable Long id) {
+        log.debug("getById() id=" + id);
         return repository
                 .findById(id)
                 .map(c -> resourceAssembler.toModel2(c, null))
@@ -52,6 +56,7 @@ public class AbstractController<T> {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<EntityModel<T>> create(@RequestBody EntityModel<T> entity) {
+        log.debug("create() entity=" + entity);
         return repository.save(entity.getContent())
                 .map(c -> resourceAssembler.toModel2(c, null))
                 ;
