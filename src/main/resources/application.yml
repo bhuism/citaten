@@ -4,12 +4,11 @@ spring:
   resources:
     chain:
       cache: true
-      compressed: true
       enabled: true
       strategy:
         content:
           enabled: true
-          paths: /**
+          paths: /webjars/**
   output:
     ansi:
       enabled: always
