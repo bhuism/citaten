@@ -8,3 +8,6 @@ logging:
 
 git.commit.id: '@git.commit.id@'
 git.commit.id.abbrev: "@git.commit.id.abbrev@"
+springdoc:
+  swagger-ui:
+    path: '/swagger-ui/api-docs.html'
