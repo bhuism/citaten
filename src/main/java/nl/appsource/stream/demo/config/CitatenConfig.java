@@ -30,7 +30,7 @@ public class CitatenConfig extends WebSecurityConfigurerAdapter {
         filter.setIncludeQueryString(true);
         filter.setIncludePayload(true);
         filter.setMaxPayloadLength(10000);
-        filter.setIncludeHeaders(true);
+        filter.setIncludeHeaders(false);
         return filter;
     }
 
