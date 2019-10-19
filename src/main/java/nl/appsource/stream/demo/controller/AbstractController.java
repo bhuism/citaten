@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,7 @@ import reactor.core.publisher.Mono;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -39,7 +41,7 @@ public class AbstractController<T> {
     @Autowired
     private BaseResourceAssembler<T> resourceAssembler;
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @GetMapping(produces = { APPLICATION_JSON_VALUE, HAL_JSON_VALUE } )
     public Mono<CollectionModel<EntityModel<T>>> getAll(@RequestParam(required = false, defaultValue = "5") @Max(100) @Min(1) final Long limit) {
         log.debug("getAll() limit=" + limit);
         return resourceAssembler
@@ -48,7 +50,7 @@ public class AbstractController<T> {
                 ;
     }
 
-    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = { APPLICATION_JSON_VALUE, HAL_JSON_VALUE })
     public Mono<EntityModel<T>> getById(@PathVariable Long id) {
         log.debug("getById() id=" + id);
         return repository
@@ -58,7 +60,7 @@ public class AbstractController<T> {
     }
 
 
-    @PostMapping(produces = APPLICATION_JSON_VALUE)
+    @PostMapping(produces = { APPLICATION_JSON_VALUE, HAL_JSON_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<EntityModel<T>> create(@RequestBody EntityModel<T> entity) {
         log.debug("create() entity=" + entity);
