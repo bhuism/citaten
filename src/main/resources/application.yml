@@ -9,6 +9,10 @@ spring:
         content:
           enabled: true
           paths: /webjars/**
+    cache:
+      period: 86400
+      cachecontrol:
+        cache-public: true
   output:
     ansi:
       enabled: always
