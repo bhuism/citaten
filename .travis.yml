@@ -27,4 +27,6 @@ before_script:
 script:
   - bundle exec rspec
 after_script:
-  - ./cc-test-reporter after-build -t jacoco --exit-code $TRAVIS_TEST_RESULT
+# - ./cc-test-reporter after-build -t jacoco --exit-code $TRAVIS_TEST_RESULT
+  - JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage target/site/jacoco/jacoco.xml --input-type jacoco
+  - ./cc-test-reporter upload-coverage
