@@ -1,10 +1,25 @@
 spring:
   r2dbc:
     url: r2dbc:h2:mem:///demo?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;IGNORECASE=TRUE
+  resources:
+    chain:
+      compressed: true
+      enabled: true
+  output:
+    ansi:
+      enabled: always
+server:
+  compression:
+    enabled: true
 logging:
   level:
     nl.appsource: DEBUG
     org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 git.commit.id: '@git.commit.id@'
 git.commit.id.abbrev: "@git.commit.id.abbrev@"

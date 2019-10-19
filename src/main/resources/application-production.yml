@@ -1,0 +1,9 @@
+server:
+  tomcat:
+    accesslog:
+      enabled: true
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
