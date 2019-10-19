@@ -27,6 +27,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>jquery</artifactId>
+                <version>3.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>popper.js</artifactId>
+                <version>1.14.7</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -86,6 +96,13 @@
             <version>1.1.48</version>
         </dependency>
 
+        <!--
+                <dependency>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-webflux-ui</artifactId>
+                    <version>1.1.48</version>
+                </dependency>
+            -->
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-h2</artifactId>
