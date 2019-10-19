@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @Slf4j
 @RestController
 @RequestMapping("/citaten")
@@ -33,7 +35,7 @@ public class CitaatController extends AbstractController<Citaat> {
     @Autowired
     private CitaatRepository citaatRepository;
 
-    @GetMapping("/{id}/spreker")
+    @GetMapping(value = "/{id}/spreker", produces = APPLICATION_JSON_VALUE)
     public Mono<EntityModel<Spreker>> getCitaatByIdSpreker(@PathVariable Long id) {
         return citaatRepository
                 .getSprekerByCitaatId(id)
@@ -41,7 +43,7 @@ public class CitaatController extends AbstractController<Citaat> {
                 ;
     }
 
-    @GetMapping("/{id}/categorie")
+    @GetMapping(value = "/{id}/categorie", produces = APPLICATION_JSON_VALUE)
     public Mono<EntityModel<Categorie>> getCitaatByIdCategorie(@PathVariable Long id) {
         return citaatRepository
                 .getCategorieByCitaatId(id)
