@@ -16,9 +16,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Citaten</title>
+
+    <!--
     <link href="sticky-footer.css" rel="stylesheet">
+    -->
+
     <link rel="stylesheet" type="text/css" th:href="@{/sticky-footer.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/citaten.css}"/>
+
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -34,12 +40,20 @@
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/manifest.json">
+
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
+    <title>Citaten</title>
+
 </head>
 <body>
+
+<div th:fragment="leader">
+    <a class="github-fork-ribbon" href="https://github.com/bhuism/citaten" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+</div>
+
 <footer class="footer" th:fragment="footer">
     <div class="container">
         <span class="text-muted">©2019 <a style="color: inherit;" href="http://www.appsource.nl">Appsource</a></span>
