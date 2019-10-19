@@ -5,5 +5,5 @@ import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategorieRepository extends R2dbcRepository<Categorie, Long> {
+public interface CategorieRepository extends AbstractReactiveRepository<Categorie> {
 }
