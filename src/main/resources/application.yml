@@ -15,7 +15,7 @@ spring:
         cache-public: true
   output:
     ansi:
-      enabled: always
+      enabled: detect
 server:
   compression:
     enabled: true
