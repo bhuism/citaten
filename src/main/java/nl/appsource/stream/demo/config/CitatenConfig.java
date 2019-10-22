@@ -1,44 +1,58 @@
 package nl.appsource.stream.demo.config;
 
-import lombok.Generated;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
-import org.springframework.web.filter.ForwardedHeaderFilter;
-
-import javax.servlet.Filter;
+import org.springframework.web.reactive.config.ViewResolverRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.thymeleaf.spring5.ISpringWebFluxTemplateEngine;
+import org.thymeleaf.spring5.SpringWebFluxTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.reactive.ThymeleafReactiveViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Slf4j
 @Configuration
-@Generated
-@EnableWebSecurity
-public class CitatenConfig extends WebSecurityConfigurerAdapter {
+public class CitatenConfig implements WebFluxConfigurer, ApplicationContextAware {
+
+    @Setter
+    private ApplicationContext applicationContext;
+
+    @Bean
+    public ITemplateResolver thymeleafTemplateResolver() {
+        final SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(this.applicationContext);
+        resolver.setPrefix("classpath:templates/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode(TemplateMode.HTML);
+        resolver.setCacheable(false);
+        resolver.setCheckExistence(false);
+        return resolver;
+    }
+
+    @Bean
+    public ISpringWebFluxTemplateEngine thymeleafTemplateEngine() {
+        SpringWebFluxTemplateEngine templateEngine = new SpringWebFluxTemplateEngine();
+        templateEngine.setTemplateResolver(thymeleafTemplateResolver());
+        return templateEngine;
+    }
+
+    @Bean
+    public ThymeleafReactiveViewResolver thymeleafReactiveViewResolver() {
+        ThymeleafReactiveViewResolver viewResolver = new ThymeleafReactiveViewResolver();
+        viewResolver.setTemplateEngine(thymeleafTemplateEngine());
+        return viewResolver;
+    }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-    }
-
-    @Bean
-    public CommonsRequestLoggingFilter logFilter() {
-        final CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();
-        filter.setIncludeQueryString(true);
-        filter.setIncludePayload(true);
-        filter.setMaxPayloadLength(10000);
-        filter.setIncludeHeaders(false);
-        return filter;
-    }
-
-    @Bean
-    public FilterRegistrationBean<Filter> forwardedHeaderFilter() {
-        final FilterRegistrationBean<Filter> bean = new FilterRegistrationBean<>();
-        bean.setFilter(new ForwardedHeaderFilter());
-        return bean;
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.viewResolver(thymeleafReactiveViewResolver());
     }
 
 }
