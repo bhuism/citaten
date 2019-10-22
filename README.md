@@ -7,5 +7,6 @@
 [![Codecov](https://codecov.io/gh/bhuism/citaten/branch/master/graph/badge.svg)](https://codecov.io/gh/bhuism/citaten)
 [![Maintainability](https://api.codeclimate.com/v1/badges/4ca0cb384033ee57296f/maintainability)](https://codeclimate.com/github/bhuism/citaten/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/4ca0cb384033ee57296f/test_coverage)](https://codeclimate.com/github/bhuism/citaten/test_coverage)
+[![Known Vulnerabilities](https://snyk.io/test/github/bhuism/citaten/badge.svg)](https://snyk.io/test/github/bhuism/citaten)
 
 Try out spring reactive rest
