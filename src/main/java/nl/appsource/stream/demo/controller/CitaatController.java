@@ -61,7 +61,7 @@ public class CitaatController extends AbstractController<Citaat> {
                 ;
     }
 
-    @GetMapping(value = "/{id}/spreker", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}/spreker", produces = {APPLICATION_JSON_VALUE, HAL_JSON_VALUE})
     public Mono<EntityModel<Spreker>> getCitaatByIdSpreker(@PathVariable Long id) {
         return citaatRepository
                 .getSprekerByCitaatId(id)
@@ -69,7 +69,7 @@ public class CitaatController extends AbstractController<Citaat> {
                 ;
     }
 
-    @GetMapping(value = "/{id}/categorie", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}/categorie", produces = {APPLICATION_JSON_VALUE, HAL_JSON_VALUE})
     public Mono<EntityModel<Categorie>> getCitaatByIdCategorie(@PathVariable Long id) {
         return citaatRepository
                 .getCategorieByCitaatId(id)
