@@ -1,7 +1,5 @@
 package nl.appsource.stream.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,11 +12,9 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Table("Citaat")
 @ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 public class Citaat extends AbstractPersistable {
 
-    @JsonProperty("name")
     @NotBlank
     private String name;
 

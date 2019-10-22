@@ -1,6 +1,5 @@
 package nl.appsource.stream.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -12,7 +11,6 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 public class Categorie extends AbstractPersistable {
 
-    @JsonProperty("name")
     private String name;
 
     public Categorie(final Long id, final String name) {

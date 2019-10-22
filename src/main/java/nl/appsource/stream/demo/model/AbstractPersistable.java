@@ -1,6 +1,6 @@
 package nl.appsource.stream.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,11 +17,11 @@ import javax.validation.constraints.NotNull;
 public abstract class AbstractPersistable implements Persistable<Long> {
 
     @Id
-    @JsonProperty("id")
     @NotNull
     private Long id;
 
     @Override
+    @JsonIgnore
     public boolean isNew() {
         return getId() == null;
     }
