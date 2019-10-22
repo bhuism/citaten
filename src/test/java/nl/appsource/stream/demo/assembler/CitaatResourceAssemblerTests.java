@@ -26,7 +26,7 @@ public class CitaatResourceAssemblerTests extends BaseResourceAssemblerTests {
     @Test
     public void toModel2ShouldWork() {
 
-        final EntityModel<Citaat> resource = assembler.toModel2(new Citaat(-1L, "Frodo", -2L, -3L), null);
+        final EntityModel<Citaat> resource = assembler.toModel(new Citaat(-1L, "Frodo", -2L, -3L), null).block();
 
         assertThat(resource.getContent().getId(), is(equalTo(-1L)));
         assertThat(resource.getContent().getName(), is(equalTo("Frodo")));

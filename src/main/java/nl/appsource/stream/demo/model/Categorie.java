@@ -1,23 +1,24 @@
 package nl.appsource.stream.demo.model;
 
-import lombok.Generated;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
-@RequiredArgsConstructor
 @Table("Categorie")
-@Generated
 @ToString
-public class Categorie {
+@NoArgsConstructor
+public class Categorie extends AbstractPersistable {
 
-    @Id
-    private final Long id;
+    @JsonProperty("name")
+    private String name;
 
-    private final String name;
+    public Categorie(final Long id, final String name) {
+        super(id);
+        this.name = name;
+    }
 
     public Categorie withId(Long id) {
         return new Categorie(id, this.name);

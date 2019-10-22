@@ -26,7 +26,7 @@ public class SprekerResourceAssemblerTests extends BaseResourceAssemblerTests {
     @Test
     public void toModel2ShouldWork() {
 
-        final EntityModel<Spreker> resource = assembler.toModel2(new Spreker(-1L, "Frodo"), null);
+        final EntityModel<Spreker> resource = assembler.toModel(new Spreker(-1L, "Frodo"), null).block();
 
         assertThat(resource.getContent().getId(), is(equalTo(-1L)));
         assertThat(resource.getContent().getName(), is(equalTo("Frodo")));

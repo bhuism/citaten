@@ -1,18 +1,16 @@
 package nl.appsource.stream.demo.controller;
 
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.assembler.BaseResourceAssembler;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,15 +31,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Validated
 @Slf4j
-public class AbstractController<T> {
+@RequiredArgsConstructor
+public class AbstractController<T extends Persistable<Long>> {
 
-    @Autowired
-    private R2dbcRepository<T, Long> repository;
+    private final R2dbcRepository<T, Long> repository;
 
-    @Autowired
-    private BaseResourceAssembler<T> resourceAssembler;
+    private final BaseResourceAssembler<T> resourceAssembler;
 
-    @GetMapping(produces = { APPLICATION_JSON_VALUE, HAL_JSON_VALUE } )
+    @GetMapping(produces = {APPLICATION_JSON_VALUE, HAL_JSON_VALUE})
     public Mono<CollectionModel<EntityModel<T>>> getAll(@RequestParam(required = false, defaultValue = "5") @Max(100) @Min(1) final Long limit) {
         log.debug("getAll() limit=" + limit);
         return resourceAssembler
@@ -50,24 +47,33 @@ public class AbstractController<T> {
                 ;
     }
 
-    @GetMapping(value = "/{id}", produces = { APPLICATION_JSON_VALUE, HAL_JSON_VALUE })
+    @GetMapping(value = "/{id}", produces = {APPLICATION_JSON_VALUE, HAL_JSON_VALUE})
     public Mono<EntityModel<T>> getById(@PathVariable Long id) {
         log.debug("getById() id=" + id);
         return repository
                 .findById(id)
-                .map(c -> resourceAssembler.toModel2(c, null))
+                .flatMap(c -> resourceAssembler.toModel(c, null))
                 ;
     }
 
 
-    @PostMapping(produces = { APPLICATION_JSON_VALUE, HAL_JSON_VALUE })
+    @PostMapping(produces = {APPLICATION_JSON_VALUE, HAL_JSON_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<EntityModel<T>> create(@RequestBody EntityModel<T> entity) {
         log.debug("create() entity=" + entity);
         return repository.save(entity.getContent())
-                .map(c -> resourceAssembler.toModel2(c, null))
+                .flatMap(c -> resourceAssembler.toModel(c, null))
                 ;
     }
 
+    @DeleteMapping(value = "/{id}", produces = {APPLICATION_JSON_VALUE, HAL_JSON_VALUE})
+    public Mono<T> delete(@PathVariable Long id) {
+        return repository
+                .findById(id)
+                .flatMap(p -> this.repository.deleteById(p.getId()).thenReturn(p));
+    }
 
+    public BaseResourceAssembler<T> getResourceAssembler() {
+        return resourceAssembler;
+    }
 }

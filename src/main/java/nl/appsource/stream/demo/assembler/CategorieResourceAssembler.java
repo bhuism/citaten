@@ -1,15 +1,11 @@
 package nl.appsource.stream.demo.assembler;
 
-import nl.appsource.stream.demo.controller.CitaatController;
 import nl.appsource.stream.demo.model.Categorie;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class CategorieResourceAssembler extends BaseResourceAssembler<Categorie> {

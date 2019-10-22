@@ -26,7 +26,7 @@ public class CategorieResourceAssemblerTests extends BaseResourceAssemblerTests 
     @Test
     public void toModel2ShouldWork() {
 
-        final EntityModel<Categorie> resource = assembler.toModel2(new Categorie(-1L, "Frodo"), null);
+        final EntityModel<Categorie> resource = assembler.toModel(new Categorie(-1L, "Frodo"), null).block();
 
         assertThat(resource.getContent().getId(), is(equalTo(-1L)));
         assertThat(resource.getContent().getName(), is(equalTo("Frodo")));
