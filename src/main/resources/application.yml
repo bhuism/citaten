@@ -19,6 +19,7 @@ spring:
 server:
   compression:
     enabled: true
+  forward-headers-strategy: framework
 logging:
   level:
     nl.appsource: DEBUG
