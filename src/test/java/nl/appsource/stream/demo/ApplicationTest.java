@@ -2,7 +2,9 @@ package nl.appsource.stream.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.model.Citaat;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.Request;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -10,17 +12,20 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
-import org.springframework.hateoas.client.Traverson;
+import org.springframework.hateoas.server.core.TypeReferences;
+import org.springframework.hateoas.server.core.TypeReferences.CollectionModelType;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -28,6 +33,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
@@ -48,31 +54,25 @@ public class ApplicationTest {
         return "http://localhost:" + port;
     }
 
-    private HttpEntity<Citaat> createHttpEntity(final Citaat citaat) {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaTypes.HAL_JSON));
-        return new HttpEntity<>(citaat, headers);
-    }
-
     private ResponseEntity<Citaat> getCitaat(final Long id) {
         final String url = baseUrl() + "/citaten/{id}";
+        final URI uri = new UriTemplate(url).expand(id);
         final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.exchange(url, HttpMethod.GET, createHttpEntity(null), Citaat.class, id);
+        return restTemplate.exchange(RequestEntity.get(uri).accept(MediaTypes.HAL_JSON).build(), Citaat.class);
     }
 
-    private CollectionModel<EntityModel<Citaat>> getCitaten() throws URISyntaxException {
-
-        final Traverson traverson = new Traverson(new URI(baseUrl() + "/citaten"), MediaTypes.HAL_JSON);
-        final Traverson.TraversalBuilder tb = traverson.follow("citaten");
-        final  ParameterizedTypeReference<CollectionModel<EntityModel<Citaat>>> typeRefDevices = new ParameterizedTypeReference<>() {
-        };
-        return tb.toObject(typeRefDevices);
+    private ResponseEntity<CollectionModel<EntityModel<Citaat>>> getCitaten() throws URISyntaxException {
+        final String url = baseUrl() + "/citaten";
+        final URI uri = new UriTemplate(url).expand();
+        final RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.exchange(url, HttpMethod.GET, null, new CollectionModelType<EntityModel<Citaat>>() {});
     }
 
     private ResponseEntity<Citaat> createCitaat(final Citaat citaat) throws URISyntaxException {
         final String url = baseUrl() + "/citaten";
+        final URI uri = new UriTemplate(url).expand();
         final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForEntity(url, createHttpEntity(citaat), Citaat.class);
+        return restTemplate.postForEntity(url, RequestEntity.post(uri).accept(MediaTypes.HAL_JSON).body(citaat), Citaat.class);
     }
 
     @Test
@@ -91,10 +91,17 @@ public class ApplicationTest {
 
     @Test
     public void testGetCitaten() throws URISyntaxException {
-        final CollectionModel<EntityModel<Citaat>> response = getCitaten();
-        final Collection<EntityModel<Citaat>> resources = response.getContent();
-        assertThat(resources.size(), is(greaterThan(0)));
-        assertThat(resources, hasSize(5));
+        final ResponseEntity<CollectionModel<EntityModel<Citaat>>> response = getCitaten();
+        final Collection<EntityModel<Citaat>> citaten = response.getBody().getContent();
+
+        assertThat(response.getStatusCode(), is(equalTo(OK)));
+        assertThat(response.getHeaders().keySet(), hasItem("Content-Type"));
+
+//        assertThat(response.getHeaders(), hasEntry(is("Content-Type"), Collections.singletonList(startsWith(MediaTypes.HAL_JSON_VALUE))));
+//        assertThat(response.getHeaders(), hasEntry("Content-Type", Collections.singletonList(MediaTypes.HAL_JSON_VALUE)));
+
+        assertThat(citaten.size(), is(greaterThan(0)));
+        assertThat(citaten, hasSize(5));
     }
 
     @Test
@@ -112,7 +119,6 @@ public class ApplicationTest {
 
         assertThat(resource, is(not(nullValue())));
         assertThat(resource.getName(), is(equalTo("HiThere")));
-
 
     }
 
