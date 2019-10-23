@@ -8,5 +8,8 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/4ca0cb384033ee57296f/test_coverage)](https://codeclimate.com/github/bhuism/citaten/test_coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/bhuism/citaten/badge.svg)](https://snyk.io/test/github/bhuism/citaten)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bhuism_citaten&metric=alert_status)](https://sonarcloud.io/dashboard?id=bhuism_citaten)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=bhuism_citaten&metric=bugs)](https://sonarcloud.io/dashboard?id=bhuism_citaten)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=bhuism_citaten&metric=code_smells)](https://sonarcloud.io/dashboard?id=bhuism_citaten)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=bhuism_citaten&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=bhuism_citaten)
 
 Try out spring reactive rest
