@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
@@ -49,25 +49,40 @@ public class CitaatRouter {
         return route(
                 GET("/" + CITAAT + "/{id}").and(accept(APPLICATION_JSON)),
                 request -> justOrEmpty(request.pathVariable("id"))
-                        .map(Long::valueOf)
+                        .flatMap(CitaatRouter::safeLongValueofMono)
                         .map(citaatRepository::findById)
                         .flatMap(citaat -> ok().contentType(APPLICATION_JSON).body(fromPublisher(citaat, Citaat.class)))
                         .switchIfEmpty(NOTFOUND)
         ).and(route(
                 GET("/" + CITAAT).and(accept(APPLICATION_JSON)),
-                request -> ok().contentType(APPLICATION_JSON).body(citaatRepository.findAll().limitRequest(getLongOrDefault(request,"limit", 5L)), Citaat.class)
+                request -> ok().contentType(APPLICATION_JSON).body(citaatRepository.findAll().limitRequest(getLongOrDefault(request, "limit", 5L)), Citaat.class)
                 )
         );
 
     }
 
     private static Long getLongOrDefault(final ServerRequest request, final String name, final Long value) {
+
         return request.queryParam(name)
-                .filter(Objects::nonNull)
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .map(Long::valueOf)
-                .orElse(value);
+                .flatMap(CitaatRouter::safeLongValueofOptional)
+                .orElse(value)
+                ;
+    }
+
+    private static Optional<Long> safeLongValueofOptional(final String value) {
+        try {
+            return Optional.of(Long.valueOf(value));
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
+    }
+
+    private static Mono<Long> safeLongValueofMono(final String value) {
+        try {
+            return Mono.just(Long.valueOf(value));
+        } catch (NumberFormatException e) {
+            return Mono.empty();
+        }
     }
 
 
