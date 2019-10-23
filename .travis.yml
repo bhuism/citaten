@@ -13,10 +13,6 @@ jobs:
       script:
         - mvn -B -V clean deploy jacoco:report
 
-#codecov
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
 #code climate
 rvm:
   - 2.2.0
