@@ -1,23 +1,26 @@
-CREATE TABLE `Spreker` (
-                           `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                           `name` varchar(255) NOT NULL,
-                           PRIMARY KEY (`id`),
-                           UNIQUE KEY `name` (`name`)
+CREATE TABLE `Spreker`
+(
+    `id`   bigint(20)   NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE (`name`)
 );
 
-CREATE TABLE `Categorie` (
-                             `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                             `name` varchar(255) DEFAULT NULL,
-                             PRIMARY KEY (`id`)
+CREATE TABLE `Categorie`
+(
+    `id`   bigint(20) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Citaat` (
-                          `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                          `name` varchar(4096 ) NOT NULL,
-                          `categorie` bigint(20) NOT NULL,
-                          `spreker` bigint(20) NOT NULL,
-                          CONSTRAINT `FK785288E6469F3E0A` FOREIGN KEY (`categorie`) REFERENCES `Categorie` (`id`),
-                          CONSTRAINT `FK785288E651A78AC` FOREIGN KEY (`spreker`) REFERENCES `Spreker` (`id`)
+CREATE TABLE `Citaat`
+(
+    `id`        bigint(20)    NOT NULL AUTO_INCREMENT,
+    `name`      varchar(4096) NOT NULL,
+    `categorie` bigint(20)    NOT NULL,
+    `spreker`   bigint(20)    NOT NULL,
+    CONSTRAINT `FK785288E6469F3E0A` FOREIGN KEY (`categorie`) REFERENCES `Categorie` (`id`),
+    CONSTRAINT `FK785288E651A78AC` FOREIGN KEY (`spreker`) REFERENCES `Spreker` (`id`)
 );
 
 

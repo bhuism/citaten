@@ -55,19 +55,19 @@ public class ApplicationTest {
         return restTemplate.exchange(RequestEntity.get(uri).accept(APPLICATION_JSON).build(), Citaat.class);
     }
 
-    private ResponseEntity<List<Citaat>> getCitaten() throws URISyntaxException {
+    private ResponseEntity<List<Citaat>> getCitaten() {
         final String url = baseUrl() + "/citaten";
         final URI uri = new UriTemplate(url).expand();
         final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Citaat>>() {
+        return restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<List<Citaat>>() {
         });
     }
 
-    private ResponseEntity<Citaat> createCitaat(final Citaat citaat) throws URISyntaxException {
+    private ResponseEntity<Citaat> createCitaat(final Citaat citaat) {
         final String url = baseUrl() + "/citaten";
         final URI uri = new UriTemplate(url).expand();
         final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForEntity(url, RequestEntity.post(uri).accept(APPLICATION_JSON).body(citaat), Citaat.class);
+        return restTemplate.postForEntity(uri, RequestEntity.post(uri).accept(APPLICATION_JSON).body(citaat), Citaat.class);
     }
 
     @Test

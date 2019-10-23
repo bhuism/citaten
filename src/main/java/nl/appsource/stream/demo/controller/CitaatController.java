@@ -1,5 +1,6 @@
 package nl.appsource.stream.demo.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.model.Categorie;
 import nl.appsource.stream.demo.model.Citaat;
@@ -24,11 +25,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/citaten")
 public class CitaatController extends AbstractController<Citaat> {
 
-    @Autowired
-    private CitaatRepository citaatRepository;
+    private final CitaatRepository citaatRepository;
 
-    public CitaatController(final CitaatRepository repository) {
-        super(repository);
+    public CitaatController(final CitaatRepository citaatRepository) {
+        super(citaatRepository);
+        this.citaatRepository = citaatRepository;
     }
 
     @GetMapping(value = "/{id}/spreker", produces = {APPLICATION_JSON_VALUE})
