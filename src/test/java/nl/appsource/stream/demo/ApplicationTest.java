@@ -57,7 +57,7 @@ public class ApplicationTest {
         final String url = baseUrl() + "/citaten";
         final URI uri = new UriTemplate(url).expand();
         final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+        return restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<List<Citaat>>() {
         });
     }
 
