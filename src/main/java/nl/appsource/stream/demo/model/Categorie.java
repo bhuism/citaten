@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Table("Categorie")
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class Categorie extends AbstractPersistable {
 

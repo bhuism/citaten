@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @Table("Citaat")
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class Citaat extends AbstractPersistable {
 

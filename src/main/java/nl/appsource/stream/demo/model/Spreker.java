@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Table("Spreker")
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class Spreker extends AbstractPersistable {
 
