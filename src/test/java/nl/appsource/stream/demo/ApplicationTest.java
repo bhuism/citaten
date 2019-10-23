@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.model.Citaat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
@@ -16,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +57,7 @@ public class ApplicationTest {
         final String url = baseUrl() + "/citaten";
         final URI uri = new UriTemplate(url).expand();
         final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<List<Citaat>>() {
+        return restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
         });
     }
 
@@ -85,7 +83,7 @@ public class ApplicationTest {
     }
 
     @Test
-    public void testGetCitaten() throws URISyntaxException {
+    public void testGetCitaten() {
         final ResponseEntity<List<Citaat>> response = getCitaten();
         final Collection<Citaat> citaten = response.getBody();
 
@@ -93,18 +91,17 @@ public class ApplicationTest {
         assertThat(response.getHeaders().keySet(), hasItem("Content-Type"));
         assertThat(response.getHeaders(), hasEntry("Content-Type", Collections.singletonList(APPLICATION_JSON_VALUE)));
 
+        assertThat(citaten, is(not(nullValue())));
         assertThat(citaten.size(), is(greaterThan(0)));
         assertThat(citaten, hasSize(5));
     }
 
     @Test
-    public void testCreateCitaat() throws URISyntaxException {
+    public void testCreateCitaat() {
         final Citaat citaat = new Citaat(null, UUID.fromString("ef014bf5-92e0-473b-a8c4-03b8e17514fb"), "HiThere", 38291L, 73001L);
 
         final ResponseEntity<Citaat> response = createCitaat(citaat);
         final Citaat resource = response.getBody();
-
-        log.debug("Created: " + resource.getId());
 
         assertThat(response.getStatusCode(), is(equalTo(CREATED)));
         assertThat(response.getHeaders().keySet(), hasItem("Content-Type"));

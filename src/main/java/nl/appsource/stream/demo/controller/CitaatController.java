@@ -1,22 +1,15 @@
 package nl.appsource.stream.demo.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.model.Categorie;
 import nl.appsource.stream.demo.model.Citaat;
 import nl.appsource.stream.demo.model.Spreker;
 import nl.appsource.stream.demo.repository.CitaatRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
