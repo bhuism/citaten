@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Repository
 public interface CitaatRepository extends AbstractReactiveRepository<Citaat> {
 
@@ -16,5 +18,11 @@ public interface CitaatRepository extends AbstractReactiveRepository<Citaat> {
 
     @Query("SELECT a.* FROM Categorie a INNER JOIN Citaat c ON c.categorie=a.id WHERE c.id=:id")
     Mono<Categorie> getCategorieByCitaatId(@Param("id") final Long id);
+
+    @Query("SELECT x.* FROM Citaat x WHERE x.uuid=:uuid")
+    Mono<Citaat> findByUuid(@Param("uuid") final UUID uuid);
+
+    @Query("DELETE FROM Citaat x WHERE x.uuid=:uuid")
+    Mono<Void> deleteByUuid(@Param("uuid") final UUID uuid);
 
 }

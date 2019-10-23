@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -25,14 +28,26 @@ public class CitaatController extends AbstractController<Citaat> {
         this.citaatRepository = citaatRepository;
     }
 
-    @GetMapping(value = "/{id}/spreker", produces = {APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{id}/spreker", produces = APPLICATION_JSON_VALUE)
     public Mono<Spreker> getCitaatByIdSpreker(@PathVariable Long id) {
         return citaatRepository.getSprekerByCitaatId(id);
     }
 
-    @GetMapping(value = "/{id}/categorie", produces = {APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{id}/categorie", produces = APPLICATION_JSON_VALUE)
     public Mono<Categorie> getCitaatByIdCategorie(@PathVariable Long id) {
         return citaatRepository.getCategorieByCitaatId(id);
+    }
+
+    @Override
+    public Mono<Citaat> getByUuid(@PathVariable final UUID uuid) {
+        log.debug("getByUuid() uuid=" + uuid);
+        return citaatRepository.findByUuid(uuid);
+    }
+
+    @Override
+    public Mono<Void> deleteByUuid(@PathVariable final UUID uuid) {
+        log.debug("delete() uuid=" + uuid);
+        return citaatRepository.deleteByUuid(uuid);
     }
 
 }
