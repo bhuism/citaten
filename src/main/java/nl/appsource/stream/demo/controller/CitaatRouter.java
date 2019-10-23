@@ -10,8 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
@@ -52,10 +55,20 @@ public class CitaatRouter {
                         .switchIfEmpty(NOTFOUND)
         ).and(route(
                 GET("/" + CITAAT).and(accept(APPLICATION_JSON)),
-                request -> ok().contentType(APPLICATION_JSON).body(citaatRepository.findAll().limitRequest(5), Citaat.class)
+                request -> ok().contentType(APPLICATION_JSON).body(citaatRepository.findAll().limitRequest(getLongOrDefault(request,"limit", 5L)), Citaat.class)
                 )
         );
 
     }
+
+    private static Long getLongOrDefault(final ServerRequest request, final String name, final Long value) {
+        return request.queryParam(name)
+                .filter(Objects::nonNull)
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .map(Long::valueOf)
+                .orElse(value);
+    }
+
 
 }
