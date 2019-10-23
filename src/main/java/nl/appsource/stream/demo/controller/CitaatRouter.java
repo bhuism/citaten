@@ -69,21 +69,20 @@ public class CitaatRouter {
                 ;
     }
 
-    private static Optional<Long> safeLongValueofOptional(final String value) {
+    private static Long safeLongValueOf(final String value) {
         try {
-            return Optional.of(Long.valueOf(value));
+            return Long.valueOf(value);
         } catch (NumberFormatException e) {
-            return Optional.empty();
+            return null;
         }
+    }
+
+    private static Optional<Long> safeLongValueofOptional(final String value) {
+        return Optional.ofNullable(safeLongValueOf(value));
     }
 
     private static Mono<Long> safeLongValueofMono(final String value) {
-        try {
-            return Mono.just(Long.valueOf(value));
-        } catch (NumberFormatException e) {
-            return Mono.empty();
-        }
+        return Mono.justOrEmpty(safeLongValueofOptional(value));
     }
-
 
 }
