@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.UUID;
+
 @Getter
 @Table("Spreker")
 @ToString
@@ -13,17 +15,9 @@ public class Spreker extends AbstractPersistable {
 
     private String name;
 
-    public Spreker(Long id, final String name) {
-        super(id);
+    public Spreker(final Long id, final UUID uuid, final String name) {
+        super(id, uuid);
         this.name = name;
-    }
-
-    public Spreker withId(Long id) {
-        return new Spreker(id, this.name);
-    }
-
-    public static Spreker of(String name) {
-        return new Spreker(null, name);
     }
 
 }

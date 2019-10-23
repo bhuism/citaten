@@ -2,20 +2,12 @@ package nl.appsource.stream.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.model.Citaat;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.Request;
 import org.junit.runner.RunWith;
+import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.MediaTypes;
-import org.springframework.hateoas.server.core.TypeReferences;
-import org.springframework.hateoas.server.core.TypeReferences.CollectionModelType;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +17,15 @@ import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
@@ -41,6 +33,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -58,21 +52,22 @@ public class ApplicationTest {
         final String url = baseUrl() + "/citaten/{id}";
         final URI uri = new UriTemplate(url).expand(id);
         final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.exchange(RequestEntity.get(uri).accept(MediaTypes.HAL_JSON).build(), Citaat.class);
+        return restTemplate.exchange(RequestEntity.get(uri).accept(APPLICATION_JSON).build(), Citaat.class);
     }
 
-    private ResponseEntity<CollectionModel<EntityModel<Citaat>>> getCitaten() throws URISyntaxException {
+    private ResponseEntity<List<Citaat>> getCitaten() throws URISyntaxException {
         final String url = baseUrl() + "/citaten";
         final URI uri = new UriTemplate(url).expand();
         final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.exchange(url, HttpMethod.GET, null, new CollectionModelType<EntityModel<Citaat>>() {});
+        return restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Citaat>>() {
+        });
     }
 
     private ResponseEntity<Citaat> createCitaat(final Citaat citaat) throws URISyntaxException {
         final String url = baseUrl() + "/citaten";
         final URI uri = new UriTemplate(url).expand();
         final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForEntity(url, RequestEntity.post(uri).accept(MediaTypes.HAL_JSON).body(citaat), Citaat.class);
+        return restTemplate.postForEntity(url, RequestEntity.post(uri).accept(APPLICATION_JSON).body(citaat), Citaat.class);
     }
 
     @Test
@@ -83,7 +78,7 @@ public class ApplicationTest {
 
         assertThat(response.getStatusCode(), is(equalTo(OK)));
         assertThat(response.getHeaders().keySet(), hasItem("Content-Type"));
-        assertThat(response.getHeaders(), hasEntry("Content-Type", Collections.singletonList(MediaTypes.HAL_JSON_VALUE)));
+        assertThat(response.getHeaders(), hasEntry("Content-Type", Collections.singletonList(APPLICATION_JSON_VALUE)));
 
         assertThat(resource, is(not(nullValue())));
         assertThat(resource.getId(), is(equalTo(1102L)));
@@ -91,14 +86,12 @@ public class ApplicationTest {
 
     @Test
     public void testGetCitaten() throws URISyntaxException {
-        final ResponseEntity<CollectionModel<EntityModel<Citaat>>> response = getCitaten();
-        final Collection<EntityModel<Citaat>> citaten = response.getBody().getContent();
+        final ResponseEntity<List<Citaat>> response = getCitaten();
+        final Collection<Citaat> citaten = response.getBody();
 
         assertThat(response.getStatusCode(), is(equalTo(OK)));
         assertThat(response.getHeaders().keySet(), hasItem("Content-Type"));
-
-//        assertThat(response.getHeaders(), hasEntry(is("Content-Type"), Collections.singletonList(startsWith(MediaTypes.HAL_JSON_VALUE))));
-//        assertThat(response.getHeaders(), hasEntry("Content-Type", Collections.singletonList(MediaTypes.HAL_JSON_VALUE)));
+        assertThat(response.getHeaders(), hasEntry("Content-Type", Collections.singletonList(APPLICATION_JSON_VALUE)));
 
         assertThat(citaten.size(), is(greaterThan(0)));
         assertThat(citaten, hasSize(5));
@@ -106,7 +99,7 @@ public class ApplicationTest {
 
     @Test
     public void testCreateCitaat() throws URISyntaxException {
-        final Citaat citaat = new Citaat(null, "HiThere", 38291L, 73001L);
+        final Citaat citaat = new Citaat(null, UUID.fromString("ef014bf5-92e0-473b-a8c4-03b8e17514fb"), "HiThere", 38291L, 73001L);
 
         final ResponseEntity<Citaat> response = createCitaat(citaat);
         final Citaat resource = response.getBody();
@@ -115,7 +108,7 @@ public class ApplicationTest {
 
         assertThat(response.getStatusCode(), is(equalTo(CREATED)));
         assertThat(response.getHeaders().keySet(), hasItem("Content-Type"));
-        assertThat(response.getHeaders(), hasEntry("Content-Type", Collections.singletonList(MediaTypes.HAL_JSON_VALUE)));
+        assertThat(response.getHeaders(), hasEntry("Content-Type", Collections.singletonList(APPLICATION_JSON_VALUE)));
 
         assertThat(resource, is(not(nullValue())));
         assertThat(resource.getName(), is(equalTo("HiThere")));

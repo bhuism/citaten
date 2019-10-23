@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,6 +20,9 @@ public abstract class AbstractPersistable implements Persistable<Long> {
     @Id
     @NotNull
     private Long id;
+
+    @NotNull
+    private UUID uuid;
 
     @Override
     @JsonIgnore

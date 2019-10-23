@@ -8,6 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Getter
 @Table("Citaat")
@@ -26,20 +27,11 @@ public class Citaat extends AbstractPersistable {
     @NotNull
     private Long categorie;
 
-    public Citaat(final Long id, final String name, final Long spreker, final Long categorie) {
-        super(id);
+    public Citaat(final Long id, final UUID uuid, final String name, final Long spreker, final Long categorie) {
+        super(id, uuid);
         this.name = name;
         this.spreker = spreker;
         this.categorie = categorie;
-    }
-
-
-    public Citaat withId(final Long id) {
-        return new Citaat(id, this.name, this.spreker, this.categorie);
-    }
-
-    public static Citaat of(final String name, final Long spreker, final Long categorie) {
-        return new Citaat(null, name, spreker, categorie);
     }
 
 }

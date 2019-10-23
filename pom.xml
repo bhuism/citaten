@@ -23,7 +23,7 @@
             <dependency>
                 <groupId>org.springframework.boot.experimental</groupId>
                 <artifactId>spring-boot-bom-r2dbc</artifactId>
-                <version>0.1.0.BUILD-SNAPSHOT</version>
+                <version>0.1.0.M2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -52,28 +52,6 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hateoas</artifactId>
-            <exclusions>
-                <!--     need for springdoc
-                               <exclusion>
-                                    <groupId>org.springframework</groupId>
-                                    <artifactId>spring-webmvc</artifactId>
-                                </exclusion>
-                                -->
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-security</artifactId>
-                </dependency>
-        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -109,8 +87,14 @@
         </dependency>
 
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -133,6 +117,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot.experimental</groupId>
+            <artifactId>spring-boot-test-autoconfigure-r2dbc</artifactId>
             <scope>test</scope>
         </dependency>
 

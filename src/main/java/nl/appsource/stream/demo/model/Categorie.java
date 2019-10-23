@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.UUID;
+
 @Getter
 @Table("Categorie")
 @ToString
@@ -13,17 +15,9 @@ public class Categorie extends AbstractPersistable {
 
     private String name;
 
-    public Categorie(final Long id, final String name) {
-        super(id);
+    public Categorie(final Long id, final UUID uuid, final String name) {
+        super(id, uuid);
         this.name = name;
-    }
-
-    public Categorie withId(Long id) {
-        return new Categorie(id, this.name);
-    }
-
-    public static Categorie of(String name) {
-        return new Categorie(null, name);
     }
 
 }
