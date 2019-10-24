@@ -19,9 +19,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApplicationTest {
 
-    final UUID testUUID = UUID.fromString("930d19b3-181f-4987-96b2-a03299d3f487");
+    private final UUID testUUID = UUID.fromString("930d19b3-181f-4987-96b2-a03299d3f487");
 
-    private WebTestClient webClient = WebTestClient.bindToServer().build();
+    private final WebTestClient webClient = WebTestClient.bindToServer().build();
 
     @LocalServerPort
     private Long port;

@@ -7,23 +7,15 @@ import nl.appsource.stream.demo.model.Citaat;
 import nl.appsource.stream.demo.repository.CitaatRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.BodyExtractors.toMono;
-import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
-import static org.springframework.web.reactive.function.server.ServerResponse.noContent;
-import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 import static org.springframework.web.reactive.function.server.ServerResponse.status;
-import static reactor.core.publisher.Mono.justOrEmpty;
 
 @Component
 @RequiredArgsConstructor
@@ -36,8 +28,9 @@ public class CitaatHandler {
 
     public Mono<ServerResponse> getOne(final ServerRequest request) {
         return Mono.just(request)
-                .flatMap(r -> Util.safeUuidValueofMono(r.pathVariable("uuid")))
-                .flatMap(uuid -> citaatRepository.findByUuid(uuid))
+                .map(r ->  r.pathVariable("uuid"))
+                .flatMap(Util::safeUuidValueofMono)
+                .flatMap(citaatRepository::findByUuid)
                 .flatMap(p -> ok().contentType(APPLICATION_JSON).body(fromValue(p)))
                 .switchIfEmpty(NOTFOUND)
         ;
@@ -57,8 +50,9 @@ public class CitaatHandler {
 
     public Mono<ServerResponse> delete(final ServerRequest request) {
         return Mono.just(request)
-                .flatMap(r -> Util.safeUuidValueofMono(r.pathVariable("uuid")))
-                .flatMap(uuid -> citaatRepository.findByUuid(uuid))
+                .map(r ->  r.pathVariable("uuid"))
+                .flatMap(Util::safeUuidValueofMono)
+                .flatMap(citaatRepository::findByUuid)
                 .flatMap(citaat -> ok().contentType(APPLICATION_JSON).build(citaatRepository.delete(citaat)))
                 .switchIfEmpty(NOTFOUND)
                 ;
@@ -68,8 +62,9 @@ public class CitaatHandler {
 
     public Mono<ServerResponse> getCitaatByIdSpreker(final ServerRequest request) {
         return Mono.just(request)
-                .flatMap(r -> Util.safeUuidValueofMono(r.pathVariable("uuid")))
-                .flatMap(uuid -> citaatRepository.getSprekerByCitaatId(uuid))
+                .map(r ->  r.pathVariable("uuid"))
+                .flatMap(Util::safeUuidValueofMono)
+                .flatMap(citaatRepository::getSprekerByCitaatId)
                 .flatMap(p -> ok().contentType(APPLICATION_JSON).body(fromValue(p)))
                 .switchIfEmpty(NOTFOUND)
 
@@ -79,8 +74,9 @@ public class CitaatHandler {
 
     public Mono<ServerResponse> getCitaatByIdCategorie(final ServerRequest request) {
         return Mono.just(request)
-                .flatMap(r -> Util.safeUuidValueofMono(r.pathVariable("uuid")))
-                .flatMap(uuid -> citaatRepository.getCategorieByCitaatId(uuid))
+                .map(r ->  r.pathVariable("uuid"))
+                .flatMap(Util::safeUuidValueofMono)
+                .flatMap(citaatRepository::getCategorieByCitaatId)
                 .flatMap(p -> ok().contentType(APPLICATION_JSON).body(fromValue(p)))
                 .switchIfEmpty(NOTFOUND)
         ;
