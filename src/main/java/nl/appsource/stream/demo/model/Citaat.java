@@ -34,4 +34,12 @@ public class Citaat extends AbstractPersistable {
         this.categorie = categorie;
     }
 
+    public Citaat withId(final UUID uuid) {
+        return new Citaat(null, uuid, this.name, this.spreker, this.categorie);
+    }
+
+    public static Citaat of(final String name, final Long spreker, final Long categorie) {
+        return new Citaat(null, null, name, spreker, categorie);
+    }
+
 }

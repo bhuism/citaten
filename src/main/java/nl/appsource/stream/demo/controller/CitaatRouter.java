@@ -17,7 +17,9 @@ import reactor.core.publisher.Mono;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.PATCH;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+import static org.springframework.web.reactive.function.server.RequestPredicates.PUT;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
@@ -49,10 +51,12 @@ public class CitaatRouter {
     public RouterFunction<ServerResponse> citaat() {
         return route(GET("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::getOne)
                 .and(route(GET("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::getAll))
-                .and(route(POST("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::create))
+                .and(route(POST("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::post))
                 .and(route(DELETE("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::delete))
                 .and(route(GET("/" + CITAAT + "/{uuid}/spreker").and(accept(APPLICATION_JSON)), citaatHandler::getCitaatByIdSpreker))
                 .and(route(GET("/" + CITAAT + "/{uuid}/categorie").and(accept(APPLICATION_JSON)), citaatHandler::getCitaatByIdCategorie))
+                .and(route(PATCH("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::patch))
+                .and(route(PUT("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::put))
                 ;
     }
 

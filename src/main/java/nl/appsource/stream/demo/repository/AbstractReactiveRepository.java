@@ -8,4 +8,3 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface AbstractReactiveRepository<T extends AbstractPersistable> extends R2dbcRepository<T, Long> {
 
 }
-
