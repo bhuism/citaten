@@ -1,6 +1,5 @@
 package nl.appsource.stream.demo.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.Util;
 import nl.appsource.stream.demo.model.Citaat;
@@ -12,7 +11,6 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.web.reactive.function.BodyExtractors.toMono;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 import static org.springframework.web.reactive.function.server.ServerResponse.status;

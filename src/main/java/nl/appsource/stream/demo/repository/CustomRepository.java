@@ -1,6 +1,5 @@
 package nl.appsource.stream.demo.repository;
 
-import nl.appsource.stream.demo.model.Citaat;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Mono;

@@ -3,7 +3,6 @@ package nl.appsource.stream.demo.controller;
 import lombok.RequiredArgsConstructor;
 import nl.appsource.stream.demo.Util;
 import nl.appsource.stream.demo.model.AbstractPersistable;
-import nl.appsource.stream.demo.model.Citaat;
 import nl.appsource.stream.demo.repository.AbstractReactiveRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.ServerRequest;
