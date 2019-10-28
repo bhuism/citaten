@@ -1,6 +1,7 @@
 package nl.appsource.stream.demo;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.appsource.stream.demo.controller.Router;
 import nl.appsource.stream.demo.model.Citaat;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +9,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.io.File;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -27,7 +29,7 @@ public class ApplicationTest {
     private Long port;
 
     private String baseUrl() {
-        return "http://localhost:" + port + "/citaat";
+        return "http://localhost:" + port + '/' + Router.CITAAT;
     }
 
     @Test

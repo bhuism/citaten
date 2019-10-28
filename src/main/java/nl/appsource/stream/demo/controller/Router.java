@@ -2,17 +2,10 @@ package nl.appsource.stream.demo.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nl.appsource.stream.demo.repository.CitaatRepository;
-import nl.appsource.stream.demo.repository.SprekerRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Mono;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
@@ -22,34 +15,25 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RequestPredicates.PUT;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
-import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class CitaatRouter {
+public class Router {
 
-    private static final String CITAAT = "citaat";
-    private static final Mono<ServerResponse> NOTFOUND = ServerResponse.notFound().build();
-    private static final Mono<ServerResponse> CREATED = ServerResponse.status(HttpStatus.CREATED).build();
-
-    private final CitaatRepository citaatRepository;
-
-    private final SprekerRepository sprekerRepository;
+    public static final String CITAAT = "citaten";
+    public static final String SPREKERS = "sprekers";
+    public static final String CATEGORIEN = "categorien";
 
     private final CitaatHandler citaatHandler;
+    private final SprekerHandler sprekerHandler;
+    private final CategorieHandler categorieHandler;
 
     @Bean
-    public RouterFunction<ServerResponse> index() {
-        return RouterFunctions
-                .route(RequestPredicates.GET("/")
-                        .and(accept(MediaType.TEXT_HTML)), (r) ->
-                        ok().contentType(MediaType.TEXT_HTML).render("index"));
-    }
+    public RouterFunction<ServerResponse> endpoints() {
+        return route(
 
-    @Bean
-    public RouterFunction<ServerResponse> citaat() {
-        return route(GET("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::getOne)
+                GET("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::getOne)
                 .and(route(GET("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::getAll))
                 .and(route(POST("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::post))
                 .and(route(DELETE("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::delete))
@@ -57,6 +41,20 @@ public class CitaatRouter {
                 .and(route(GET("/" + CITAAT + "/{uuid}/categorie").and(accept(APPLICATION_JSON)), citaatHandler::getCitaatByIdCategorie))
                 .and(route(PATCH("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::patch))
                 .and(route(PUT("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::put))
+
+                .and(route(GET("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::getOne))
+                .and(route(GET("/" + SPREKERS).and(accept(APPLICATION_JSON)), sprekerHandler::getAll))
+                .and(route(POST("/" + SPREKERS).and(accept(APPLICATION_JSON)), sprekerHandler::post))
+                .and(route(DELETE("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::delete))
+                .and(route(PATCH("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::patch))
+                .and(route(PUT("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::put))
+
+                .and(route(GET("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::getOne))
+                .and(route(GET("/" + CATEGORIEN).and(accept(APPLICATION_JSON)), categorieHandler::getAll))
+                .and(route(POST("/" + CATEGORIEN).and(accept(APPLICATION_JSON)), categorieHandler::post))
+                .and(route(DELETE("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::delete))
+                .and(route(PATCH("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::patch))
+                .and(route(PUT("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::put))
                 ;
     }
 
