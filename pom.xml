@@ -16,6 +16,8 @@
 
     <properties>
         <java.version>11</java.version>
+        <r2dbc.version>0.1.0.M2</r2dbc.version>
+        <release.train.version>Hoxton.M3</release.train.version>
     </properties>
 
     <dependencyManagement>
@@ -24,6 +26,13 @@
                 <groupId>org.springframework.boot.experimental</groupId>
                 <artifactId>spring-boot-bom-r2dbc</artifactId>
                 <version>0.1.0.M2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${release.train.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -90,6 +99,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
 
         <dependency>
