@@ -2,10 +2,13 @@ package nl.appsource.stream.demo.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Mono;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
@@ -55,7 +58,49 @@ public class Router {
                 .and(route(DELETE("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::delete))
                 .and(route(PATCH("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::patch))
                 .and(route(PUT("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::put))
+
+                .filter((request, next) -> {
+                    request.headers().asHttpHeaders().forEach( (key, value) -> {
+                        log.debug("Request: " + key + "=" + value);
+                    });
+                    return next.handle(request).map(response -> {
+                        response.headers().forEach( (key, value) -> {
+                            log.debug("Response: " + key + "=" + value);
+                        });
+                        return response;
+                    });
+                })
                 ;
+    }
+
+
+    private ExchangeFilterFunction logRequest() {
+        return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
+            if (log.isDebugEnabled()) {
+                StringBuilder sb = new StringBuilder("Request: \n");
+                //append clientRequest method and url
+                clientRequest
+                        .headers()
+                        .forEach((name, values) -> sb.append(name + "=" + values));
+                log.debug(sb.toString());
+            }
+            return Mono.just(clientRequest);
+        });
+    }
+
+    private ExchangeFilterFunction logResponse() {
+        return ExchangeFilterFunction.ofResponseProcessor(clientRequest -> {
+            if (log.isDebugEnabled()) {
+                StringBuilder sb = new StringBuilder("Response: \n");
+                //append clientRequest method and url
+                clientRequest
+                        .headers()
+                        .asHttpHeaders()
+                        .forEach((name, values) -> sb.append(name + "=" + values));
+                log.debug(sb.toString());
+            }
+            return Mono.just(clientRequest);
+        });
     }
 
 }

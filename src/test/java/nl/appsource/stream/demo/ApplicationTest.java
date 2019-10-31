@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -22,9 +24,13 @@ public class ApplicationTest {
 
     private final UUID testUUID = UUID.fromString("930d19b3-181f-4987-96b2-a03299d3f487");
 
-    private final WebTestClient webClient = WebTestClient
-            .bindToServer()
+    private final WebTestClient webClient = WebTestClient.bindToServer()
+            .filters(exchangeFilterFunctions -> {
+                exchangeFilterFunctions.add(logRequest());
+                exchangeFilterFunctions.add(logResponse());
+            })
             .build();
+
 
     @LocalServerPort
     private Long port;
@@ -88,9 +94,7 @@ public class ApplicationTest {
                 .expectStatus().isNotFound()
                 .expectHeader().contentType(APPLICATION_JSON)
         ;
-
     }
-
 
     @Test
     public void testCreateCitaat() {
@@ -124,7 +128,35 @@ public class ApplicationTest {
 
         // CHECK NOT EXISTS
         webClient.get().uri(baseUrl() + "/" + uuid.toString()).exchange().expectStatus().isNotFound();
+    }
 
+    private ExchangeFilterFunction logRequest() {
+        return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
+            if (log.isDebugEnabled()) {
+                StringBuilder sb = new StringBuilder("Request: ");
+                //append clientRequest method and url
+                clientRequest
+                        .headers()
+                        .forEach((name, values) -> sb.append(name + "=" + values));
+                log.debug(sb.toString());
+            }
+            return Mono.just(clientRequest);
+        });
+    }
+
+    private ExchangeFilterFunction logResponse() {
+        return ExchangeFilterFunction.ofResponseProcessor(clientRequest -> {
+            if (log.isDebugEnabled()) {
+                StringBuilder sb = new StringBuilder("Response: ");
+                //append clientRequest method and url
+                clientRequest
+                        .headers()
+                        .asHttpHeaders()
+                        .forEach((name, values) -> sb.append(name + "=" + values));
+                log.debug(sb.toString());
+            }
+            return Mono.just(clientRequest);
+        });
     }
 
 }

@@ -31,7 +31,8 @@ public class AbstractHandler<T extends AbstractPersistable> {
                 .flatMap(Util::safeUuidValueofMono)
                 .flatMap(repository::findByUuid)
                 .flatMap(p -> ok().contentType(APPLICATION_JSON).body(fromValue(p)))
-                .switchIfEmpty(NOTFOUND);
+                .switchIfEmpty(NOTFOUND)
+                ;
     }
 
     public Mono<ServerResponse> getAll(final ServerRequest request) {
