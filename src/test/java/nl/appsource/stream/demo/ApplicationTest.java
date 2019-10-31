@@ -9,7 +9,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.io.File;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -23,7 +22,9 @@ public class ApplicationTest {
 
     private final UUID testUUID = UUID.fromString("930d19b3-181f-4987-96b2-a03299d3f487");
 
-    private final WebTestClient webClient = WebTestClient.bindToServer().build();
+    private final WebTestClient webClient = WebTestClient
+            .bindToServer()
+            .build();
 
     @LocalServerPort
     private Long port;
