@@ -134,10 +134,9 @@ public class ApplicationTest {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
             if (log.isDebugEnabled()) {
                 StringBuilder sb = new StringBuilder("Request: ");
-                //append clientRequest method and url
                 clientRequest
                         .headers()
-                        .forEach((name, values) -> sb.append(name + "=" + values));
+                        .forEach((name, values) -> sb.append(name).append("=").append(values));
                 log.debug(sb.toString());
             }
             return Mono.just(clientRequest);
@@ -148,11 +147,10 @@ public class ApplicationTest {
         return ExchangeFilterFunction.ofResponseProcessor(clientRequest -> {
             if (log.isDebugEnabled()) {
                 StringBuilder sb = new StringBuilder("Response: ");
-                //append clientRequest method and url
                 clientRequest
                         .headers()
                         .asHttpHeaders()
-                        .forEach((name, values) -> sb.append(name + "=" + values));
+                        .forEach((name, values) -> sb.append(name).append("=").append(values));
                 log.debug(sb.toString());
             }
             return Mono.just(clientRequest);
