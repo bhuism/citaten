@@ -33,43 +33,43 @@ public class Router {
     public RouterFunction<ServerResponse> endpoints() {
         return route(
 
-            GET("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::getOne)
-            .and(route(GET("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::getAll))
-            .and(route(POST("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::post))
-            .and(route(DELETE("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::delete))
-            .and(route(GET("/" + CITAAT + "/{uuid}/spreker").and(accept(APPLICATION_JSON)), citaatHandler::getCitaatByIdSpreker))
-            .and(route(GET("/" + CITAAT + "/{uuid}/categorie").and(accept(APPLICATION_JSON)), citaatHandler::getCitaatByIdCategorie))
-            .and(route(PATCH("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::patch))
-            .and(route(PUT("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::put))
+                GET("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::getOne)
+                .and(route(GET("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::getAll))
+                .and(route(POST("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::post))
+                .and(route(DELETE("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::delete))
+                .and(route(GET("/" + CITAAT + "/{uuid}/spreker").and(accept(APPLICATION_JSON)), citaatHandler::getCitaatByIdSpreker))
+                .and(route(GET("/" + CITAAT + "/{uuid}/categorie").and(accept(APPLICATION_JSON)), citaatHandler::getCitaatByIdCategorie))
+                .and(route(PATCH("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::patch))
+                .and(route(PUT("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::put))
 
-            .and(route(GET("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::getOne))
-            .and(route(GET("/" + SPREKERS).and(accept(APPLICATION_JSON)), sprekerHandler::getAll))
-            .and(route(POST("/" + SPREKERS).and(accept(APPLICATION_JSON)), sprekerHandler::post))
-            .and(route(DELETE("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::delete))
-            .and(route(PATCH("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::patch))
-            .and(route(PUT("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::put))
+                .and(route(GET("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::getOne))
+                .and(route(GET("/" + SPREKERS).and(accept(APPLICATION_JSON)), sprekerHandler::getAll))
+                .and(route(POST("/" + SPREKERS).and(accept(APPLICATION_JSON)), sprekerHandler::post))
+                .and(route(DELETE("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::delete))
+                .and(route(PATCH("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::patch))
+                .and(route(PUT("/" + SPREKERS + "/{uuid}").and(accept(APPLICATION_JSON)), sprekerHandler::put))
 
-            .and(route(GET("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::getOne))
-            .and(route(GET("/" + CATEGORIEN).and(accept(APPLICATION_JSON)), categorieHandler::getAll))
-            .and(route(POST("/" + CATEGORIEN).and(accept(APPLICATION_JSON)), categorieHandler::post))
-            .and(route(DELETE("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::delete))
-            .and(route(PATCH("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::patch))
-            .and(route(PUT("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::put))
+                .and(route(GET("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::getOne))
+                .and(route(GET("/" + CATEGORIEN).and(accept(APPLICATION_JSON)), categorieHandler::getAll))
+                .and(route(POST("/" + CATEGORIEN).and(accept(APPLICATION_JSON)), categorieHandler::post))
+                .and(route(DELETE("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::delete))
+                .and(route(PATCH("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::patch))
+                .and(route(PUT("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::put))
 
-            .filter((request, next) -> {
-                if (log.isInfoEnabled()) {
-
-                    log.info("Request: " + request.uri());
-
-                    request.remoteAddress().ifPresent(remote -> request.headers().asHttpHeaders().forEach((key, value) -> log.info("Request [from:" + remote + "] " + key + "=" + value)));
-                    return next.handle(request).map(response -> {
-                        response.headers().forEach((key, value) -> log.info("Response: " + key + "=" + value));
-                        return response;
-                    });
-                } else {
-                    return next.handle(request);
-                }
-            });
+                .filter((request, next) -> {
+                    if (log.isInfoEnabled()) {
+                        request.remoteAddress().ifPresent(remote -> {
+                            log.info("Request: " + request.uri() + ", from: " + remote + ", headers: " + request.headers().asHttpHeaders());
+                            request.headers().asHttpHeaders().forEach((key, value) -> log.info("Request " + key + "=" + value));
+                        });
+                        return next.handle(request).map(response -> {
+                            response.headers().forEach((key, value) -> log.info("Response: " + key + "=" + value));
+                            return response;
+                        });
+                    } else {
+                        return next.handle(request);
+                    }
+                });
     }
 
 }
