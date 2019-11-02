@@ -1,5 +1,6 @@
 package nl.appsource.stream.demo.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Table("Spreker")
 @ToString(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
 public class Spreker extends AbstractPersistable {
 
     private String name;

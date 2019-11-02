@@ -1,5 +1,6 @@
 package nl.appsource.stream.demo.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Table("Citaat")
 @ToString(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
 public class Citaat extends AbstractPersistable {
 
     @NotBlank
