@@ -57,10 +57,15 @@ public class Router {
             .and(route(PUT("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::put))
 
             .filter((request, next) -> {
-                if (log.isDebugEnabled()) {
-                    request.headers().asHttpHeaders().forEach((key, value) -> log.debug("Request: " + key + "=" + value));
+                if (log.isInfoEnabled()) {
+
+                    log.info("Request: " + request.uri());
+
+                    request.remoteAddress().ifPresent(remote -> {
+                            request.headers().asHttpHeaders().forEach((key, value) -> log.info("Request [from:" + remote + "] " + key + "=" + value));
+                    });
                     return next.handle(request).map(response -> {
-                        response.headers().forEach((key, value) -> log.debug("Response: " + key + "=" + value));
+                        response.headers().forEach((key, value) -> log.info("Response: " + key + "=" + value));
                         return response;
                     });
                 } else {
