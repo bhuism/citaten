@@ -61,9 +61,7 @@ public class Router {
 
                     log.info("Request: " + request.uri());
 
-                    request.remoteAddress().ifPresent(remote -> {
-                            request.headers().asHttpHeaders().forEach((key, value) -> log.info("Request [from:" + remote + "] " + key + "=" + value));
-                    });
+                    request.remoteAddress().ifPresent(remote -> request.headers().asHttpHeaders().forEach((key, value) -> log.info("Request [from:" + remote + "] " + key + "=" + value)));
                     return next.handle(request).map(response -> {
                         response.headers().forEach((key, value) -> log.info("Response: " + key + "=" + value));
                         return response;
