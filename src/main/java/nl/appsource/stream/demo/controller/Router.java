@@ -60,7 +60,6 @@ public class Router {
                     if (log.isInfoEnabled()) {
                         request.remoteAddress().ifPresent(remote -> {
                             log.info("Request: " + request.uri() + ", from: " + remote + ", headers: " + request.headers().asHttpHeaders());
-                            request.headers().asHttpHeaders().forEach((key, value) -> log.info("Request " + key + "=" + value));
                         });
                         return next.handle(request).map(response -> {
                             response.headers().forEach((key, value) -> log.info("Response: " + key + "=" + value));
