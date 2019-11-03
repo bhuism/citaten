@@ -248,9 +248,7 @@
                     <to>
                         <image>bhuism/${project.artifactId}:latest</image>
                         <auth>
-                            <!--suppress UnresolvedMavenProperty -->
                             <username>${env.DOCKER_USERNAME}</username>
-                            <!--suppress UnresolvedMavenProperty -->
                             <password>${env.DOCKER_PASSWORD}</password>
                         </auth>
                     </to>
