@@ -58,11 +58,9 @@ public class Router {
 
                 .filter((request, next) -> {
                     if (log.isInfoEnabled()) {
-                        request.remoteAddress().ifPresent(remote -> {
-                            log.info("Request: " + request.uri() + ", from: " + remote + ", headers: " + request.headers().asHttpHeaders());
-                        });
+                        log.info("Request: " + request.uri() + ", headers: " + request.headers().asHttpHeaders());
                         return next.handle(request).map(response -> {
-                            response.headers().forEach((key, value) -> log.info("Response: " + key + "=" + value));
+                            log.info("Response: " + response.headers());
                             return response;
                         });
                     } else {
