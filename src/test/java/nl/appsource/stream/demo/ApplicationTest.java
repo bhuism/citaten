@@ -2,7 +2,9 @@ package nl.appsource.stream.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.appsource.stream.demo.controller.Router;
+import nl.appsource.stream.demo.model.Categorie;
 import nl.appsource.stream.demo.model.Citaat;
+import nl.appsource.stream.demo.model.Spreker;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -35,14 +37,22 @@ public class ApplicationTest {
     @LocalServerPort
     private Long port;
 
-    private String baseUrl() {
+    private String citaatBaseUrl() {
         return "http://localhost:" + port + '/' + Router.CITAAT;
+    }
+
+    private String categorieBaseUrl() {
+        return "http://localhost:" + port + '/' + Router.CATEGORIEN;
+    }
+
+    private String sprekerBaseUrl() {
+        return "http://localhost:" + port + '/' + Router.SPREKERS;
     }
 
     @Test
     public void testGetCitaat() {
 
-        webClient.get().uri(baseUrl() + "/{uuid}", testUUID.toString())
+        webClient.get().uri(citaatBaseUrl() + "/{uuid}", testUUID.toString())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -62,7 +72,7 @@ public class ApplicationTest {
 
         final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
-        webClient.get().uri(baseUrl() + "/{uuid}", uuid.toString())
+        webClient.get().uri(citaatBaseUrl() + "/{uuid}", uuid.toString())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isNotFound()
@@ -72,8 +82,7 @@ public class ApplicationTest {
 
     @Test
     public void testGetCitaten() {
-
-        webClient.get().uri(baseUrl())
+        webClient.get().uri(citaatBaseUrl())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -81,7 +90,30 @@ public class ApplicationTest {
                 .expectBodyList(Citaat.class)
                 .hasSize(5)
         ;
+    }
 
+    @Test
+    public void testGetSprekers() {
+        webClient.get().uri(sprekerBaseUrl())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBodyList(Spreker.class)
+                .hasSize(5)
+        ;
+    }
+
+    @Test
+    public void testGetCategorien() {
+        webClient.get().uri(categorieBaseUrl())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBodyList(Categorie.class)
+                .hasSize(5)
+        ;
     }
 
     @Test
@@ -89,7 +121,7 @@ public class ApplicationTest {
 
         final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
-        webClient.delete().uri(baseUrl() + "/" + uuid.toString())
+        webClient.delete().uri(citaatBaseUrl() + "/" + uuid.toString())
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectHeader().contentType(APPLICATION_JSON)
@@ -104,7 +136,7 @@ public class ApplicationTest {
         final Citaat citaat = new Citaat(null, uuid, "HiThere", 38291L, 73001L);
 
         // CREATE
-        webClient.post().uri(baseUrl())
+        webClient.post().uri(citaatBaseUrl())
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(citaat)
                 .exchange()
@@ -118,16 +150,16 @@ public class ApplicationTest {
         ;
 
         // CHECK EXISTS
-        webClient.get().uri(baseUrl() + "/" + uuid.toString())
+        webClient.get().uri(citaatBaseUrl() + "/" + uuid.toString())
                 .exchange()
                 .expectStatus().isOk()
         ;
 
         // DELETE
-        webClient.delete().uri(baseUrl() + "/" + uuid.toString()).exchange().expectStatus().isOk();
+        webClient.delete().uri(citaatBaseUrl() + "/" + uuid.toString()).exchange().expectStatus().isOk();
 
         // CHECK NOT EXISTS
-        webClient.get().uri(baseUrl() + "/" + uuid.toString()).exchange().expectStatus().isNotFound();
+        webClient.get().uri(citaatBaseUrl() + "/" + uuid.toString()).exchange().expectStatus().isNotFound();
     }
 
     private ExchangeFilterFunction logRequest() {
