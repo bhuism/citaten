@@ -76,6 +76,12 @@
                 <artifactId>netty-codec-http</artifactId>
                 <version>4.1.43.Final</version>
             </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.4.199</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
