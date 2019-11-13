@@ -4,7 +4,8 @@ CREATE TABLE `Spreker`
     `name` varchar(255)                      NOT NULL,
     `uuid` VARCHAR(36) DEFAULT RANDOM_UUID() NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE (`name`)
+    UNIQUE (`name`),
+    UNIQUE (`uuid`)
 );
 
 CREATE TABLE `Categorie`
@@ -13,7 +14,8 @@ CREATE TABLE `Categorie`
     `name` varchar(255) DEFAULT NULL,
     `uuid` VARCHAR(36)  DEFAULT RANDOM_UUID() NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE (`name`)
+    UNIQUE (`name`),
+    UNIQUE (`uuid`)
 );
 
 CREATE TABLE `Citaat`
@@ -25,8 +27,7 @@ CREATE TABLE `Citaat`
     `uuid`      VARCHAR(36) DEFAULT RANDOM_UUID() NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE (`name`),
+    UNIQUE (`uuid`),
     CONSTRAINT `FK785288E6469F3E0A` FOREIGN KEY (`categorie`) REFERENCES `Categorie` (`id`),
     CONSTRAINT `FK785288E651A78AC` FOREIGN KEY (`spreker`) REFERENCES `Spreker` (`id`)
 );
-
-

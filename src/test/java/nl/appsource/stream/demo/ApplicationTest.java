@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import reactor.core.publisher.Mono;
@@ -21,6 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Slf4j
+@ActiveProfiles("citest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApplicationTest {
 
@@ -60,9 +62,9 @@ public class ApplicationTest {
                 .expectBody(Citaat.class)
                 .value(c -> assertThat(c.getUuid(), is(equalTo(testUUID))))
                 .value(c -> assertThat(c.getId(), is(equalTo(1L))))
-                .value(c -> assertThat(c.getName(), is(equalTo("Test Citaat from the future of time and space"))))
-                .value(c -> assertThat(c.getSpreker(), is(equalTo(50313L))))
-                .value(c -> assertThat(c.getCategorie(), is(equalTo(73001L))))
+                .value(c -> assertThat(c.getName(), is(equalTo("Test Citaat from the future of time and space1"))))
+                .value(c -> assertThat(c.getSpreker(), is(equalTo(1L))))
+                .value(c -> assertThat(c.getCategorie(), is(equalTo(1L))))
         ;
 
     }
@@ -88,7 +90,7 @@ public class ApplicationTest {
                 .expectStatus().isOk()
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBodyList(Citaat.class)
-                .hasSize(5)
+                .hasSize(3)
         ;
     }
 
@@ -100,7 +102,7 @@ public class ApplicationTest {
                 .expectStatus().isOk()
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBodyList(Spreker.class)
-                .hasSize(5)
+                .hasSize(3)
         ;
     }
 
@@ -112,7 +114,7 @@ public class ApplicationTest {
                 .expectStatus().isOk()
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBodyList(Categorie.class)
-                .hasSize(5)
+                .hasSize(3)
         ;
     }
 
@@ -133,7 +135,7 @@ public class ApplicationTest {
 
         final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
-        final Citaat citaat = new Citaat(null, uuid, "HiThere", 38291L, 73001L);
+        final Citaat citaat = new Citaat(null, uuid, "HiThere", 3L, 2L);
 
         // CREATE
         webClient.post().uri(citaatBaseUrl())
@@ -145,8 +147,8 @@ public class ApplicationTest {
                 .expectBody(Citaat.class)
                 .value(c -> assertThat(c.getUuid(), is(equalTo(uuid))))
                 .value(c -> assertThat(c.getName(), is(equalTo("HiThere"))))
-                .value(c -> assertThat(c.getSpreker(), is(equalTo(38291L))))
-                .value(c -> assertThat(c.getCategorie(), is(equalTo(73001L))))
+                .value(c -> assertThat(c.getSpreker(), is(equalTo(3L))))
+                .value(c -> assertThat(c.getCategorie(), is(equalTo(2L))))
         ;
 
         // CHECK EXISTS
