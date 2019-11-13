@@ -70,6 +70,34 @@ public class ApplicationTest {
     }
 
     @Test
+    public void testGetCitaatSpreker() {
+        webClient.get().uri(citaatBaseUrl() + "/{uuid}/spreker", testUUID.toString())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(Spreker.class)
+                .value(c -> assertThat(c.getUuid(), is(equalTo(UUID.fromString("041b38be-718a-4cb8-80b1-f329e915a21d")))))
+                .value(c -> assertThat(c.getId(), is(equalTo(1L))))
+                .value(c -> assertThat(c.getName(), is(equalTo("sOnbekend1"))))
+        ;
+    }
+
+    @Test
+    public void testGetCitaatCategorie() {
+        webClient.get().uri(citaatBaseUrl() + "/{uuid}/categorie", testUUID.toString())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody(Categorie.class)
+                .value(c -> assertThat(c.getUuid(), is(equalTo(UUID.fromString("e1f6fa61-cf10-4bc1-a741-4d7145b74cee")))))
+                .value(c -> assertThat(c.getId(), is(equalTo(1L))))
+                .value(c -> assertThat(c.getName(), is(equalTo("conbekend1"))))
+        ;
+    }
+
+    @Test
     public void testGetCitaatNotFound() {
 
         final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");

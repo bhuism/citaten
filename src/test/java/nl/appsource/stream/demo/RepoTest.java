@@ -52,24 +52,21 @@ public class RepoTest {
     private DatabaseClient databaseClient;
 
     @BeforeEach
-    public void setUp() {
-        Arrays.asList("schema.sql", "testdata.sql")
-            .forEach(fileName -> {
-                try {
-                    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    Files.copy(Paths.get(ClassLoader.getSystemResource(fileName).toURI()), baos);
-                    databaseClient.execute(baos.toString(StandardCharsets.UTF_8)).fetch().all().log().subscribe();
-                } catch (IOException | URISyntaxException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+    public void setUp() throws IOException, URISyntaxException {
+        load("schema.sql");
+        load("testdata.sql");
     }
 
     @AfterEach
     public void tearDown() throws IOException, URISyntaxException {
+        load("cleanup.sql");
+    }
+
+    private void load(final String fileName) throws URISyntaxException, IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Files.copy(Paths.get(ClassLoader.getSystemResource("cleanup.sql").toURI()), baos);
+        Files.copy(Paths.get(ClassLoader.getSystemResource(fileName).toURI()), baos);
         databaseClient.execute(baos.toString(StandardCharsets.UTF_8)).fetch().all().subscribe();
+
     }
 
     @EnableR2dbcRepositories
@@ -97,29 +94,36 @@ public class RepoTest {
     public void shouldFindCitaat() {
         citaatRepository.findByUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
                 .as(StepVerifier::create)
-                .expectNextCount(1)
-                .verifyComplete();
-    }
-
-    @Test
-    public void shouldfindSprekerBySitaat() {
-        citaatRepository.getSprekerByCitaatId(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
-                .as(StepVerifier::create)
                 .expectNextMatches(e -> {
                     assertThat(e.getId()).isEqualTo(3L);
-                    assertThat(e.getName()).isEqualTo("sOnbekend3");
+                    assertThat(e.getName()).isEqualTo("Test Citaat from the future of time and space3");
+                    assertThat(e.getUuid()).isEqualTo(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"));
                     return true;
                 })
                 .verifyComplete();
     }
 
     @Test
-    public void shouldfindCategorieBySitaat() {
+    public void shouldfindSprekerBycitaat() {
+        citaatRepository.getSprekerByCitaatId(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+                .as(StepVerifier::create)
+                .expectNextMatches(e -> {
+                    assertThat(e.getId()).isEqualTo(3L);
+                    assertThat(e.getName()).isEqualTo("sOnbekend3");
+                    assertThat(e.getUuid()).isEqualTo(UUID.fromString("19834cdd-5042-4a68-9875-3178d17debca"));
+                    return true;
+                })
+                .verifyComplete();
+    }
+
+    @Test
+    public void shouldfindCategorieByCitaat() {
         citaatRepository.getCategorieByCitaatId(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
                 .as(StepVerifier::create)
                 .expectNextMatches(e -> {
                     assertThat(e.getId()).isEqualTo(3L);
                     assertThat(e.getName()).isEqualTo("conbekend3");
+                    assertThat(e.getUuid()).isEqualTo(UUID.fromString("eabc8778-13d1-4e11-b8b2-96cdb09f8233"));
                     return true;
                 })
                 .verifyComplete();
