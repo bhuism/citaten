@@ -28,6 +28,10 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.UUID;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+
 @Slf4j
 @ExtendWith(SpringExtension.class)
 public class RepoTest {
@@ -86,9 +90,41 @@ public class RepoTest {
     }
 
     @Test
-    public void citaatRepoTest() {
+    public void shouldCountCitaten() {
         citaatRepository.count().as(StepVerifier::create)
                 .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
+    public void shouldFindCitaat() {
+        citaatRepository.findByUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+                .as(StepVerifier::create)
+                .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
+    public void shouldfindSprekerBySitaat() {
+        citaatRepository.getSprekerByCitaatId(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+                .as(StepVerifier::create)
+                .expectNextMatches(e -> {
+                    assertThat(e.getId(), is(equalTo(3L)));
+                    assertThat(e.getName(), is(equalTo("sOnbekend3")));
+                    return true;
+                })
+                .verifyComplete();
+    }
+
+    @Test
+    public void shouldfindCategorieBySitaat() {
+        citaatRepository.getCategorieByCitaatId(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+                .as(StepVerifier::create)
+                .expectNextMatches(e -> {
+                    assertThat(e.getId(), is(equalTo(3L)));
+                    assertThat(e.getName(), is(equalTo("conbekend3")));
+                    return true;
+                })
                 .verifyComplete();
     }
 
