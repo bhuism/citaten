@@ -28,9 +28,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.UUID;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -53,19 +52,17 @@ public class RepoTest {
     private DatabaseClient databaseClient;
 
     @BeforeEach
-    public void setUp() throws IOException, URISyntaxException {
-
+    public void setUp() {
         Arrays.asList("schema.sql", "testdata.sql")
-                .forEach(fileName -> {
-                    try {
-                        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        Files.copy(Paths.get(ClassLoader.getSystemResource(fileName).toURI()), baos);
-                        databaseClient.execute(baos.toString(StandardCharsets.UTF_8)).fetch().all().log().subscribe();
-                    } catch (IOException | URISyntaxException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-
+            .forEach(fileName -> {
+                try {
+                    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    Files.copy(Paths.get(ClassLoader.getSystemResource(fileName).toURI()), baos);
+                    databaseClient.execute(baos.toString(StandardCharsets.UTF_8)).fetch().all().log().subscribe();
+                } catch (IOException | URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            });
     }
 
     @AfterEach
@@ -109,8 +106,8 @@ public class RepoTest {
         citaatRepository.getSprekerByCitaatId(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
                 .as(StepVerifier::create)
                 .expectNextMatches(e -> {
-                    assertThat(e.getId(), is(equalTo(3L)));
-                    assertThat(e.getName(), is(equalTo("sOnbekend3")));
+                    assertThat(e.getId()).isEqualTo(3L);
+                    assertThat(e.getName()).isEqualTo("sOnbekend3");
                     return true;
                 })
                 .verifyComplete();
@@ -121,8 +118,8 @@ public class RepoTest {
         citaatRepository.getCategorieByCitaatId(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
                 .as(StepVerifier::create)
                 .expectNextMatches(e -> {
-                    assertThat(e.getId(), is(equalTo(3L)));
-                    assertThat(e.getName(), is(equalTo("conbekend3")));
+                    assertThat(e.getId()).isEqualTo(3L);
+                    assertThat(e.getName()).isEqualTo("conbekend3");
                     return true;
                 })
                 .verifyComplete();
