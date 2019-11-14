@@ -53,20 +53,19 @@ public class RepoTest {
 
     @BeforeEach
     public void setUp() throws IOException, URISyntaxException {
-        load("schema.sql");
-        load("testdata.sql");
+        load(databaseClient, "schema.sql");
+        load(databaseClient, "testdata.sql");
     }
 
     @AfterEach
     public void tearDown() throws IOException, URISyntaxException {
-        load("cleanup.sql");
+        load(databaseClient, "cleanup.sql");
     }
 
-    private void load(final String fileName) throws URISyntaxException, IOException {
+    public static void load(final DatabaseClient databaseClient, final String fileName) throws URISyntaxException, IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Files.copy(Paths.get(ClassLoader.getSystemResource(fileName).toURI()), baos);
         databaseClient.execute(baos.toString(StandardCharsets.UTF_8)).fetch().all().subscribe();
-
     }
 
     @EnableR2dbcRepositories

@@ -5,15 +5,21 @@ import nl.appsource.stream.demo.controller.Router;
 import nl.appsource.stream.demo.model.Categorie;
 import nl.appsource.stream.demo.model.Citaat;
 import nl.appsource.stream.demo.model.Spreker;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -38,6 +44,20 @@ public class ApplicationTest {
 
     @LocalServerPort
     private Long port;
+
+    @Autowired
+    private DatabaseClient databaseClient;
+
+    @BeforeEach
+    public void setUp() throws IOException, URISyntaxException {
+        RepoTest.load(databaseClient, "schema.sql");
+        RepoTest.load(databaseClient, "testdata.sql");
+    }
+
+    @AfterEach
+    public void tearDown() throws IOException, URISyntaxException {
+        RepoTest.load(databaseClient, "cleanup.sql");
+    }
 
     private String citaatBaseUrl() {
         return "http://localhost:" + port + '/' + Router.CITAAT;
@@ -66,6 +86,17 @@ public class ApplicationTest {
                 .value(c -> assertThat(c.getSpreker(), is(equalTo(1L))))
                 .value(c -> assertThat(c.getCategorie(), is(equalTo(1L))))
         ;
+
+    }
+
+    @Test
+    public void testDeleteCitaat() {
+
+        // DELETE
+        webClient.delete().uri(citaatBaseUrl() + "/{uuid}", testUUID.toString()).exchange().expectStatus().isOk();
+
+        // CHECK NOT EXISTS
+        webClient.get().uri(citaatBaseUrl() + "/{uuid}", testUUID.toString()).exchange().expectStatus().isNotFound();
 
     }
 
@@ -151,7 +182,7 @@ public class ApplicationTest {
 
         final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
-        webClient.delete().uri(citaatBaseUrl() + "/" + uuid.toString())
+        webClient.delete().uri(citaatBaseUrl() + "/{uuid}", uuid.toString())
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectHeader().contentType(APPLICATION_JSON)
@@ -159,7 +190,7 @@ public class ApplicationTest {
     }
 
     @Test
-    public void testCreateCitaat() {
+    public void testPostCitaat() {
 
         final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
@@ -180,16 +211,11 @@ public class ApplicationTest {
         ;
 
         // CHECK EXISTS
-        webClient.get().uri(citaatBaseUrl() + "/" + uuid.toString())
+        webClient.get().uri(citaatBaseUrl() + "/{uuid}", uuid.toString())
                 .exchange()
                 .expectStatus().isOk()
         ;
 
-        // DELETE
-        webClient.delete().uri(citaatBaseUrl() + "/" + uuid.toString()).exchange().expectStatus().isOk();
-
-        // CHECK NOT EXISTS
-        webClient.get().uri(citaatBaseUrl() + "/" + uuid.toString()).exchange().expectStatus().isNotFound();
     }
 
     private ExchangeFilterFunction logRequest() {

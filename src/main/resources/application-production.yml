@@ -2,6 +2,7 @@ spring:
   r2dbc:
     schema: classpath:schema.sql
     data: classpath:bigdata.sql
+    initialization-mode: always
 server:
   tomcat:
     accesslog:

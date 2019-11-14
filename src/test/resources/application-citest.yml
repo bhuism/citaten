@@ -1,5 +1,2 @@
 spring:
   r2dbc:
-    schema: classpath:schema.sql
-    data: classpath:testdata.sql
-    initialization-mode: always
