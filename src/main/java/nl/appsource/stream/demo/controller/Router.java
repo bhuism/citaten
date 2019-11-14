@@ -57,15 +57,11 @@ public class Router {
                 .and(route(PUT("/" + CATEGORIEN + "/{uuid}").and(accept(APPLICATION_JSON)), categorieHandler::put))
 
                 .filter((request, next) -> {
-                    if (log.isInfoEnabled()) {
-                        log.info("Request: " + request.uri() + ", headers: " + request.headers().asHttpHeaders());
-                        return next.handle(request).map(response -> {
-                            log.info("Response: " + response.headers());
-                            return response;
-                        });
-                    } else {
-                        return next.handle(request);
-                    }
+                    log.info("Request: " + request.uri() + ", headers: " + request.headers().asHttpHeaders());
+                    return next.handle(request).map(response -> {
+                        log.info("Response: " + response.headers());
+                        return response;
+                    });
                 });
     }
 
