@@ -49,13 +49,12 @@ public class ApplicationTest {
     private DatabaseClient databaseClient;
 
     @BeforeEach
-    public void setUp() throws IOException, URISyntaxException {
-        RepoTest.load(databaseClient, "schema.sql");
+    public void setUpEach() throws IOException, URISyntaxException {
         RepoTest.load(databaseClient, "testdata.sql");
     }
 
     @AfterEach
-    public void tearDown() throws IOException, URISyntaxException {
+    public void tearDownEach() throws IOException, URISyntaxException {
         RepoTest.load(databaseClient, "cleanup.sql");
     }
 

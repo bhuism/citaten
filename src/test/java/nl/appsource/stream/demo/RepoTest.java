@@ -7,6 +7,7 @@ import nl.appsource.stream.demo.repository.CategorieRepository;
 import nl.appsource.stream.demo.repository.CitaatRepository;
 import nl.appsource.stream.demo.repository.SprekerRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +26,6 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,9 +51,15 @@ public class RepoTest {
     @Autowired
     private DatabaseClient databaseClient;
 
+    // schema.sql is not automatically loaded
+
+    @BeforeAll
+    public static void setUpAll(@Autowired DatabaseClient databaseClient) throws IOException, URISyntaxException {
+        RepoTest.load(databaseClient, "schema.sql");
+    }
+
     @BeforeEach
     public void setUp() throws IOException, URISyntaxException {
-        load(databaseClient, "schema.sql");
         load(databaseClient, "testdata.sql");
     }
 
@@ -73,11 +79,11 @@ public class RepoTest {
         @Bean
         public H2ConnectionFactory connectionFactory() {
             return new H2ConnectionFactory(
-                H2ConnectionConfiguration.builder()
-                    .url("mem:" + UUID.randomUUID())
-                    .property("DB_CLOSE_DELAY", "-1")
-                    .property("DB_CLOSE_ON_EXIT", "FALSE")
-                    .build()
+                    H2ConnectionConfiguration.builder()
+                            .url("mem:" + UUID.randomUUID())
+                            .property("DB_CLOSE_DELAY", "-1")
+                            .property("DB_CLOSE_ON_EXIT", "FALSE")
+                            .build()
             );
         }
     }
