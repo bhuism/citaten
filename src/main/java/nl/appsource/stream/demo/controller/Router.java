@@ -37,8 +37,8 @@ public class Router {
                 .and(route(GET("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::getAll))
                 .and(route(POST("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::post))
                 .and(route(DELETE("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::delete))
-                .and(route(GET("/" + CITAAT + "/{uuid}/spreker").and(accept(APPLICATION_JSON)), citaatHandler::getCitaatByIdSpreker))
-                .and(route(GET("/" + CITAAT + "/{uuid}/categorie").and(accept(APPLICATION_JSON)), citaatHandler::getCitaatByIdCategorie))
+                .and(route(GET("/" + CITAAT + "/{uuid}/spreker").and(accept(APPLICATION_JSON)), citaatHandler::getSprekerByCitaatId))
+                .and(route(GET("/" + CITAAT + "/{uuid}/categorie").and(accept(APPLICATION_JSON)), citaatHandler::getCategorieByCitaatId))
                 .and(route(PATCH("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::patch))
                 .and(route(PUT("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::put))
 

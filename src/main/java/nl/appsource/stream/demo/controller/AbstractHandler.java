@@ -5,9 +5,13 @@ import nl.appsource.stream.demo.Util;
 import nl.appsource.stream.demo.model.AbstractPersistable;
 import nl.appsource.stream.demo.repository.AbstractReactiveRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
+import java.util.function.Function;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -25,29 +29,41 @@ public class AbstractHandler<T extends AbstractPersistable> {
 
     private final Class<T> modelClazz;
 
-    public Mono<ServerResponse> getOne(final ServerRequest request) {
-        return Mono.just(request)
-                .map(r -> r.pathVariable("uuid"))
-                .flatMap(Util::safeUuidValueofMono)
-                .flatMap(repository::findByUuid)
-                .flatMap(p -> ok().contentType(APPLICATION_JSON).body(fromValue(p)))
-                .switchIfEmpty(NOTFOUND)
-                ;
+    @FunctionalInterface
+    public interface MyHandlerFunction extends HandlerFunction<ServerResponse>, Function<UUID, Mono<? extends AbstractPersistable>> {
+        @Override
+        default Mono<ServerResponse> handle(ServerRequest serverRequest) {
+            return Mono.just(serverRequest)
+                    .map(r -> r.pathVariable("uuid"))
+                    .flatMap(Util::safeUuidValueofMono)
+                    .flatMap(this::apply)
+                    .flatMap(p -> ok().contentType(APPLICATION_JSON).body(fromValue(p)))
+                    .switchIfEmpty(NOTFOUND);
+        }
     }
 
-    public Mono<ServerResponse> getAll(final ServerRequest request) {
-        return ok().contentType(APPLICATION_JSON).body(repository.findAll().limitRequest(Util.getLongOrDefault(request, "limit", 5L)), modelClazz);
+    public Mono<ServerResponse> getOne(final ServerRequest serverRequest) {
+        return ((MyHandlerFunction) repository::findByUuid).handle(serverRequest);
     }
 
-    public Mono<ServerResponse> post(final ServerRequest request) {
-        return request.body(toMono(modelClazz))
+    public Mono<ServerResponse> getAll(final ServerRequest serverRequest) {
+        return ok()
+                .contentType(APPLICATION_JSON)
+                .body(repository.findAll()
+                                .limitRequest(Util.getLongOrDefault(serverRequest, "limit", 5L))
+                        , modelClazz
+                );
+    }
+
+    public Mono<ServerResponse> post(final ServerRequest serverRequest) {
+        return serverRequest.body(toMono(modelClazz))
                 .flatMap(repository::save)
                 .flatMap(citaat -> status(HttpStatus.CREATED).contentType(APPLICATION_JSON).body(fromValue(citaat)))
                 .switchIfEmpty(NOTFOUND);
     }
 
-    public Mono<ServerResponse> delete(final ServerRequest request) {
-        return Mono.just(request)
+    public Mono<ServerResponse> delete(final ServerRequest serverRequest) {
+        return Mono.just(serverRequest)
                 .map(r -> r.pathVariable("uuid"))
                 .flatMap(Util::safeUuidValueofMono)
                 .flatMap(repository::findByUuid)
@@ -56,18 +72,12 @@ public class AbstractHandler<T extends AbstractPersistable> {
     }
 
 
-    public Mono<ServerResponse> patch(final ServerRequest request) {
-        return Mono.just(request)
-                .map(r -> r.pathVariable("uuid"))
-                .flatMap(Util::safeUuidValueofMono)
-                .flatMap(repository::findByUuid)
-                .flatMap(repository::save)
-                .flatMap(p -> ok().contentType(APPLICATION_JSON).body(fromValue(p)))
-                .switchIfEmpty(NOTFOUND);
+    public Mono<ServerResponse> patch(final ServerRequest serverRequest) {
+        return ((MyHandlerFunction) c -> repository.findByUuid(c).flatMap(repository::save)).handle(serverRequest);
     }
 
-    public Mono<ServerResponse> put(final ServerRequest request) {
-        return request.body(toMono(modelClazz))
+    public Mono<ServerResponse> put(final ServerRequest serverRequest) {
+        return serverRequest.body(toMono(modelClazz))
                 .flatMap(repository::save)
                 .flatMap(citaat -> status(HttpStatus.OK).contentType(APPLICATION_JSON).body(fromValue(citaat)))
                 .switchIfEmpty(NOTFOUND);
