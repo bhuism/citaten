@@ -12,9 +12,9 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class Util {
 
-    public static Long getLongOrDefault(final ServerRequest request, final String name, final Long value) {
+    public static Long getLongOrDefault(final ServerRequest ServerRequest, final String name, final Long value) {
 
-        return request.queryParam(name)
+        return ServerRequest.queryParam(name)
                 .flatMap(Util::safeLongValueofOptional)
                 .orElse(value);
     }
