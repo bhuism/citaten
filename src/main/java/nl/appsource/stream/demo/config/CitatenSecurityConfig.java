@@ -19,7 +19,7 @@ public class CitatenSecurityConfig {
         http.authorizeExchange(exchanges -> exchanges.anyExchange().permitAll());
 
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:3000", "https://citaten.odee.net/"));
+        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:3000", "http://localhost:3000", "https://citaten.odee.net/"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
