@@ -53,7 +53,7 @@
     <div class="container">
         <span class="text-muted">©2019 <a style="color: inherit;" href="http://www.appsource.nl">Appsource</a></span>
             - <a th:text="${@environment.getProperty('git.commit.id.abbrev')}" th:href="'https://github.com/bhuism/citaten/commit/' + ${@environment.getProperty('git.commit.id')}">git.commit.id.abbrev</a>
-            - <img alt="Latest badge" th:src="'https://img.shields.io/endpoint?url=https%3A%2F%2Fbadge.odee.net%2Fgithub%2Flatest%2Fbhuism%2Fcitaten%2Fmaster%2F' + ${@environment.getProperty('git.commit.id')}">
+            - <img alt="Latest badge" th:src="'https://img.shields.io/endpoint?style=plastic&url=https%3A%2F%2Fbadge.odee.net%2Fgithub%2Flatest%2Fbhuism%2Fcitaten%2Fmaster%2F' + ${@environment.getProperty('git.commit.id')}">
             - <span th:text="${#strings.listJoin(@environment.getActiveProfiles(), ',')}"></span>
             - <span th:text="${#calendars.format(#calendars.createNow(), 'dd MMM yyyy HH:mm:ss')}"></span>
     </div>
