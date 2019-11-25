@@ -19,8 +19,7 @@ public class IndexRouter {
     @Bean
     public RouterFunction<ServerResponse> index() {
         return RouterFunctions
-                .route(RequestPredicates.GET("/")
-                        .and(accept(MediaType.TEXT_HTML)), (r) ->
+                .route(RequestPredicates.GET("/"), (r) ->
                         ok().contentType(MediaType.TEXT_HTML).render("index"));
     }
 
