@@ -12,3 +12,8 @@ server:
       cookie:
         http-only: true
         secure: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'info,health'
