@@ -1,5 +1,6 @@
 # Citaten
 
+![stable](https://img.shields.io/badge/stability-stable-brightgreen.svg)
 [![Api Status](https://img.shields.io/badge/dynamic/json?color=4c1&label=api&query=%24.status&url=https%3A%2F%2Fcitaten.odee.net%2Factuator%2Fhealth)](https://citaten.odee.net/)
 [![Version badge](https://badge.odee.net/github/actuator/bhuism/citaten/master?actuator_url=https://citaten.odee.net/actuator/info)](https://citaten.odee.net)
 [![Build Status](https://travis-ci.com/bhuism/citaten.svg?branch=master)](https://travis-ci.com/bhuism/citaten)
