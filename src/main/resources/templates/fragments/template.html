@@ -63,7 +63,7 @@
         <span class="text-muted">©2019 <a style="color: inherit;text-decoration: none;" href="http://www.appsource.nl">Appsource</a></span>
         - <a th:href="'https://github.com/bhuism/citaten/commit/' + ${@environment.getProperty('git.commit.id')}"><img
             alt="Latest badge"
-            th:src="'https://badge.odee.net/github/sha/bhuism/citaten/master/' + ${@environment.getProperty('git.commit.id')}"></a>
+            th:src="'https://badge.odee.net/github/sha/bhuism/citaten/master/' + ${@environment.getProperty('git.commit.id')} + '/badge.svg'"></a>
         - <span th:text="${#strings.listJoin(@environment.getActiveProfiles(), ',')}"></span>
         - <span th:text="${#calendars.format(#calendars.createNow(), 'dd MMM yyyy HH:mm:ss')}"></span>
     </div>
