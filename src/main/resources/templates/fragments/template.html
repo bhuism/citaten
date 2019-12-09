@@ -61,7 +61,7 @@
 <footer class="footer" th:fragment="footer">
     <div class="container">
         <span class="text-muted">©2019 <a style="color: inherit;text-decoration: none;" href="http://www.appsource.nl">Appsource</a></span>
-        - <a href="'https://github.com/bhuism/citaten/commit/@env.COMMIT_SHA@"><img alt="Latest badge" src="'https://badge.odee.net/github/sha/bhuism/citaten/master/@env.COMMIT_SHA@/badge.svg'"></a>
+        - <a href="https://github.com/bhuism/citaten/commit/@env.COMMIT_SHA@"><img alt="Latest badge" src="https://badge.odee.net/github/sha/bhuism/citaten/master/@env.COMMIT_SHA@/badge.svg"></a>
         - <span th:text="${#strings.listJoin(@environment.getActiveProfiles(), ',')}"></span>
         - <span th:text="${#calendars.format(#calendars.createNow(), 'dd MMM yyyy HH:mm:ss')}"></span>
     </div>
