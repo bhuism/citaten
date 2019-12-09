@@ -167,29 +167,6 @@
         <finalName>demo</finalName>
         <plugins>
             <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>get-the-git-infos</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>validate-the-git-infos</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>validateRevision</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <verbose>false</verbose>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
@@ -219,24 +196,34 @@
                 <version>1.8.0</version>
                 <configuration>
                     <from>
-                        <image>openjdk:11.0.4-jre-slim</image>
+                        <image>openjdk:11-jre-slim</image>
                     </from>
                     <to>
-                        <image>bhuism/${project.artifactId}:latest</image>
-                        <auth>
-                            <username>${env.DOCKER_USERNAME}</username>
-                            <password>${env.DOCKER_PASSWORD}</password>
-                        </auth>
+                        <image>eu.gcr.io/badge-260212/citaten</image>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${env.COMMIT_SHA}</tag>
+                        </tags>
                     </to>
                     <container>
+                        <args>
+                            <arg>--spring.profiles.active=production</arg>
+                            <arg>--spring.config.location=/app/resources/application.yml,/app/resources/application-production.yml</arg>
+                        </args>
                         <jvmFlags>
-                            <jvmFlag>-server</jvmFlag>
                             <jvmFlag>-Duser.timezone=Europe/Amsterdam</jvmFlag>
+                            <jvmFlag>-noverify</jvmFlag>
+                            <jvmFlag>-Xshare:auto</jvmFlag>
+                            <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                            <jvmFlag>-XX:TieredStopAtLevel=1</jvmFlag>
+                            <jvmFlag>-Dspring.main.lazy-initialization=true</jvmFlag>
                         </jvmFlags>
+                        <mainClass>nl.appsource.stream.demo.Citaten</mainClass>
                         <ports>
                             <port>8080</port>
                         </ports>
                     </container>
+                    <allowInsecureRegistries>true</allowInsecureRegistries>
                 </configuration>
                 <executions>
                     <execution>
