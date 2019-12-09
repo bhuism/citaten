@@ -4,14 +4,15 @@ cache:
   directories:
     - .autoconf
     - $HOME/.m2
+
 jdk:
   - openjdk11
 
 jobs:
   include:
-    - stage: build test deploy
+    - stage: build
       script:
-        - mvn -B -V clean deploy jacoco:report
+        - mvn -B -V clean jacoco:report
 
 #code climate
 rvm:
