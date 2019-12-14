@@ -3,7 +3,7 @@ package nl.appsource.stream.demo.repository;
 import nl.appsource.stream.demo.model.Categorie;
 import nl.appsource.stream.demo.model.Citaat;
 import nl.appsource.stream.demo.model.Spreker;
-import org.springframework.data.r2dbc.repository.query.Query;
+import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
