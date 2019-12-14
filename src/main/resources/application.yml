@@ -1,8 +1,6 @@
 spring:
   r2dbc:
     url: r2dbc:h2:mem:///demo?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    schema: classpath:schema.sql
-    data: classpath:bigdata.sql
     initialization-mode: always
   resources:
     chain:
