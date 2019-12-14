@@ -1,12 +1,4 @@
-spring:
-  r2dbc:
-    schema: classpath:schema.sql
-    data: classpath:bigdata.sql
-    initialization-mode: always
 server:
-  tomcat:
-    accesslog:
-      enabled: true
   servlet:
     session:
       cookie:
@@ -14,6 +6,14 @@ server:
         secure: true
 management:
   endpoints:
+    enabled-by-default: false
     web:
       exposure:
         include: 'info,health'
+spring:
+  cloud:
+    gcp:
+      logging:
+        enabled: true
+      trace:
+        enabled: true
