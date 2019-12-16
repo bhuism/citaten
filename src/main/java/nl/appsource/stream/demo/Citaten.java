@@ -25,8 +25,8 @@ public class Citaten {
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() throws IOException, URISyntaxException {
         showTables();
-//        loadFile(databaseClient, "allschema.sql");
-//        showTables();
+        loadFile(databaseClient, "allschema.sql");
+        showTables();
 //        loadFile(databaseClient, "alldata.sql");
 //        countCitaten();
     }
