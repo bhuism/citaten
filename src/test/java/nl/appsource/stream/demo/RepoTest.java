@@ -55,7 +55,7 @@ public class RepoTest {
 
     @BeforeAll
     public static void setUpAll(@Autowired DatabaseClient databaseClient) throws IOException, URISyntaxException {
-        RepoTest.load(databaseClient, "schema.sql");
+        RepoTest.load(databaseClient, "allschema.sql");
     }
 
     @BeforeEach

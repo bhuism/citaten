@@ -4,10 +4,11 @@ server:
       cookie:
         http-only: true
         secure: true
-spring:
-  cloud:
-    gcp:
-      logging:
-        enabled: true
-      trace:
-        enabled: true
+#spring:
+#  cloud:
+#    gcp:
+#      logging:
+#        enabled: true
+#      trace:
+#        enabled: true
+#
