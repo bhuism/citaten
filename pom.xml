@@ -17,7 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <r2dbc.version>0.1.0.M3</r2dbc.version>
-        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
