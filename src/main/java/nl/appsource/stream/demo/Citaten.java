@@ -27,8 +27,8 @@ public class Citaten {
         showTables();
         loadFile(databaseClient, "allschema.sql");
         showTables();
-//        loadFile(databaseClient, "alldata.sql");
-//        countCitaten();
+        loadFile(databaseClient, "alldata.sql");
+        countCitaten();
     }
 
     public void showTables() {
