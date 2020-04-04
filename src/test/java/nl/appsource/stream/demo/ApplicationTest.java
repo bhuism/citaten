@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -80,7 +81,7 @@ public class ApplicationTest {
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(Citaat.class)
                 .value(c -> assertThat(c.getUuid(), is(equalTo(testUUID))))
-                .value(c -> assertThat(c.getId(), is(equalTo(1L))))
+                .value(c -> assertThat(c.getId(), is(nullValue())))
                 .value(c -> assertThat(c.getName(), is(equalTo("Test Citaat from the future of time and space1"))))
                 .value(c -> assertThat(c.getSpreker(), is(equalTo(1L))))
                 .value(c -> assertThat(c.getCategorie(), is(equalTo(1L))))
@@ -108,7 +109,7 @@ public class ApplicationTest {
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(Spreker.class)
                 .value(c -> assertThat(c.getUuid(), is(equalTo(UUID.fromString("041b38be-718a-4cb8-80b1-f329e915a21d")))))
-                .value(c -> assertThat(c.getId(), is(equalTo(1L))))
+                .value(c -> assertThat(c.getId(), is(nullValue())))
                 .value(c -> assertThat(c.getName(), is(equalTo("sOnbekend1"))))
         ;
     }
@@ -122,7 +123,7 @@ public class ApplicationTest {
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(Categorie.class)
                 .value(c -> assertThat(c.getUuid(), is(equalTo(UUID.fromString("e1f6fa61-cf10-4bc1-a741-4d7145b74cee")))))
-                .value(c -> assertThat(c.getId(), is(equalTo(1L))))
+                .value(c -> assertThat(c.getId(), is(nullValue())))
                 .value(c -> assertThat(c.getName(), is(equalTo("conbekend1"))))
         ;
     }

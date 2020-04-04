@@ -194,6 +194,19 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.0.0</version>
+                <dependencies>
+                    <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>4.0.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>2.1.0</version>
@@ -211,7 +224,9 @@
                     <container>
                         <args>
                             <arg>--spring.profiles.active=production</arg>
-                            <arg>--spring.config.location=/app/resources/application.yml,/app/resources/application-production.yml</arg>
+                            <arg>
+                                --spring.config.location=/app/resources/application.yml,/app/resources/application-production.yml
+                            </arg>
                         </args>
                         <jvmFlags>
                             <jvmFlag>-Duser.timezone=Europe/Amsterdam</jvmFlag>
