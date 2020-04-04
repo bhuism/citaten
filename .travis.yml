@@ -12,7 +12,7 @@ jobs:
   include:
     - stage: build
       script:
-        - mvn -B -V clean jacoco:report
+        - mvn -B -V clean spotbugs:check install jacoco:report
 
 #code climate
 rvm:
