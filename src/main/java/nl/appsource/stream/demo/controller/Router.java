@@ -31,9 +31,7 @@ public class Router {
 
     @Bean
     public RouterFunction<ServerResponse> endpoints() {
-        return route(
-
-                GET("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::getOne)
+        return route(GET("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::getOne)
                 .and(route(GET("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::getAll))
                 .and(route(POST("/" + CITAAT).and(accept(APPLICATION_JSON)), citaatHandler::post))
                 .and(route(DELETE("/" + CITAAT + "/{uuid}").and(accept(APPLICATION_JSON)), citaatHandler::delete))

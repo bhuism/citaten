@@ -2,11 +2,19 @@ package nl.appsource.stream.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.r2dbc.core.DatabaseClient;
+import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -52,8 +60,30 @@ public class Citaten {
         loadString(databaseClient, baos.toString(StandardCharsets.UTF_8));
     }
 
-    public static void loadString(final DatabaseClient databaseClient, final String sql) throws URISyntaxException, IOException {
+    public static void loadString(final DatabaseClient databaseClient, final String sql) {
         databaseClient.execute(sql).fetch().all().subscribe();
+    }
+
+    @Configuration
+    @PropertySource("classpath:git.properties")
+    public static class XVersionHeaderFilter {
+
+        @Value("${git.commit.id}")
+        private String gitCommitId;
+
+        @Component
+        public class AddResponseHeaderWebFilter implements WebFilter {
+
+            @Override
+            public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+                exchange.getResponse()
+                        .getHeaders()
+                        .add("X-Version", gitCommitId);
+                return chain.filter(exchange);
+            }
+
+        }
+
     }
 
 
