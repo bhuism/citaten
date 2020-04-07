@@ -164,6 +164,7 @@
                         <image>eu.gcr.io/badge-260212/citaten</image>
                         <tags>
                             <tag>latest</tag>
+                            <!--suppress UnresolvedMavenProperty -->
                             <tag>${env.COMMIT_SHA}</tag>
                         </tags>
                     </to>
