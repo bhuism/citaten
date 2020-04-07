@@ -123,6 +123,11 @@
             <artifactId>spring-cloud-gcp-starter-logging</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -206,8 +211,8 @@
                 <filtering>true</filtering>
                 <directory>src/main/resources</directory>
                 <includes>
+                    <include>git.properties</include>
                     <include>info.json</include>
-                    <include>application.yml</include>
                     <include>banner.txt</include>
                 </includes>
             </resource>
