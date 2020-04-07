@@ -123,11 +123,6 @@
             <artifactId>spring-cloud-gcp-starter-logging</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>
