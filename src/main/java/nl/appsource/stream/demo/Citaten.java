@@ -11,17 +11,16 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Slf4j
 @SpringBootApplication
@@ -55,9 +54,9 @@ public class Citaten {
     }
 
     public static void loadFile(final DatabaseClient databaseClient, final String fileName) throws URISyntaxException, IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Files.copy(Paths.get(ClassLoader.getSystemResource(fileName).toURI()), baos);
-        loadString(databaseClient, baos.toString(StandardCharsets.UTF_8));
+        log.info("Loading " + fileName);
+        final String sql = new String(Files.readAllBytes(ResourceUtils.getFile("classpath:" + fileName).toPath()), StandardCharsets.UTF_8);
+        loadString(databaseClient, sql);
     }
 
     public static void loadString(final DatabaseClient databaseClient, final String sql) {
