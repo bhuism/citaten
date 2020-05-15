@@ -107,6 +107,9 @@
                     <image>
                         <name>eu.gcr.io/badge-260212/citaten</name>
                     </image>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
                 </configuration>
             </plugin>
             <plugin>
