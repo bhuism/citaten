@@ -2,7 +2,7 @@ steps:
   # Build and push image
   - name: 'gcr.io/cloud-builders/mvn'
     id: build
-    args: ['-B', '-V', 'install', 'jib:build']
+    args: ['-B', 'install', 'jib:build']
     env:
       - 'COMMIT_SHA=$COMMIT_SHA'
       - 'SHORT_SHA=$SHORT_SHA'
