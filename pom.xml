@@ -119,7 +119,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>eu.gcr.io/badge-260212/${project.artifactId}</name>
+                        <name>eu.gcr.io/badge-260212/citaten</name>
                     </image>
                 </configuration>
             </plugin>
