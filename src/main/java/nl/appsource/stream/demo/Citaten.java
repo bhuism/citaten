@@ -41,7 +41,6 @@ public class Citaten {
     public void showTables() {
         databaseClient.execute("SHOW TABLES;").fetch()
                 .all()
-                .log()
                 .subscribe();
     }
 
@@ -53,9 +52,9 @@ public class Citaten {
         SpringApplication.run(Citaten.class, args);
     }
 
-    public static void loadFile(final DatabaseClient databaseClient, final String fileName) throws URISyntaxException, IOException {
+    public static void loadFile(final DatabaseClient databaseClient, final String fileName) throws IOException {
         log.info("Loading " + fileName);
-        final String sql = new String(Files.readAllBytes(ResourceUtils.getFile("classpath:" + fileName).toPath()), StandardCharsets.UTF_8);
+        final String sql = Files.readString(ResourceUtils.getFile("classpath:" + fileName).toPath());
         loadString(databaseClient, sql);
     }
 
