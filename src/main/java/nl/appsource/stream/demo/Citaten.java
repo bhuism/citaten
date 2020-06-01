@@ -62,7 +62,7 @@ public class Citaten {
     @Configuration
     public static class XVersionHeaderFilter {
 
-        @Value("${git.commit.id}")
+        @Value("${COMMIT_SHA:null}")
         private String gitCommitId;
 
         @Component
