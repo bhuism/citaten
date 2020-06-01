@@ -18,8 +18,6 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 @Slf4j
@@ -30,7 +28,7 @@ public class Citaten {
     private DatabaseClient databaseClient;
 
     @EventListener(ApplicationReadyEvent.class)
-    public void doSomethingAfterStartup() throws IOException, URISyntaxException {
+    public void doSomethingAfterStartup() throws IOException {
         showTables();
         loadFile(databaseClient, "allschema.sql");
         showTables();

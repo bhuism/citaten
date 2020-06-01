@@ -110,7 +110,7 @@ public class RepoTest {
 
     @Test
     public void shouldfindSprekerBycitaat() {
-        citaatRepository.getSprekerByCitaatId(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+        citaatRepository.getSprekerByCitaatUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
                 .as(StepVerifier::create)
                 .expectNextMatches(e -> {
                     assertThat(e.getId()).isEqualTo(3L);
@@ -123,7 +123,7 @@ public class RepoTest {
 
     @Test
     public void shouldfindCategorieByCitaat() {
-        citaatRepository.getCategorieByCitaatId(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+        citaatRepository.getCategorieByCitaatUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
                 .as(StepVerifier::create)
                 .expectNextMatches(e -> {
                     assertThat(e.getId()).isEqualTo(3L);

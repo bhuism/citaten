@@ -20,11 +20,11 @@ public class CitaatHandler extends AbstractHandler<Citaat> {
     }
 
     public Mono<ServerResponse> getSprekerByCitaatId(final ServerRequest serverRequest) {
-        return ((MyHandlerFunction) citaatRepository::getSprekerByCitaatId).handle(serverRequest);
+        return ((MyHandlerFunction) citaatRepository::getSprekerByCitaatUuid).handle(serverRequest);
     }
 
     public Mono<ServerResponse> getCategorieByCitaatId(final ServerRequest serverRequest) {
-        return ((MyHandlerFunction) citaatRepository::getCategorieByCitaatId).handle(serverRequest);
+        return ((MyHandlerFunction) citaatRepository::getCategorieByCitaatUuid).handle(serverRequest);
     }
 
 }
