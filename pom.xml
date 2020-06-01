@@ -40,30 +40,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>cloud-artifacts</id>
-            <url>artifactregistry://europe-west4-maven.pkg.dev/badge-260212/mijnrepo</url>
-        </snapshotRepository>
-        <repository>
-            <id>cloud-artifacts</id>
-            <url>artifactregistry://europe-west4-maven.pkg.dev/badge-260212/mijnrepo</url>
-        </repository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>cloud-artifacts</id>
-            <url>artifactregistry://europe-west4-maven.pkg.dev/badge-260212/mijnrepo</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -142,9 +118,7 @@
                 <filtering>true</filtering>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>git.properties</include>
                     <include>info.json</include>
-                    <include>banner.txt</include>
                 </includes>
             </resource>
             <resource>
@@ -152,13 +126,6 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-        <extensions>
-            <extension>
-                <groupId>com.google.cloud.artifactregistry</groupId>
-                <artifactId>artifactregistry-maven-wagon</artifactId>
-                <version>2.1.0</version>
-            </extension>
-        </extensions>
     </build>
 
 </project>
