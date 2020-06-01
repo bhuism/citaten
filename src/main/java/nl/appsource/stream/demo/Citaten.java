@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Component;
@@ -60,9 +61,10 @@ public class Citaten {
     }
 
     @Configuration
+    @PropertySource("classpath:git.properties")
     public static class XVersionHeaderFilter {
 
-        @Value("${COMMIT_SHA:null}")
+        @Value("${git.commit.id}")
         private String gitCommitId;
 
         @Component

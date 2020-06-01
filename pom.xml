@@ -118,6 +118,7 @@
                 <filtering>true</filtering>
                 <directory>src/main/resources</directory>
                 <includes>
+                    <include>git.properties</include>
                     <include>info.json</include>
                 </includes>
             </resource>
