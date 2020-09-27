@@ -38,12 +38,12 @@ public class Citaten {
 
     public void showTables() {
         databaseClient.execute("SHOW TABLES;").fetch()
-                .all()
-                .subscribe();
+            .all()
+            .subscribe();
     }
 
     public void countCitaten() {
-        databaseClient.execute("SELECT COUNT(*) FROM CITAAT").fetch().all().log().subscribe();
+        databaseClient.execute("SELECT COUNT(*) FROM CITAAT").fetch().all().log().subscribe();
     }
 
     public static void main(String[] args) {
@@ -73,8 +73,8 @@ public class Citaten {
             @Override
             public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
                 exchange.getResponse()
-                        .getHeaders()
-                        .add("X-Version", gitCommitId);
+                    .getHeaders()
+                    .add("X-Version", gitCommitId);
                 return chain.filter(exchange);
             }
 
