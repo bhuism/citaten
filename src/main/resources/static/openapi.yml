@@ -12,16 +12,46 @@ paths:
       operationId: "getCitaten"
       responses:
         '200':
-          $ref: '#/components/responses/Ok'
+          $ref: '#/components/responses/OkCitaten'
+  /sprekers:
+    get:
+      summary: "Get all sprekers"
+      operationId: "getSprekers"
+      responses:
+        '200':
+          $ref: '#/components/responses/OkSprekers'
+  /categorien:
+    get:
+      summary: "Get all categorien"
+      operationId: "getCategorien"
+      responses:
+        '200':
+          $ref: '#/components/responses/OkCategorien'
 components:
   responses:
-    Ok:
+    OkCitaten:
       description: Get all Citaten
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Citaat'
+            $ref: '#/components/schemas/Citaten'
+    OkSprekers:
+      description: Get all Sprekers
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Sprekers'
+    OkCategorien:
+      description: Get all Categorien
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Categorien'
   schemas:
+    Citaten:
+      type: array
+      items:
+        $ref: '#/components/schemas/Citaat'
     Citaat:
       type: "object"
       properties:
@@ -34,3 +64,27 @@ components:
           type: "integer"
         categorie:
           type: "integer"
+    Sprekers:
+      type: array
+      items:
+        $ref: '#/components/schemas/Spreker'
+    Spreker:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        name:
+          type: "string"
+    Categorien:
+      type: array
+      items:
+        $ref: '#/components/schemas/Categorie'
+    Categorie:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        name:
+          type: "string"
