@@ -1,0 +1,36 @@
+openapi: 3.0.3
+info:
+  description: "Get your citaten here."
+  version: "0.0.1"
+  title: "Citaten"
+servers:
+  - url: https://api.citaten.odee.net
+paths:
+  /citaten:
+    get:
+      summary: "Get all citaten"
+      operationId: "getCitaten"
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+components:
+  responses:
+    Ok:
+      description: Get all Citaten
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Citaat'
+  schemas:
+    Citaat:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        name:
+          type: "string"
+        spreker:
+          type: "integer"
+        categorie:
+          type: "integer"
