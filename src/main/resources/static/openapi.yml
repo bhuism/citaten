@@ -5,6 +5,9 @@ info:
   title: "Citaten"
 servers:
   - url: https://api.citaten.odee.net
+    description: odee.net
+  - url: http://localhost:8080
+    description: localhost
 paths:
   /citaten:
     get:
