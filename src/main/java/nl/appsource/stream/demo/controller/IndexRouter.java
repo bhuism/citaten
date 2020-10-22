@@ -6,12 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Mono;
 
 import static java.net.URI.create;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RouterFunctions.resources;
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.permanentRedirect;
 
 @Slf4j
@@ -23,13 +23,12 @@ public class IndexRouter {
 
     @Bean
     public RouterFunction<ServerResponse> index() {
-        return RouterFunctions
-            .route(GET("/"), r -> permanentRedirect(create("https://citaten.odee.net")).build());
+        return route(GET("/"), r -> permanentRedirect(create("https://citaten.odee.net")).build());
     }
 
     @Bean
     public RouterFunction<ServerResponse> contract() {
-        return RouterFunctions.resources((r) -> Mono.just(contract));
+        return resources("/openapi.yml", contract);
     }
 
 }
