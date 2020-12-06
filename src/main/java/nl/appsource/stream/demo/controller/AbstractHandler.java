@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nl.appsource.stream.demo.Util;
 import nl.appsource.stream.demo.model.AbstractPersistable;
 import nl.appsource.stream.demo.repository.AbstractReactiveRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -51,13 +53,21 @@ public class AbstractHandler<T extends AbstractPersistable> {
     }
 
     public Mono<ServerResponse> getAll(final ServerRequest serverRequest) {
+
+        final Optional<String> osort = serverRequest.queryParam("sort");
+
+        Query query = Query.empty()
+            .limit(Util.getIntegerOrDefault(serverRequest, "limit", 10))
+            .offset(Util.getIntegerOrDefault(serverRequest, "offset", 0));
+
+        if (osort.isPresent()) {
+            query = query.sort(Sort.by(osort.get().startsWith("-") ? Sort.Direction.DESC : Sort.Direction.ASC, osort.get().startsWith("-") ? osort.get().substring(1) : osort.get()));
+        }
+
         return ok()
             .contentType(APPLICATION_JSON)
             .body(template.select(modelClazz)
-                .matching(
-                    Query.empty()
-                        .limit(Util.getIntegerOrDefault(serverRequest, "limit", 10))
-                        .offset(Util.getIntegerOrDefault(serverRequest, "offset", 0)))
+                .matching(query)
                 .all(), modelClazz);
     }
 
