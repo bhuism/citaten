@@ -13,15 +13,28 @@ import static lombok.AccessLevel.PRIVATE;
 public final class Util {
 
     public static Long getLongOrDefault(final ServerRequest ServerRequest, final String name, final Long value) {
-
         return ServerRequest.queryParam(name)
-                .flatMap(Util::safeLongValueofOptional)
-                .orElse(value);
+            .flatMap(Util::safeLongValueofOptional)
+            .orElse(value);
+    }
+
+    public static Integer getIntegerOrDefault(final ServerRequest ServerRequest, final String name, final Integer value) {
+        return ServerRequest.queryParam(name)
+            .flatMap(Util::safeIntegerValueofOptional)
+            .orElse(value);
     }
 
     public static Long safeLongValueOf(final String value) {
         try {
             return Long.valueOf(value);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public static Integer safeIntegerValueOf(final String value) {
+        try {
+            return Integer.valueOf(value);
         } catch (NumberFormatException e) {
             return null;
         }
@@ -37,6 +50,10 @@ public final class Util {
 
     public static Optional<Long> safeLongValueofOptional(final String value) {
         return Optional.ofNullable(safeLongValueOf(value));
+    }
+
+    public static Optional<Integer> safeIntegerValueofOptional(final String value) {
+        return Optional.ofNullable(safeIntegerValueOf(value));
     }
 
     public static Optional<UUID> safeUuidValueofOptional(final String value) {

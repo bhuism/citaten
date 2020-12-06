@@ -9,7 +9,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
-import org.springframework.data.r2dbc.core.DatabaseClient;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.server.ServerWebExchange;
@@ -37,13 +37,13 @@ public class Citaten {
     }
 
     public void showTables() {
-        databaseClient.execute("SHOW TABLES;").fetch()
+        databaseClient.sql("SHOW TABLES;").fetch()
             .all()
             .subscribe();
     }
 
     public void countCitaten() {
-        databaseClient.execute("SELECT COUNT(*) FROM CITAAT").fetch().all().log().subscribe();
+        databaseClient.sql("SELECT COUNT(*) FROM CITAAT").fetch().all().log().subscribe();
     }
 
     public static void main(String[] args) {
@@ -57,7 +57,7 @@ public class Citaten {
     }
 
     public static void loadString(final DatabaseClient databaseClient, final String sql) {
-        databaseClient.execute(sql).fetch().all().subscribe();
+        databaseClient.sql(sql).fetch().all().subscribe();
     }
 
     @Configuration

@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import nl.appsource.stream.demo.Util;
 import nl.appsource.stream.demo.model.AbstractPersistable;
 import nl.appsource.stream.demo.repository.AbstractReactiveRepository;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.relational.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -29,16 +31,18 @@ public class AbstractHandler<T extends AbstractPersistable> {
 
     private final Class<T> modelClazz;
 
+    private final R2dbcEntityTemplate template;
+
     @FunctionalInterface
     public interface MyHandlerFunction extends HandlerFunction<ServerResponse>, Function<UUID, Mono<? extends AbstractPersistable>> {
         @Override
         default Mono<ServerResponse> handle(ServerRequest serverRequest) {
             return Mono.just(serverRequest)
-                    .map(r -> r.pathVariable("uuid"))
-                    .flatMap(Util::safeUuidValueofMono)
-                    .flatMap(this::apply)
-                    .flatMap(p -> ok().contentType(APPLICATION_JSON).body(fromValue(p)))
-                    .switchIfEmpty(NOTFOUND);
+                .map(r -> r.pathVariable("uuid"))
+                .flatMap(Util::safeUuidValueofMono)
+                .flatMap(this::apply)
+                .flatMap(p -> ok().contentType(APPLICATION_JSON).body(fromValue(p)))
+                .switchIfEmpty(NOTFOUND);
         }
     }
 
@@ -48,27 +52,29 @@ public class AbstractHandler<T extends AbstractPersistable> {
 
     public Mono<ServerResponse> getAll(final ServerRequest serverRequest) {
         return ok()
-                .contentType(APPLICATION_JSON)
-                .body(repository.findAll()
-                                .limitRequest(Util.getLongOrDefault(serverRequest, "limit", 5L))
-                        , modelClazz
-                );
+            .contentType(APPLICATION_JSON)
+            .body(template.select(modelClazz)
+                .matching(
+                    Query.empty()
+                        .limit(Util.getIntegerOrDefault(serverRequest, "limit", 10))
+                        .offset(Util.getIntegerOrDefault(serverRequest, "offset", 0)))
+                .all(), modelClazz);
     }
 
     public Mono<ServerResponse> post(final ServerRequest serverRequest) {
         return serverRequest.body(toMono(modelClazz))
-                .flatMap(repository::save)
-                .flatMap(citaat -> status(HttpStatus.CREATED).contentType(APPLICATION_JSON).body(fromValue(citaat)))
-                .switchIfEmpty(NOTFOUND);
+            .flatMap(repository::save)
+            .flatMap(citaat -> status(HttpStatus.CREATED).contentType(APPLICATION_JSON).body(fromValue(citaat)))
+            .switchIfEmpty(NOTFOUND);
     }
 
     public Mono<ServerResponse> delete(final ServerRequest serverRequest) {
         return Mono.just(serverRequest)
-                .map(r -> r.pathVariable("uuid"))
-                .flatMap(Util::safeUuidValueofMono)
-                .flatMap(repository::findByUuid)
-                .flatMap(citaat -> ok().contentType(APPLICATION_JSON).build(repository.delete(citaat)))
-                .switchIfEmpty(NOTFOUND);
+            .map(r -> r.pathVariable("uuid"))
+            .flatMap(Util::safeUuidValueofMono)
+            .flatMap(repository::findByUuid)
+            .flatMap(citaat -> ok().contentType(APPLICATION_JSON).build(repository.delete(citaat)))
+            .switchIfEmpty(NOTFOUND);
     }
 
 
@@ -78,9 +84,9 @@ public class AbstractHandler<T extends AbstractPersistable> {
 
     public Mono<ServerResponse> put(final ServerRequest serverRequest) {
         return serverRequest.body(toMono(modelClazz))
-                .flatMap(repository::save)
-                .flatMap(citaat -> status(HttpStatus.OK).contentType(APPLICATION_JSON).body(fromValue(citaat)))
-                .switchIfEmpty(NOTFOUND);
+            .flatMap(repository::save)
+            .flatMap(citaat -> status(HttpStatus.OK).contentType(APPLICATION_JSON).body(fromValue(citaat)))
+            .switchIfEmpty(NOTFOUND);
     }
 
 }

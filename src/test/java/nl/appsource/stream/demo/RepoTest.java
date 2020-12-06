@@ -14,8 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
-import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Hooks;
 import reactor.test.StepVerifier;
@@ -71,7 +71,7 @@ public class RepoTest {
     public static void load(final DatabaseClient databaseClient, final String fileName) throws URISyntaxException, IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Files.copy(Paths.get(ClassLoader.getSystemResource(fileName).toURI()), baos);
-        databaseClient.execute(baos.toString(StandardCharsets.UTF_8)).fetch().all().subscribe();
+        databaseClient.sql(baos.toString(StandardCharsets.UTF_8)).fetch().all().subscribe();
     }
 
     @EnableR2dbcRepositories
@@ -79,11 +79,11 @@ public class RepoTest {
         @Bean
         public H2ConnectionFactory connectionFactory() {
             return new H2ConnectionFactory(
-                    H2ConnectionConfiguration.builder()
-                            .url("mem:" + UUID.randomUUID())
-                            .property("DB_CLOSE_DELAY", "-1")
-                            .property("DB_CLOSE_ON_EXIT", "FALSE")
-                            .build()
+                H2ConnectionConfiguration.builder()
+                    .url("mem:" + UUID.randomUUID())
+                    .property("DB_CLOSE_DELAY", "-1")
+                    .property("DB_CLOSE_ON_EXIT", "FALSE")
+                    .build()
             );
         }
     }
@@ -91,47 +91,47 @@ public class RepoTest {
     @Test
     public void shouldCountCitaten() {
         citaatRepository.count().as(StepVerifier::create)
-                .expectNextCount(1)
-                .verifyComplete();
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     @Test
     public void shouldFindCitaat() {
         citaatRepository.findByUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
-                .as(StepVerifier::create)
-                .expectNextMatches(e -> {
-                    assertThat(e.getId()).isEqualTo(3L);
-                    assertThat(e.getName()).isEqualTo("Test Citaat from the future of time and space3");
-                    assertThat(e.getUuid()).isEqualTo(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"));
-                    return true;
-                })
-                .verifyComplete();
+            .as(StepVerifier::create)
+            .expectNextMatches(e -> {
+                assertThat(e.getId()).isEqualTo(3L);
+                assertThat(e.getName()).isEqualTo("Test Citaat from the future of time and space3");
+                assertThat(e.getUuid()).isEqualTo(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"));
+                return true;
+            })
+            .verifyComplete();
     }
 
     @Test
     public void shouldfindSprekerBycitaat() {
         citaatRepository.getSprekerByCitaatUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
-                .as(StepVerifier::create)
-                .expectNextMatches(e -> {
-                    assertThat(e.getId()).isEqualTo(3L);
-                    assertThat(e.getName()).isEqualTo("sOnbekend3");
-                    assertThat(e.getUuid()).isEqualTo(UUID.fromString("19834cdd-5042-4a68-9875-3178d17debca"));
-                    return true;
-                })
-                .verifyComplete();
+            .as(StepVerifier::create)
+            .expectNextMatches(e -> {
+                assertThat(e.getId()).isEqualTo(3L);
+                assertThat(e.getName()).isEqualTo("sOnbekend3");
+                assertThat(e.getUuid()).isEqualTo(UUID.fromString("19834cdd-5042-4a68-9875-3178d17debca"));
+                return true;
+            })
+            .verifyComplete();
     }
 
     @Test
     public void shouldfindCategorieByCitaat() {
         citaatRepository.getCategorieByCitaatUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
-                .as(StepVerifier::create)
-                .expectNextMatches(e -> {
-                    assertThat(e.getId()).isEqualTo(3L);
-                    assertThat(e.getName()).isEqualTo("conbekend3");
-                    assertThat(e.getUuid()).isEqualTo(UUID.fromString("eabc8778-13d1-4e11-b8b2-96cdb09f8233"));
-                    return true;
-                })
-                .verifyComplete();
+            .as(StepVerifier::create)
+            .expectNextMatches(e -> {
+                assertThat(e.getId()).isEqualTo(3L);
+                assertThat(e.getName()).isEqualTo("conbekend3");
+                assertThat(e.getUuid()).isEqualTo(UUID.fromString("eabc8778-13d1-4e11-b8b2-96cdb09f8233"));
+                return true;
+            })
+            .verifyComplete();
     }
 
 }
