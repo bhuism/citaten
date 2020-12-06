@@ -2,16 +2,17 @@ steps:
   # Build and push image
   - name: 'gcr.io/cloud-builders/mvn'
     id: build
-    args: ['-B', 'install', 'spring-boot:build-info', 'spring-boot:build-image']
+    args: [ '-B', 'install', 'spring-boot:build-info', 'spring-boot:build-image' ]
     env:
+      - 'MAVEN_OPTS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
       - 'COMMIT_SHA=$COMMIT_SHA'
       - 'SHORT_SHA=$SHORT_SHA'
 
     #push
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'eu.gcr.io/badge-260212/citaten']
+    args: [ 'push', 'eu.gcr.io/badge-260212/citaten' ]
 
     # Deploy
   - name: 'gcr.io/cloud-builders/gcloud'
     id: deploy
-    args: ['run', 'deploy', 'citaten', '--image', 'eu.gcr.io/badge-260212/citaten:latest', '--region', 'europe-west4', '--platform', 'managed', '--concurrency', '80', '--max-instances', '10', '--memory', '512Mi', '--timeout', '60s', '--allow-unauthenticated']
+    args: [ 'run', 'deploy', 'citaten', '--image', 'eu.gcr.io/badge-260212/citaten:latest', '--region', 'europe-west4', '--platform', 'managed', '--concurrency', '80', '--max-instances', '10', '--memory', '512Mi', '--timeout', '60s', '--allow-unauthenticated' ]
