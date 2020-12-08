@@ -54,11 +54,11 @@ public class AbstractHandler<T extends AbstractPersistable> {
 
     public Mono<ServerResponse> getAll(final ServerRequest serverRequest) {
 
-        final Optional<String> osort = serverRequest.queryParam("sort");
-
         Query query = Query.empty()
             .limit(Util.getIntegerOrDefault(serverRequest, "limit", 10))
             .offset(Util.getIntegerOrDefault(serverRequest, "offset", 0));
+
+        final Optional<String> osort = serverRequest.queryParam("sort");
 
         if (osort.isPresent()) {
             query = query.sort(Sort.by(osort.get().startsWith("-") ? Sort.Direction.DESC : Sort.Direction.ASC, osort.get().startsWith("-") ? osort.get().substring(1) : osort.get()));
