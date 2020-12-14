@@ -4,7 +4,7 @@ info:
   version: "0.0.1"
   title: "Citaten"
 servers:
-  - url: https://api.citaten.odee.net
+  - url: https://api-citaten.odee.net
     description: odee.net
   - url: http://localhost:8080
     description: localhost
