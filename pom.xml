@@ -75,7 +75,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>eu.gcr.io/badge-260212/citaten</name>
+                        <name>eu.gcr.io/badge-260212/citaten,bhuism/citaten-api</name>
                     </image>
                     <layers>
                         <enabled>true</enabled>

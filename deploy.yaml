@@ -8,6 +8,10 @@ steps:
       - 'SHORT_SHA=$SHORT_SHA'
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', 'eu.gcr.io/badge-260212/citaten' ]
+  - name: "gcr.io/cloud-builders/docker"
+    args: [ "login", "--username", "bhuism", "--password", "$_DOCKERHUBPASSWORD" ]
+  - name: "gcr.io/cloud-builders/docker"
+    args: [ "push", "bhuism/citaten-api:latest" ]
   - name: 'gcr.io/cloud-builders/gcloud'
     id: deploy
     args: [ 'run', 'deploy', 'citaten', '--image', 'eu.gcr.io/badge-260212/citaten:latest', '--region', 'europe-west4', '--platform', 'managed', '--concurrency', '80', '--max-instances', '10', '--memory', '512Mi', '--timeout', '60s', '--allow-unauthenticated' ]
