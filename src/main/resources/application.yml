@@ -2,33 +2,34 @@ spring:
   r2dbc:
     url: r2dbc:h2:mem:///demo?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     initialization-mode: always
-  resources:
-    chain:
-      cache: true
-      enabled: true
-      strategy:
-        content:
-          enabled: true
-          paths: /webjars/**
-    cache:
-      period: 86400
-      cachecontrol:
-        cache-public: true
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          cache-public: true
+        period: 86400
+      chain:
+        cache: true
+        enabled: true
+        strategy:
+          content:
+            enabled: true
+            paths: /webjars/**
   output:
     ansi:
       enabled: detect
   main:
     banner-mode: log
-  cloud:
-    gcp:
-      logging:
-        enabled: false
-      trace:
-        enabled: false
+
 server:
   compression:
     enabled: true
   forward-headers-strategy: framework
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
 logging:
   level:
     nl.appsource: DEBUG

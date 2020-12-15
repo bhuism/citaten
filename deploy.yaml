@@ -1,12 +1,17 @@
 steps:
   - name: 'gcr.io/cloud-builders/mvn'
     id: build
-    args: [ '-B', 'install', 'spring-boot:build-info', 'spring-boot:build-image' ]
-    env:
-      - 'MAVEN_OPTS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-      - 'COMMIT_SHA=$COMMIT_SHA'
-      - 'SHORT_SHA=$SHORT_SHA'
+    args: [ '-B', '-Pnative', 'install', 'spring-boot:build-info', 'spring-boot:build-image' ]
   - name: "gcr.io/cloud-builders/docker"
     args: [ "login", "--username", "bhuism", "--password", "$_DOCKERHUBPASSWORD" ]
   - name: "gcr.io/cloud-builders/docker"
     args: [ "push", "bhuism/citaten-api:latest" ]
+
+options:
+  machineType: "N1_HIGHCPU_8"
+  env:
+    - "COMMIT_SHA=$COMMIT_SHA"
+    - "SHORT_SHA=$SHORT_SHA"
+    - "BRANCH_NAME=$BRANCH_NAME"
+    - "NATIVEPROFILE=$_NATIVEPROFILE"
+    - 'MAVEN_OPTS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'

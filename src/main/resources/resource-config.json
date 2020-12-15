@@ -1,0 +1,19 @@
+{
+  "resources": [
+    {
+      "pattern": ".*\\.sql$"
+    },
+    {
+      "pattern": ".*\\.yml"
+    },
+    {
+      "pattern": ".*\\.json$"
+    },
+    {
+      "pattern": ".*\\.txt"
+    },
+    {
+      "pattern": ".*\\.properties$"
+    }
+  ]
+}
