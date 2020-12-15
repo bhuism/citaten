@@ -6,29 +6,37 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.r2dbc.core.DatabaseClient;
-import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilter;
-import org.springframework.web.server.WebFilterChain;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 public class Citaten {
 
     @Autowired
     private DatabaseClient databaseClient;
 
+    @Value("classpath:/allschema.sql")
+    private Resource allSchema;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     @EventListener(ApplicationReadyEvent.class)
-    public void doSomethingAfterStartup() throws IOException {
+    public void doSomethingAfterStartup(final ApplicationReadyEvent event) throws IOException {
+
+        log.info("Got " + event.toString());
+
         showTables();
         loadFile(databaseClient, "allschema.sql");
         showTables();
@@ -50,36 +58,21 @@ public class Citaten {
         SpringApplication.run(Citaten.class, args);
     }
 
-    public static void loadFile(final DatabaseClient databaseClient, final String fileName) throws IOException {
-        log.info("Loading " + fileName);
-        final String sql = Files.readString(ResourceUtils.getFile("classpath:" + fileName).toPath());
-        loadString(databaseClient, sql);
+    public void loadFile(final DatabaseClient databaseClient, final String fileName) throws IOException {
+        final Resource resource = resourceLoader.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
+        loadString(databaseClient, asString(resource));
     }
 
     public static void loadString(final DatabaseClient databaseClient, final String sql) {
         databaseClient.sql(sql).fetch().all().subscribe();
     }
 
-    @Configuration
-    @PropertySource("classpath:git.properties")
-    public static class XVersionHeaderFilter {
-
-        @Value("${git.commit.id}")
-        private String gitCommitId;
-
-        @Component
-        public class AddResponseHeaderWebFilter implements WebFilter {
-
-            @Override
-            public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-                exchange.getResponse()
-                    .getHeaders()
-                    .add("X-Version", gitCommitId);
-                return chain.filter(exchange);
-            }
-
+    private static String asString(Resource resource) {
+        try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
+            return FileCopyUtils.copyToString(reader);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-
     }
 
 }
