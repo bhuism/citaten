@@ -71,6 +71,21 @@
         <finalName>demo</finalName>
         <plugins>
             <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <verbose>false</verbose>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -98,5 +113,68 @@
             </resource>
         </resources>
     </build>
+
+    <profiles>
+        <profile>
+            <id>native</id>
+
+            <activation>
+                <property>
+                    <name>env.NATIVEPROFILE</name>
+                    <value>true</value>
+                </property>
+            </activation>
+
+            <properties>
+                <graalvm.version>20.3.0</graalvm.version>
+                <repackage.skip>true</repackage.skip>
+                <spring.native.mode>reflection</spring.native.mode>
+            </properties>
+
+            <dependencies>
+
+                <dependency>
+                    <groupId>org.springframework.experimental</groupId>
+                    <artifactId>spring-graalvm-native</artifactId>
+                    <version>0.8.4</version>
+                </dependency>
+
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <image>
+                                <name>bhuism/citaten-api</name>
+                                <builder>paketobuildpacks/builder:tiny</builder>
+                                <env>
+                                    <BP_BOOT_NATIVE_IMAGE>true</BP_BOOT_NATIVE_IMAGE>
+                                    <BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                                        -Dspring.spel.ignore=true
+                                        -Dspring.native.remove-yaml-support=true
+                                        -Dspring.native.remove-xml-support=true
+                                        -Dspring.native.remove-spel-support=true
+                                        -Dspring.native.remove-jmx-support=true
+                                        -Dspring.native.remove-unused-autoconfig=true
+                                        -H:DynamicProxyConfigurationResources=proxy-config.json
+                                        -H:ResourceConfigurationResources=resource-config.json
+                                        --enable-http
+                                        --enable-https
+                                        --native-image-info
+                                        --install-exit-handlers
+                                        --no-fallback
+                                    </BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                                </env>
+                            </image>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 
 </project>
