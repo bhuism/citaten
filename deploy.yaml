@@ -1,7 +1,7 @@
 steps:
   - name: 'gcr.io/cloud-builders/mvn'
     id: build
-    args: [ '-B', 'install', 'spring-boot:build-info', 'spring-boot:build-image' ]
+    args: [ '-B', '-Pnative', 'install', 'spring-boot:build-info', 'spring-boot:build-image' ]
     env:
       - 'MAVEN_OPTS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
       - 'COMMIT_SHA=$COMMIT_SHA'
