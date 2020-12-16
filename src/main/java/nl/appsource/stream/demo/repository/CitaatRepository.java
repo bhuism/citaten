@@ -19,8 +19,4 @@ public interface CitaatRepository extends AbstractReactiveRepository<Citaat> {
     @Query("SELECT a.* FROM Categorie a INNER JOIN Citaat c ON c.categorie=a.id WHERE c.uuid=:uuid")
     Mono<Categorie> getCategorieByCitaatUuid(@Param("uuid") final UUID uuid);
 
-    Mono<Citaat> findByUuid(@Param("uuid") final UUID uuid);
-
-    Mono<Void> deleteByUuid(@Param("uuid") final UUID uuid);
-
 }

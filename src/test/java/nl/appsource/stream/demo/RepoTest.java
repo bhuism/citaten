@@ -97,12 +97,11 @@ public class RepoTest {
 
     @Test
     public void shouldFindCitaat() {
-        citaatRepository.findByUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+        citaatRepository.findById(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
             .as(StepVerifier::create)
             .expectNextMatches(e -> {
-                assertThat(e.getId()).isEqualTo(3L);
                 assertThat(e.getName()).isEqualTo("Test Citaat from the future of time and space3");
-                assertThat(e.getUuid()).isEqualTo(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"));
+                assertThat(e.getId()).isEqualTo(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"));
                 return true;
             })
             .verifyComplete();
@@ -113,9 +112,8 @@ public class RepoTest {
         citaatRepository.getSprekerByCitaatUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
             .as(StepVerifier::create)
             .expectNextMatches(e -> {
-                assertThat(e.getId()).isEqualTo(3L);
                 assertThat(e.getName()).isEqualTo("sOnbekend3");
-                assertThat(e.getUuid()).isEqualTo(UUID.fromString("19834cdd-5042-4a68-9875-3178d17debca"));
+                assertThat(e.getId()).isEqualTo(UUID.fromString("19834cdd-5042-4a68-9875-3178d17debca"));
                 return true;
             })
             .verifyComplete();
@@ -126,9 +124,8 @@ public class RepoTest {
         citaatRepository.getCategorieByCitaatUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
             .as(StepVerifier::create)
             .expectNextMatches(e -> {
-                assertThat(e.getId()).isEqualTo(3L);
                 assertThat(e.getName()).isEqualTo("conbekend3");
-                assertThat(e.getUuid()).isEqualTo(UUID.fromString("eabc8778-13d1-4e11-b8b2-96cdb09f8233"));
+                assertThat(e.getId()).isEqualTo(UUID.fromString("eabc8778-13d1-4e11-b8b2-96cdb09f8233"));
                 return true;
             })
             .verifyComplete();

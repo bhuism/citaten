@@ -16,13 +16,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public abstract class AbstractPersistable implements Persistable<Long> {
+public abstract class AbstractPersistable implements Persistable<UUID> {
 
     @Id
-    @JsonIgnore
-    private Long id;
-
-    private UUID uuid;
+    private UUID id;
 
     @JsonIgnore
     public boolean isNew() {

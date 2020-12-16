@@ -80,7 +80,7 @@ public class ApplicationTest {
                 .expectStatus().isOk()
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(Citaat.class)
-                .value(c -> assertThat(c.getUuid(), is(equalTo(testUUID))))
+                .value(c -> assertThat(c.getId(), is(equalTo(testUUID))))
                 .value(c -> assertThat(c.getId(), is(nullValue())))
                 .value(c -> assertThat(c.getName(), is(equalTo("Test Citaat from the future of time and space1"))))
                 .value(c -> assertThat(c.getSpreker(), is(equalTo(1L))))
@@ -108,8 +108,7 @@ public class ApplicationTest {
                 .expectStatus().isOk()
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(Spreker.class)
-                .value(c -> assertThat(c.getUuid(), is(equalTo(UUID.fromString("041b38be-718a-4cb8-80b1-f329e915a21d")))))
-                .value(c -> assertThat(c.getId(), is(nullValue())))
+                .value(c -> assertThat(c.getId(), is(equalTo(UUID.fromString("041b38be-718a-4cb8-80b1-f329e915a21d")))))
                 .value(c -> assertThat(c.getName(), is(equalTo("sOnbekend1"))))
         ;
     }
@@ -122,8 +121,7 @@ public class ApplicationTest {
                 .expectStatus().isOk()
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(Categorie.class)
-                .value(c -> assertThat(c.getUuid(), is(equalTo(UUID.fromString("e1f6fa61-cf10-4bc1-a741-4d7145b74cee")))))
-                .value(c -> assertThat(c.getId(), is(nullValue())))
+                .value(c -> assertThat(c.getId(), is(equalTo(UUID.fromString("e1f6fa61-cf10-4bc1-a741-4d7145b74cee")))))
                 .value(c -> assertThat(c.getName(), is(equalTo("conbekend1"))))
         ;
     }
@@ -194,7 +192,7 @@ public class ApplicationTest {
 
         final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
-        final Citaat citaat = new Citaat(null, uuid, "HiThere", 3L, 2L);
+        final Citaat citaat = new Citaat(uuid, "HiThere", UUID.randomUUID(), UUID.randomUUID());
 
         // CREATE
         webClient.post().uri(citaatBaseUrl())
@@ -204,7 +202,7 @@ public class ApplicationTest {
                 .expectStatus().isCreated()
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody(Citaat.class)
-                .value(c -> assertThat(c.getUuid(), is(equalTo(uuid))))
+                .value(c -> assertThat(c.getId(), is(equalTo(uuid))))
                 .value(c -> assertThat(c.getName(), is(equalTo("HiThere"))))
                 .value(c -> assertThat(c.getSpreker(), is(equalTo(3L))))
                 .value(c -> assertThat(c.getCategorie(), is(equalTo(2L))))

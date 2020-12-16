@@ -49,7 +49,7 @@ public class AbstractHandler<T extends AbstractPersistable> {
     }
 
     public Mono<ServerResponse> getOne(final ServerRequest serverRequest) {
-        return ((MyHandlerFunction) repository::findByUuid).handle(serverRequest);
+        return ((MyHandlerFunction) repository::findById).handle(serverRequest);
     }
 
     public Mono<ServerResponse> getAll(final ServerRequest serverRequest) {
@@ -82,14 +82,14 @@ public class AbstractHandler<T extends AbstractPersistable> {
         return Mono.just(serverRequest)
             .map(r -> r.pathVariable("uuid"))
             .flatMap(Util::safeUuidValueofMono)
-            .flatMap(repository::findByUuid)
+            .flatMap(repository::findById)
             .flatMap(citaat -> ok().contentType(APPLICATION_JSON).build(repository.delete(citaat)))
             .switchIfEmpty(NOTFOUND);
     }
 
 
     public Mono<ServerResponse> patch(final ServerRequest serverRequest) {
-        return ((MyHandlerFunction) c -> repository.findByUuid(c).flatMap(repository::save)).handle(serverRequest);
+        return ((MyHandlerFunction) c -> repository.findById(c).flatMap(repository::save)).handle(serverRequest);
     }
 
     public Mono<ServerResponse> put(final ServerRequest serverRequest) {

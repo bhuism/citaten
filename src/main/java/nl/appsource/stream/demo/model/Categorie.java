@@ -9,7 +9,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.util.UUID;
 
 @Getter
-@Table("Categorie")
+@Table("genre")
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,8 +17,8 @@ public class Categorie extends AbstractPersistable {
 
     private String name;
 
-    public Categorie(final Long id, final UUID uuid, final String name) {
-        super(id, uuid);
+    public Categorie(final UUID uuid, final String name) {
+        super(uuid);
         this.name = name;
     }
 
