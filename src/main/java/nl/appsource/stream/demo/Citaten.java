@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -28,12 +30,19 @@ public class Citaten {
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @Autowired
+    private Environment environment;
+
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup(final ApplicationReadyEvent event) throws IOException {
         showTables();
         loadFile(databaseClient, resourceLoader, "allschema2.sql");
         showTables();
-        loadFile(databaseClient, resourceLoader, "alldata2.sql");
+
+        if (!environment.acceptsProfiles(Profiles.of("citest"))) {
+            loadFile(databaseClient, resourceLoader, "alldata2.sql");
+        }
+
         countCitaten();
     }
 
