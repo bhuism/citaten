@@ -73,6 +73,7 @@ public class AbstractHandler<T extends AbstractPersistable> {
 
     public Mono<ServerResponse> post(final ServerRequest serverRequest) {
         return serverRequest.body(toMono(modelClazz))
+            .map(e -> {e.makeNew() ; return e;})
             .flatMap(repository::save)
             .flatMap(citaat -> status(HttpStatus.CREATED).contentType(APPLICATION_JSON).body(fromValue(citaat)))
             .switchIfEmpty(NOTFOUND);

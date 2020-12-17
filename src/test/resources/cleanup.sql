@@ -1,3 +1,3 @@
-DELETE FROM Citaat;
-DELETE FROM Categorie;
-DELETE FROM Spreker;
+DELETE FROM quote;
+DELETE FROM author;
+DELETE FROM genre;

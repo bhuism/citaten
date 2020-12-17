@@ -26,5 +26,9 @@ public abstract class AbstractPersistable implements Persistable<UUID> {
         return getId() == null;
     }
 
+    public void makeNew() {
+        this.id = null;
+    }
+
 }
 

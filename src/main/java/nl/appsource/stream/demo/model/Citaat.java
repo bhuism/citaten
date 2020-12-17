@@ -18,10 +18,10 @@ public class Citaat extends AbstractPersistable {
 
     private String name;
 
-    @Column("spreker_id")
+    @Column("author_id")
     private UUID spreker;
 
-    @Column("categorie_id")
+    @Column("genre_id")
     private UUID categorie;
 
     public Citaat(final UUID uuid, final String name, final UUID spreker, final UUID categorie) {

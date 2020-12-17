@@ -30,13 +30,10 @@ public class Citaten {
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup(final ApplicationReadyEvent event) throws IOException {
-
-        log.info("Got " + event.toString());
-
         showTables();
-        loadFile(databaseClient, "allschema2.sql");
+        loadFile(databaseClient, resourceLoader, "allschema2.sql");
         showTables();
-        loadFile(databaseClient, "alldata2.sql");
+        loadFile(databaseClient, resourceLoader, "alldata2.sql");
         countCitaten();
     }
 
@@ -54,7 +51,7 @@ public class Citaten {
         SpringApplication.run(Citaten.class, args);
     }
 
-    public void loadFile(final DatabaseClient databaseClient, final String fileName) throws IOException {
+    public static void loadFile(final DatabaseClient databaseClient, final ResourceLoader resourceLoader, final String fileName) throws IOException {
         log.info("Loading: " + fileName);
         final Resource resource = resourceLoader.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
         loadString(databaseClient, asString(resource));

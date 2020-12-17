@@ -1,11 +1,13 @@
-INSERT INTO Spreker (id, uuid, name) VALUES (1, '041b38be-718a-4cb8-80b1-f329e915a21d', 'sOnbekend1');
-INSERT INTO Spreker (id, uuid, name) VALUES (2, 'edc950ab-f110-4dbb-a8f8-be33900fb48d', 'sOnbekend2');
-INSERT INTO Spreker (id, uuid, name) VALUES (3, '19834cdd-5042-4a68-9875-3178d17debca', 'sOnbekend3');
+INSERT INTO author (`id`, `name`) VALUES (X'7d1fd954371f98887b4f0258a2044962', 'sOnbekend1');
+INSERT INTO author (`id`, `name`) VALUES (X'a2a2e622c746647f3ef069ad63036857', 'sOnbekend2');
+INSERT INTO author (`id`, `name`) VALUES (X'05727f9f725ee737592a92feec26eaea', 'sOnbekend3');
 
-INSERT INTO Categorie (id, uuid, name) VALUES (1, 'e1f6fa61-cf10-4bc1-a741-4d7145b74cee', 'conbekend1');
-INSERT INTO Categorie (id, uuid, name) VALUES (2, 'ddfe0d6b-a408-4d8a-96b7-3b97d2b5c752', 'conbekend2');
-INSERT INTO Categorie (id, uuid, name) VALUES (3, 'eabc8778-13d1-4e11-b8b2-96cdb09f8233', 'conbekend3');
+INSERT INTO genre (id, name) VALUES (X'94e4c3bd0c32b6871a06c0a607813fb3', 'conbekend1');
+INSERT INTO genre (id, name) VALUES (X'cfa98af2d0191f190c86eefd3c3e3356', 'conbekend2');
+INSERT INTO genre (id, name) VALUES (X'fac072ba03fc0ac327036c91a987e434', 'conbekend3');
 
-INSERT INTO Citaat (id, uuid, name, categorie, spreker) VALUES (1, '930d19b3-181f-4987-96b2-a03299d3f487','Test Citaat from the future of time and space1',1,1);
-INSERT INTO Citaat (id, uuid, name, categorie, spreker) VALUES (2, '830d19b3-181f-4987-96b2-a03299d3f487','Test Citaat from the future of time and space2',2,1);
-INSERT INTO Citaat (id, uuid, name, categorie, spreker) VALUES (3, '730d19b3-181f-4987-96b2-a03299d3f487','Test Citaat from the future of time and space3',3,3);
+INSERT INTO quote (id, name, genre_id, author_id) VALUES (X'9fce15e35a84e4c180cb3f5011a4350f','Test Citaat from the future of time and space1',X'94e4c3bd0c32b6871a06c0a607813fb3',X'7d1fd954371f98887b4f0258a2044962');
+INSERT INTO quote (id, name, genre_id, author_id) VALUES (X'2c531cc7c2d32ecc319aafee18b0a7c8','Test Citaat from the future of time and space2',X'cfa98af2d0191f190c86eefd3c3e3356',X'7d1fd954371f98887b4f0258a2044962');
+INSERT INTO quote (id, name, genre_id, author_id) VALUES (X'9320683af43674138ea76b0425d6250e','Test Citaat from the future of time and space3',X'fac072ba03fc0ac327036c91a987e434',X'05727f9f725ee737592a92feec26eaea');
+
+
