@@ -2,7 +2,6 @@ package nl.appsource.stream.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -26,21 +25,15 @@ public class Citaten {
     @Autowired
     private DatabaseClient databaseClient;
 
-    @Value("classpath:/allschema.sql")
-    private Resource allSchema;
-
     @Autowired
     private ResourceLoader resourceLoader;
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup(final ApplicationReadyEvent event) throws IOException {
-
-        log.info("Got " + event.toString());
-
         showTables();
-        loadFile(databaseClient, "allschema.sql");
+        loadFile(databaseClient, resourceLoader, "allschema2.sql");
         showTables();
-        loadFile(databaseClient, "alldata.sql");
+        loadFile(databaseClient, resourceLoader, "alldata2.sql");
         countCitaten();
     }
 
@@ -51,17 +44,19 @@ public class Citaten {
     }
 
     public void countCitaten() {
-        databaseClient.sql("SELECT COUNT(*) FROM CITAAT").fetch().all().log().subscribe();
+        databaseClient.sql("SELECT COUNT(*) FROM quote").fetch().all().log().subscribe();
     }
 
     public static void main(String[] args) {
         SpringApplication.run(Citaten.class, args);
     }
 
-    public void loadFile(final DatabaseClient databaseClient, final String fileName) throws IOException {
+    public static void loadFile(final DatabaseClient databaseClient, final ResourceLoader resourceLoader, final String fileName) throws IOException {
+        log.info("Loading: " + fileName);
         final Resource resource = resourceLoader.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
         loadString(databaseClient, asString(resource));
     }
+
 
     public static void loadString(final DatabaseClient databaseClient, final String sql) {
         databaseClient.sql(sql).fetch().all().subscribe();

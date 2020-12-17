@@ -13,14 +13,10 @@ import java.util.UUID;
 @Repository
 public interface CitaatRepository extends AbstractReactiveRepository<Citaat> {
 
-    @Query("SELECT s.* FROM Spreker s INNER JOIN Citaat c ON c.spreker=s.id WHERE c.uuid=:uuid")
+    @Query("SELECT s.* FROM author s INNER JOIN quote c ON c.author_id=s.id WHERE c.id=:uuid")
     Mono<Spreker> getSprekerByCitaatUuid(@Param("uuid") final UUID uuid);
 
-    @Query("SELECT a.* FROM Categorie a INNER JOIN Citaat c ON c.categorie=a.id WHERE c.uuid=:uuid")
+    @Query("SELECT a.* FROM genre a INNER JOIN quote c ON c.genre_id=a.id WHERE c.id=:uuid")
     Mono<Categorie> getCategorieByCitaatUuid(@Param("uuid") final UUID uuid);
-
-    Mono<Citaat> findByUuid(@Param("uuid") final UUID uuid);
-
-    Mono<Void> deleteByUuid(@Param("uuid") final UUID uuid);
 
 }

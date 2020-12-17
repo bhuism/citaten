@@ -55,7 +55,7 @@ public class RepoTest {
 
     @BeforeAll
     public static void setUpAll(@Autowired DatabaseClient databaseClient) throws IOException, URISyntaxException {
-        RepoTest.load(databaseClient, "allschema.sql");
+        load(databaseClient, "allschema2.sql");
     }
 
     @BeforeEach
@@ -95,14 +95,15 @@ public class RepoTest {
             .verifyComplete();
     }
 
+    private final UUID testUUID = new UUID(0x9320683af4367413L, 0x8ea76b0425d6250eL);
+
     @Test
     public void shouldFindCitaat() {
-        citaatRepository.findByUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+        citaatRepository.findById(testUUID)
             .as(StepVerifier::create)
             .expectNextMatches(e -> {
-                assertThat(e.getId()).isEqualTo(3L);
                 assertThat(e.getName()).isEqualTo("Test Citaat from the future of time and space3");
-                assertThat(e.getUuid()).isEqualTo(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"));
+                assertThat(e.getId()).isEqualTo(testUUID);
                 return true;
             })
             .verifyComplete();
@@ -110,12 +111,11 @@ public class RepoTest {
 
     @Test
     public void shouldfindSprekerBycitaat() {
-        citaatRepository.getSprekerByCitaatUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+        citaatRepository.getSprekerByCitaatUuid(testUUID)
             .as(StepVerifier::create)
             .expectNextMatches(e -> {
-                assertThat(e.getId()).isEqualTo(3L);
                 assertThat(e.getName()).isEqualTo("sOnbekend3");
-                assertThat(e.getUuid()).isEqualTo(UUID.fromString("19834cdd-5042-4a68-9875-3178d17debca"));
+                assertThat(e.getId()).isEqualTo(UUID.fromString("05727f9f-725e-e737-592a-92feec26eaea"));
                 return true;
             })
             .verifyComplete();
@@ -123,12 +123,11 @@ public class RepoTest {
 
     @Test
     public void shouldfindCategorieByCitaat() {
-        citaatRepository.getCategorieByCitaatUuid(UUID.fromString("730d19b3-181f-4987-96b2-a03299d3f487"))
+        citaatRepository.getCategorieByCitaatUuid(testUUID)
             .as(StepVerifier::create)
             .expectNextMatches(e -> {
-                assertThat(e.getId()).isEqualTo(3L);
                 assertThat(e.getName()).isEqualTo("conbekend3");
-                assertThat(e.getUuid()).isEqualTo(UUID.fromString("eabc8778-13d1-4e11-b8b2-96cdb09f8233"));
+                assertThat(e.getId()).isEqualTo(new UUID(0xfac072ba03fc0ac3L,0x27036c91a987e434L));
                 return true;
             })
             .verifyComplete();

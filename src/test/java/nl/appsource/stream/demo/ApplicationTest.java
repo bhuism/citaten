@@ -23,7 +23,6 @@ import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -33,14 +32,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApplicationTest {
 
-    private final UUID testUUID = UUID.fromString("930d19b3-181f-4987-96b2-a03299d3f487");
+    private final UUID testUUID = new UUID(0x9fce15e35a84e4c1L, 0x80cb3f5011a4350fL);
 
     private final WebTestClient webClient = WebTestClient.bindToServer()
-            .filters(exchangeFilterFunctions -> {
-                exchangeFilterFunctions.add(logRequest());
-                exchangeFilterFunctions.add(logResponse());
-            })
-            .build();
+        .filters(exchangeFilterFunctions -> {
+            exchangeFilterFunctions.add(logRequest());
+            exchangeFilterFunctions.add(logResponse());
+        })
+        .build();
 
 
     @LocalServerPort
@@ -75,17 +74,15 @@ public class ApplicationTest {
     public void testGetCitaat() {
 
         webClient.get().uri(citaatBaseUrl() + "/{uuid}", testUUID.toString())
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(APPLICATION_JSON)
-                .expectBody(Citaat.class)
-                .value(c -> assertThat(c.getUuid(), is(equalTo(testUUID))))
-                .value(c -> assertThat(c.getId(), is(nullValue())))
-                .value(c -> assertThat(c.getName(), is(equalTo("Test Citaat from the future of time and space1"))))
-                .value(c -> assertThat(c.getSpreker(), is(equalTo(1L))))
-                .value(c -> assertThat(c.getCategorie(), is(equalTo(1L))))
-        ;
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(APPLICATION_JSON)
+            .expectBody(Citaat.class)
+            .value(c -> assertThat(c.getId(), is(equalTo(testUUID))))
+            .value(c -> assertThat(c.getName(), is(equalTo("Test Citaat from the future of time and space1"))))
+            .value(c -> assertThat(c.getSpreker(), is(equalTo(new UUID(0x7d1fd954371f9888L, 0x7b4f0258a2044962L)))))
+            .value(c -> assertThat(c.getCategorie(), is(equalTo(new UUID(0x94e4c3bd0c32b687L, 0x1a06c0a607813fb3L)))));
 
     }
 
@@ -103,28 +100,26 @@ public class ApplicationTest {
     @Test
     public void testGetCitaatSpreker() {
         webClient.get().uri(citaatBaseUrl() + "/{uuid}/spreker", testUUID.toString())
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(APPLICATION_JSON)
-                .expectBody(Spreker.class)
-                .value(c -> assertThat(c.getUuid(), is(equalTo(UUID.fromString("041b38be-718a-4cb8-80b1-f329e915a21d")))))
-                .value(c -> assertThat(c.getId(), is(nullValue())))
-                .value(c -> assertThat(c.getName(), is(equalTo("sOnbekend1"))))
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(APPLICATION_JSON)
+            .expectBody(Spreker.class)
+            .value(c -> assertThat(c.getId(), is(equalTo(new UUID(0x7d1fd954371f9888L, 0x7b4f0258a2044962L)))))
+            .value(c -> assertThat(c.getName(), is(equalTo("sOnbekend1"))))
         ;
     }
 
     @Test
     public void testGetCitaatCategorie() {
         webClient.get().uri(citaatBaseUrl() + "/{uuid}/categorie", testUUID.toString())
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(APPLICATION_JSON)
-                .expectBody(Categorie.class)
-                .value(c -> assertThat(c.getUuid(), is(equalTo(UUID.fromString("e1f6fa61-cf10-4bc1-a741-4d7145b74cee")))))
-                .value(c -> assertThat(c.getId(), is(nullValue())))
-                .value(c -> assertThat(c.getName(), is(equalTo("conbekend1"))))
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(APPLICATION_JSON)
+            .expectBody(Categorie.class)
+            .value(c -> assertThat(c.getId(), is(equalTo(new UUID(0x94e4c3bd0c32b687L, 0x1a06c0a607813fb3L)))))
+            .value(c -> assertThat(c.getName(), is(equalTo("conbekend1"))))
         ;
     }
 
@@ -134,46 +129,46 @@ public class ApplicationTest {
         final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
         webClient.get().uri(citaatBaseUrl() + "/{uuid}", uuid.toString())
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isNotFound()
-                .expectHeader().contentType(APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isNotFound()
+            .expectHeader().contentType(APPLICATION_JSON)
         ;
     }
 
     @Test
     public void testGetCitaten() {
         webClient.get().uri(citaatBaseUrl())
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(APPLICATION_JSON)
-                .expectBodyList(Citaat.class)
-                .hasSize(3)
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(APPLICATION_JSON)
+            .expectBodyList(Citaat.class)
+            .hasSize(3)
         ;
     }
 
     @Test
     public void testGetSprekers() {
         webClient.get().uri(sprekerBaseUrl())
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(APPLICATION_JSON)
-                .expectBodyList(Spreker.class)
-                .hasSize(3)
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(APPLICATION_JSON)
+            .expectBodyList(Spreker.class)
+            .hasSize(3)
         ;
     }
 
     @Test
     public void testGetCategorien() {
         webClient.get().uri(categorieBaseUrl())
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectHeader().contentType(APPLICATION_JSON)
-                .expectBodyList(Categorie.class)
-                .hasSize(3)
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(APPLICATION_JSON)
+            .expectBodyList(Categorie.class)
+            .hasSize(3)
         ;
     }
 
@@ -183,37 +178,39 @@ public class ApplicationTest {
         final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
         webClient.delete().uri(citaatBaseUrl() + "/{uuid}", uuid.toString())
-                .exchange()
-                .expectStatus().isNotFound()
-                .expectHeader().contentType(APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isNotFound()
+            .expectHeader().contentType(APPLICATION_JSON)
         ;
     }
 
     @Test
     public void testPostCitaat() {
 
-        final UUID uuid = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
+        final UUID authorUuid = new UUID(0xa2a2e622c746647fL, 0x3ef069ad63036857L);
+        final UUID genreUuid = new UUID(0xcfa98af2d0191f19L, 0x0c86eefd3c3e3356L);
 
-        final Citaat citaat = new Citaat(null, uuid, "HiThere", 3L, 2L);
+        final Citaat citaat = new Citaat(null, "HiThere", authorUuid, genreUuid);
 
         // CREATE
-        webClient.post().uri(citaatBaseUrl())
-                .accept(MediaType.APPLICATION_JSON)
-                .bodyValue(citaat)
-                .exchange()
-                .expectStatus().isCreated()
-                .expectHeader().contentType(APPLICATION_JSON)
-                .expectBody(Citaat.class)
-                .value(c -> assertThat(c.getUuid(), is(equalTo(uuid))))
-                .value(c -> assertThat(c.getName(), is(equalTo("HiThere"))))
-                .value(c -> assertThat(c.getSpreker(), is(equalTo(3L))))
-                .value(c -> assertThat(c.getCategorie(), is(equalTo(2L))))
-        ;
+        final Citaat newCitaat = webClient.post().uri(citaatBaseUrl())
+            .accept(APPLICATION_JSON)
+            .bodyValue(citaat)
+            .exchange()
+            .expectStatus().isCreated()
+            .expectHeader().contentType(APPLICATION_JSON)
+            .expectBody(Citaat.class)
+            //.value(c -> assertThat(c.getId(), is(equalTo(uuid))))
+            .value(c -> assertThat(c.getName(), is(equalTo("HiThere"))))
+            .value(c -> assertThat(c.getSpreker(), is(equalTo(authorUuid))))
+            .value(c -> assertThat(c.getCategorie(), is(equalTo(genreUuid))))
+            .returnResult()
+            .getResponseBody();
 
         // CHECK EXISTS
-        webClient.get().uri(citaatBaseUrl() + "/{uuid}", uuid.toString())
-                .exchange()
-                .expectStatus().isOk()
+        webClient.get().uri(citaatBaseUrl() + "/{uuid}", newCitaat.getId().toString())
+            .exchange()
+            .expectStatus().isOk()
         ;
 
     }
@@ -223,8 +220,8 @@ public class ApplicationTest {
             if (log.isDebugEnabled()) {
                 StringBuilder sb = new StringBuilder("Request: ");
                 clientRequest
-                        .headers()
-                        .forEach((name, values) -> sb.append(name).append("=").append(values));
+                    .headers()
+                    .forEach((name, values) -> sb.append(name).append("=").append(values));
                 log.debug(sb.toString());
             }
             return Mono.just(clientRequest);
@@ -236,9 +233,9 @@ public class ApplicationTest {
             if (log.isDebugEnabled()) {
                 StringBuilder sb = new StringBuilder("Response: ");
                 clientRequest
-                        .headers()
-                        .asHttpHeaders()
-                        .forEach((name, values) -> sb.append(name).append("=").append(values));
+                    .headers()
+                    .asHttpHeaders()
+                    .forEach((name, values) -> sb.append(name).append("=").append(values));
                 log.debug(sb.toString());
             }
             return Mono.just(clientRequest);
