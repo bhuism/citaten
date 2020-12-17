@@ -2,6 +2,9 @@ spring:
   r2dbc:
     url: r2dbc:h2:mem:///demo?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     initialization-mode: always
+    name: mem
+    username: sa
+    password: sa
   web:
     resources:
       cache:
@@ -34,8 +37,3 @@ logging:
   level:
     nl.appsource: DEBUG
     org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
