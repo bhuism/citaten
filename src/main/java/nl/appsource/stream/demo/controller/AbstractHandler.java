@@ -66,6 +66,7 @@ public class AbstractHandler<T extends AbstractPersistable> {
 
         return ok()
             .contentType(APPLICATION_JSON)
+            .header("X-Total-Count", "" + template.count(Query.empty(), modelClazz).block())
             .body(template.select(modelClazz)
                 .matching(query)
                 .all(), modelClazz);
