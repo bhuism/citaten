@@ -32,6 +32,17 @@ public final class Util {
         }
     }
 
+    public static Integer safeIntegerValueOfOrDefault(final Optional<String> value, final Integer defaultValue) {
+        return value.map(v -> {
+                try {
+                    return Integer.valueOf(v);
+                } catch (NumberFormatException e) {
+                    return defaultValue;
+                }
+            }
+        ).orElse(defaultValue);
+    }
+
     public static Integer safeIntegerValueOf(final String value) {
         try {
             return Integer.valueOf(value);
