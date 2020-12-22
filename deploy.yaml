@@ -8,7 +8,6 @@ steps:
     args: [ "push", "bhuism/citaten-api:latest" ]
 
 options:
-  machineType: "N1_HIGHCPU_32"
   env:
     - "COMMIT_SHA=$COMMIT_SHA"
     - "SHORT_SHA=$SHORT_SHA"
