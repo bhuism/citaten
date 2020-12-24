@@ -15,7 +15,7 @@ jobs:
           java-version: 11
       - name: Build with Maven
         env:
-          COMMIT_SHA=$GITHUB_SHA
-          SHORT_SHA=$GITHUB_SHA
-          BRANCH_NAME=$GITHUB_REF
+          COMMIT_SHA: $GITHUB_SHA
+          SHORT_SHA: $GITHUB_SHA
+          BRANCH_NAME: $GITHUB_REF
         run: mvn -B -Pnative clean spring-boot:build-image && docker push bhuism/citaten-api:latest
