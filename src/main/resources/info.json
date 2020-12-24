@@ -1,8 +1,8 @@
 {
   "git": {
-    "branch": "@env.COMMIT_SHA@",
+    "branch": "@git.branch@",
     "commit": {
-      "id": "@env.SHORT_SHA@",
+      "id": "@git.commit.id.abbrev@",
       "time": "@maven.build.timestamp@"
     }
   }

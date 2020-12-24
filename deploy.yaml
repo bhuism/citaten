@@ -9,8 +9,5 @@ steps:
 
 options:
   env:
-    - "COMMIT_SHA=$COMMIT_SHA"
-    - "SHORT_SHA=$SHORT_SHA"
-    - "BRANCH_NAME=$BRANCH_NAME"
     - "NATIVEPROFILE=$_NATIVEPROFILE"
     - 'MAVEN_OPTS=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
