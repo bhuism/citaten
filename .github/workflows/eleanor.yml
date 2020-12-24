@@ -14,4 +14,4 @@ jobs:
         with:
           java-version: 11
       - name: Build with Maven
-        run: mvn -Pnative clean spring-boot:build-image && docker push bhuism/citaten-api:latest
+        run: mvn -B -Pnative clean spring-boot:build-image && docker push bhuism/citaten-api:latest
