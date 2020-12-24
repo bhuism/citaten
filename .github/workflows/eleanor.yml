@@ -14,9 +14,5 @@ jobs:
         with:
           java-version: 11
       - name: Build with Maven
-        env:
-          COMMIT_SHA: $GITHUB_SHA
-          SHORT_SHA: $GITHUB_SHA
-          BRANCH_NAME: $GITHUB_REF
-        run: build.sh
+        run: ./build.sh
 
