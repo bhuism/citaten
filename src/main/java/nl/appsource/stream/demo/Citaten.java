@@ -40,7 +40,7 @@ public class Citaten {
         showTables();
 
         if (!environment.acceptsProfiles(Profiles.of("citest"))) {
-            loadFile(databaseClient, resourceLoader, "alldata2.sql");
+            loadFile(databaseClient, resourceLoader, "alldata3.sql");
         }
 
         countCitaten();
