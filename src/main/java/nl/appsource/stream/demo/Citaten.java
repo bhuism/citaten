@@ -35,15 +35,10 @@ public class Citaten {
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup(final ApplicationReadyEvent event) throws IOException {
-        showTables();
         loadFile(databaseClient, resourceLoader, "allschema2.sql");
-        showTables();
-
         if (!environment.acceptsProfiles(Profiles.of("citest"))) {
             loadFile(databaseClient, resourceLoader, "alldata3.sql");
         }
-
-        countCitaten();
     }
 
     public void showTables() {
@@ -64,6 +59,7 @@ public class Citaten {
         log.info("Loading: " + fileName);
         final Resource resource = resourceLoader.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
         loadString(databaseClient, asString(resource));
+        log.info("Loaded: " + fileName);
     }
 
 
