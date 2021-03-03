@@ -15,6 +15,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiFunction;
@@ -92,9 +93,12 @@ public class AbstractHandler<T extends AbstractPersistable> {
 
         return ok()
             .contentType(APPLICATION_JSON)
-            .body(template.select(modelClazz)
-                .matching(query)
-                .all(), modelClazz);
+            .body(
+                Mono.just(Map.of(
+                    "rows", template.select(modelClazz).matching(query).all().collectList().block(),
+                    "count", template.select(modelClazz).matching(query).count().block()
+                ))
+                , modelClazz);
     }
 
     public Mono<ServerResponse> post(final ServerRequest serverRequest) {
@@ -116,7 +120,6 @@ public class AbstractHandler<T extends AbstractPersistable> {
             .flatMap(citaat -> ok().contentType(APPLICATION_JSON).build(repository.delete(citaat)))
             .switchIfEmpty(NOTFOUND);
     }
-
 
     public Mono<ServerResponse> patch(final ServerRequest serverRequest) {
         return ((MyHandlerFunction) c -> repository.findById(c).flatMap(repository::save)).handle(serverRequest);
