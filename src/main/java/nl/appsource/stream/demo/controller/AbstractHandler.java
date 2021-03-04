@@ -82,7 +82,7 @@ public class AbstractHandler<T extends AbstractPersistable> {
         Query query =
             Optional.of(
                 getParam(serverRequest, "query")
-                    .map(queryString -> queryString.length() < 3 ? null : queryString)
+                    .flatMap(queryString -> queryString.length() > 0 ? Optional.<String>of(queryString) : Optional.<String>empty())
                     .map(queryString -> Query.query(where("name").like('%' + queryString + '%')))
                     .orElse(Query.empty()))
                 .map(q -> addMixin(serverRequest, q, LIMIT))
