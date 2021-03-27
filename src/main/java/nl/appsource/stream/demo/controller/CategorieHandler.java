@@ -14,4 +14,12 @@ public class CategorieHandler extends AbstractHandler<Categorie> {
         super(categorieRepository, Categorie.class, template);
     }
 
+//    @Override
+//    public Criteria getQueryCriteria(final String queryString) {
+//        return Util.safeLongValueofOptional(queryString)
+//            .map(aLong -> where("count").is(aLong))
+//            .map(criteria -> super.getQueryCriteria(queryString).or(criteria))
+//            .orElse(super.getQueryCriteria(queryString));
+//    }
+
 }

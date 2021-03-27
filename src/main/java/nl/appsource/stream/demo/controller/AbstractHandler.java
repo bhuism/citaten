@@ -7,6 +7,7 @@ import nl.appsource.stream.demo.model.AbstractPersistable;
 import nl.appsource.stream.demo.repository.AbstractReactiveRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
@@ -83,7 +84,7 @@ public class AbstractHandler<T extends AbstractPersistable> {
             Optional.of(
                 getParam(serverRequest, "query")
                     .flatMap(queryString -> queryString.length() > 0 ? Optional.<String>of(queryString) : Optional.<String>empty())
-                    .map(queryString -> Query.query(where("name").like('%' + queryString + '%')))
+                    .map(queryString -> Query.query(getQueryCriteria(queryString)))
                     .orElse(Query.empty()))
                 .map(q -> addMixin(serverRequest, q, LIMIT))
                 .map(q -> addMixin(serverRequest, q, OFFSET))
@@ -94,6 +95,10 @@ public class AbstractHandler<T extends AbstractPersistable> {
             .contentType(APPLICATION_JSON)
             .header("total-count", "" + template.select(modelClazz).matching(query).count().block())
             .body(template.select(modelClazz).matching(query).all(), modelClazz);
+    }
+
+    public Criteria getQueryCriteria(final String queryString) {
+        return where("name").like('%' + queryString + '%');
     }
 
     public Mono<ServerResponse> post(final ServerRequest serverRequest) {

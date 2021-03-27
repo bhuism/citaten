@@ -24,14 +24,6 @@ public final class Util {
             .orElse(value);
     }
 
-    public static Long safeLongValueOf(final String value) {
-        try {
-            return Long.valueOf(value);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
     public static Integer safeIntegerValueOfOrDefault(final Optional<String> value, final Integer defaultValue) {
         return value.map(v -> {
                 try {
@@ -60,7 +52,11 @@ public final class Util {
     }
 
     public static Optional<Long> safeLongValueofOptional(final String value) {
-        return Optional.ofNullable(safeLongValueOf(value));
+        try {
+            return Optional.of(Long.valueOf(value));
+        } catch (final NumberFormatException e) {
+            return Optional.empty();
+        }
     }
 
     public static Optional<Integer> safeIntegerValueofOptional(final String value) {
